@@ -1,0 +1,270 @@
+
+
+\begin{center}
+     \Large{\textbf{Medsigpro Cheat Sheet-o}} \\
+\end{center}
+
+\section{Basics of Brain}
+\verb!Non-invasive methods of neuroimaging!\\
+Electroencephalography (EEG), Magnetoencephalography (MEG), Magnetic Resonance Tomography/Imaging (MRT/MRI).\vs
+
+\verb!Brain waves! $f_{hi} \rightarrow f_{low}$\\
+Gamma / beta / alpha / theta / delta \vs
+
+\verb!Background of EEG/MEG!\\
+Synaptic activity causes shifts in currents \arr postsynaptic potential \arr resulting polarisation is a current dipole \arr simultaneous activation of neurons superimpose. 10000 neurons necessary to generate measurable EEG/MEG signal. \vs
+
+Synaptic activity causes intra-cellular primary current and extra-cellular secondary current. EEG records voltage changes of secondary current at head surface (Ohms law). MEG records magnetic fields of primary currents (Biot-Savart rule). Temporal resolution up to 1 kHz.\vs
+
+Depolarisation of dendritic membrane of pyramidal cells generates both currents.\vs\vs
+
+\verb!MEG devices!\\
+Superconducting quantum interference device (SQUID). Small ring (2mm) superconductor which tunnels measured magnetic flux using magnetometer. Usually 200-300 seperate SQUIDs per MEG. Keep components at $4.2 ^\circ$ K to reduce thermal noise and to increase stability.
+
+\section{MRI}
+\verb!Basics!\\
+1 Superconducting magnet (1 T), 3 gradient magnets XYZ (18-27 mT). Hydrogen atoms align in magnetic field. Majority of protons cancel each other. The remaining are used to create the image. MRI machine applies RF pulse specific to hydrogen only to the body region to be examined \arr causes protons to spin. Gradient magnets steer magnetic field to the specific regions by being turning off and on rapidly \arr after absence of RF pulse protons slowly return to their natural alignment and release energy \arr signal picked up by coils and processed, e.g. FT: k-space to image-space. \vs
+
+Normal/abnormal tissue will respond differently. Resolution approx. 0.58mm.
+Coronal: back-to-front. Axial: top-to-bottom. Saggital: right-to-left. \vs
+
+Susceptibility (generation of extra magnetic fields in materials with an applied magnetical field) causes nonuniform magnetic field and nonuniform precession frequencies. Artifacts occur between air and tissue (sinuses, ear canals). RF signals in different regions with different $f$ will get out of phase (decaying).\vs
+
+\verb!FMRI!\\
+Measures brain activity indirectly through changes in blood vasculature (Gefaesssystem), specifically the increase in blood oxyhaemoglobin, called BOLD response (blood oxygen level dependent) or the decrease in dHb, resulting from increase in $O_2$, blood flow and blood volume.
+
+BOLD response with initial dip at stimulus, overshoot after 4-6 secs, hold during stimulus and post stimulus undershoot after end of stimulus. Signal change in percent approx. 0.5-3 \%.\vs
+
+\verb!Canonical FMRI experiment!\\
+Stimulus pattern for patient \arr acquire time-series of BOLD images during stimulus \arr analyze image series to find where signal changed. Requirements of scanner: temporal resolution of stimulus, rapid imaging (very complex), get image in single shot.
+
+\section{Quantities measured from time-series}
+\verb!Power spectrum!\\
+Signal of length $N$ with $M$ disjoint segments of length $D$. Power spectrum $S_{xx}(\omega)$. Eyes closed: large alpha-Peak in $S_{xx}$.\vs
+
+Requirements:\\
+Genuine DC-couple amplifiers with high input impedance, high DC stability and wide dynamic range needed. DC drift during slow activity can be an issue (optimal range of amp). EEG/MEG signals have $S_{xx}(f) = \frac{1}{|f|^\gamma}$, with $0<\gamma<2$ or $\gamma>2$ during noise.\vs
+
+Large neuronal areas: low $f$ (1-10 Hz), high amplitude signals\\
+Small neuronal areas: high $f$ ($>$100 Hz), low amplitude signals\vs
+
+Normalisation of PSD in freq. domain: Median of all bins for all windows for all EEG channels \arr take overall median to receive normalisation curve.\vs
+
+Normalisation of PSD in time domain: Filter with a filter that cancels $\frac{1}{f^\gamma}$ spectral characteristic. $\frac{1}{f^\gamma}$ can be modelled with FIR, so the inverse is a IIR. Not full control over FIR coeffs (predetermined by normalisation curve). If FIR is not min.phase, IIR stability is a issue. Also linear phase is desired to not distort EEG/MEG signals - not possible with IIR.\vs
+
+Another approach is modeling normalisation curve as AR model \arr inverse filter is MA model with guaranteed stability. Find AR coeffs of IIR via Yule-Walker equations on the $|\cdot|$ of time domain signal. Obtain inverse filter with differentiatorm which cancels $\frac{1}{f}$ trend. Filter should have linear phase (const group delay) to compensate for phase delay by sample-shifting.\vs
+
+\verb!Modeling using autoregressive process!\\
+$y(n) = -\sum_{k=1}^G a_k y(n-k) + \eta(n)$, with $\eta(n)$ being gaussian white noise with zero mean and unit variance.\vs
+Estimator: $\hat{y}(n) = -\sum_{k=1}^G a_k y(n-k)$, such that MSE $||y(n)-\hat{y}(n)||^2$ is minimized.\vs
+
+Yule-Walker-Eq: $\sum_{l=1}^G a_l r_{yy}(k-l) = -r_{yy}(k)$ for $k=1...p$. Solution provides optimal set of coeffs to predict $y(n)$.\vs
+
+\verb!Modeling using autoregressive 2nd order process!\\
+$y(t) = a_1y(t-1)+a_2y(t-2)+\eta(t)$\\
+AR2 process can be seen as a stochastically driven, damped, resonant, harmonic oscillator with period and relaxation time determined by $a_1, a_2$.
+
+\section{Coherence}
+\verb!Coherence!\\
+Studies correlation in short-time frequency domain. Average (C)PSDs across all segments, coherence: $C(\omega)=\frac{|S_{xy}(\omega)|^2}{S_{xx}(\omega)S_{yy}(\omega)}$. Confidence limit $C_L=1-(1-\alpha)^{\frac{1}{M-1}}$. Frequency resolution $\frac{f_s}{D}$.\vs
+
+\verb!Dynamical Coherence!\\
+Estimate coherence for 30sec windows with 28sec overlap. Gives coherence for every band over time.\vs
+
+\verb!Welch periodogram and Multitaper method!\\
+Estimate similarly the coherence. Multitaper with only one Hanning taper is the same as Welch periodogram with Hanning window.\vs
+
+\verb!Increasing time resolution!\\
+For stationary process: $S(f)df=E\lfloor |X(f)|^2 \rfloor$. Estimation of spectrum by squaring FT of data sequence $|\tilde{x}(f)|^2$.
+Difficulties:\\
+Bias (mixing of information from different frequencies): $\tilde{x}(f) \neq X(f)$, except infinite data \arr kernel becomes delta func. \\
+Inconsistent spectrum estimator: Squared FT of stochastic data does not converge to true spectrum when data tends to infite length.\vs
+
+\verb!Multitaper method!\\
+Calculate spectrum by weighting data with orthogonal tapers $w_t(k)$\\
+$S_{MT}(\omega) = \frac{1}{K} \sum_{k=1}^K |\tilde{X}_k(\omega)|^2$, where $\tilde{X}_k$ is the FT of data $x(t)$, $\tilde{X}_k(\omega)=\sum_{t=1}^N w_t(k)x(t) e^{-j2\pi f t}$. Choose tapers by discrete prolate spheroidal sequences (DPSS) to reach maximum spectral concentration. Choose tapers of length N so that spectral amplitude $U(f)$ of $w_t$ is maximally concentrated in interval $[-W,W]$, ($W\in (0,f_N=\frac{1}{2f_s})$, also called freq. bandwith param.). 
+\begin{equation}
+\max \int_{-W}^{W} |U(f)|^2 df
+\end{equation}
+Leads to matrix eigenvalue eq.\vs
+
+\verb!Extended continous wavelet transform!\\
+Similar to STFT, but different time/frequency-resolution possible, due to shifting and scaling. Scaling gives frequency shift (like modulation @ STFT), however time-duration (width in time domain) is reduced.\\
+High frequencies: better time resolution, worse frequency resolution\\
+Low frequencies: worse time resolution, better frequency resolution\vs
+
+$CWT_x(\tau, a) = \frac{1}{a} \int x(t) h^*\left(\frac{t-\tau}{a}\right)dt$, with wavelet $h^*$ (e.g. Morlet) and scaling $a$. Relative bandwidth: $BW_{rel}=\frac{2\sqrt{2\beta}}{c}$. Adjust $\frac{\sqrt{\beta}}{c}$ for frequency resolutions at frequencies.\vs
+
+\subsection{Methods for finding direction of information flow}
+\verb!Partial Coherence!\\
+$C_{xy/z}(\omega) = \frac{|CY_{xy}(\omega)-CY_{xz}(\omega)CY_{zy}(\omega)|^2}{(1-C_{xz}(\omega))(1-C_{zy}(\omega)}$, with coherency between $i$ and $j$ $CY_{ij}(\omega)$.\vs
+
+\verb!Partial directed coherence!\\
+Using (MV)AR model with coeffs $a(r)$, calculate FT $A(\omega) = I-\sum_{r=1}^p a(r) e^{-j\omega r}$, then PDC is defined as:\vs
+
+$|\pi_{i\leftarrow j}(\omega)| = \frac{|A_{ij}(\omega)|}{\sqrt{\sum_k |A_{kj}(\omega)|^2}}$. \vs
+
+Shows ratio between the outflow from channel $j$ to channel $i$ to all the outflows from the source channel $j$, so it emphasizes rather the sinks, not the sources. 
+
+Find optimum order $G$ of AR model by Akaike Information Criterion (AIC), then find coeffs $a(r)$ to closely model the process.\vs
+
+\verb!Granger causality index!\\
+If $y(t)$ contains information in past terms that helps predicting $x(t)$: $y(t)$ causes $x(t)$. \\
+Predicting $x(t)$ using previous $x(t)$ values only yields error $e(t)$. Predicting $x(t)$ using previous $x(t)$ and $y(t)$ values, yields error $e_1(t)$:\\
+$x(t) = \sum_{j=1}^p A_{11}(j)x(t-j) + e(t) + \sum_{j=1}^p A_{12}(j)y(t-j)+e_1(t)$.\\
+If $e_1 < e$, then $y$ causes $x$.\vs
+
+$GCI_{i\rightarrow j}(t) = \ln\left(\frac{\text{var}\{e\}}{\text{var}\{e_1\}}\right)$
+
+\verb!Multivariate autoregressive models!\\
+Use MVAR to adapt GCI to multivariate process with $k$ channels, turning $A$ into $k\times k$ matrix and $E(t)$ into $k$ vector. With z-Transform $E(f)=A(f)X(f)$. From this the model can be viewed as a linear filter with white noises $E(f)$ as input, $X(f)$ as output and $H(f)=A(f)^{-1}$ as transfer matrix.\vs
+
+\verb!Directed Transfer Function (DTF)!\\
+$DTF^2_{j\rightarrow i}(f) = \frac{|H_{ij}(f)|^2}{\sum_{m=1}^k|H_{im}(f)|^2}$\\
+Using MVAR model, the DTF describes causal influence of channel $j$ on $i$ at $f$. Normalized DTF, which produces ratio between inflow from $j$ to $i$ to all inflows to $i$.\\
+Advantage of DTF over coh: DTF can determine directionality in the coupling when spectra of two brain regions overlap.
+
+\section{Phase spectrum and delay}
+Estimate phase $\phi(\omega) = \arg \{S_{xy}(\omega)\}$. Can only be estimated in frequency band of significant coherence. Confidence interval of phase estimate is inversely related to coherence.
+
+\subsection{Delay estimation methods}
+\verb!Maximum of CC!\\
+$\delta = \arg\max_t|CC_{xy}(t)|$ \vs
+
+\verb!Pointwise interpretation of phase spectrum!\\
+For linear system, the systems IR $a_{xy}(\tau)$ can be rewritten as convolution of a delay, a minimum phase system and an allpass filter $a_{xy}(\tau)=(\text{delay} * mp * ap)(\tau)$. If $S_x(f)$ is real, the phase spectrum,  $\phi_{xy}(f) = \arg \{\tilde{a}^*_{xy}(f) S_x(f)\} = \arg \{\tilde{a}^*_{xy}(f)\}$.\vs
+
+If the systems consists of a delay only, $a_{xy}(\tau)$ is a delta distributon at lag $\delta$ \arr FT: $a_{xy}(\tau) = e^{-j2\pi f \delta}$. It follows that phase spectrum is a straight line $\phi_{xy}(f) = 2\pi f\delta$. \\
+Pointwise method assumes delay-only model and uses previous equation only at the frequency where coherence is maximal, which yields smallest error for the TDE.\vs
+
+\verb!Fitting a straight line to the phase spectrum!\\
+Fit cosine function (locally quadratic and solves $2\pi$ periodicity problem). Choose weights to reflect variance of phase spectrum estimate.\\
+$J(\delta) = \sum_{f_j\in B} \frac{\text{coh}^2(f_j)}{1-\text{coh}^2(f_j)} \cos(\phi_{xy}(f_j)-2\pi f_j \delta)$, where $B$ is the set of frequencies with significant coherence or a subset (fitting to important freqs only). Delay is the $\arg\max J(\delta)$.\vs
+
+\verb!Hilbert transformation method!\\
+Correct phase spectrum before fitting a line to it. System is modeled consisting of a minimum phase and delay component (e.g. AR):
+$J(\delta) = \sum_{f_j\in B} \frac{\text{coh}^2(f_j)}{1-\text{coh}^2(f_j)} \cos[\phi_{xy}(f_j) - \arg mp_{xy}(f_j) - 2\pi f_j \delta]$
+
+\verb!Motivation of using maximising coherence method!\\
+$\delta = \arg\max_{\tau} C'(\tau)_{w_0}$\vs
+
+\verb!Surrogate analysis!\\
+Surrogate analysis is used to determine if the time series has nonlinear structure. Hypothesis: Time series comes from linear process - several linear realizations of the time series (surrogates) are synthesized. Then quantify both by discriminating statistic. Any deviation in latter confirms nonlinear structure.\vs
+
+Take disjoint data segments (disjoint segments are independent!) of $x(t)$ from which the time-delayed information is assumed to flow to the other time series $y(t)$ and shuffle them. Cross spectrum is different but original spectra are unchanged. Then determine time-delay dependant coherence function $C(\tau)_{w_0}^{surr}$ for all realisations.\\
+Null-hypothesis: $C(\tau)_{w_0}$ is obtained due to spurious/fake correlations between the two time series. Calculate significane of difference between $C(\tau)_{w_0}$ and $C(\tau)_{w_0}^{surr}$:\vs
+
+$S(\tau) = \frac{|C(\tau)_{w_0} - \langle C(\tau)_{w_0}^{surr} \rangle |}{\nu [C(\tau)_{w_0}^{surr} ]}$, with average over differenct realisations of surrogates $\langle \cdot \rangle$, and the std.dev. between different realisations $\nu[\cdot]$.\\
+If $S(\tau)>2$ then $C(\tau)_{w_0}$ is not due to spurious correlations (reject null hypothesis) and use $C(\tau)_{w_0}$ for further analysis.
+
+\section{Source analysis in frequency domain}
+Forward problem: Voxel \arr EEG electrodes\\
+Inverse problem: EEG Electrodes \arr Voxel\\
+\drwspc
+
+\verb!Forward solution!\\
+To determine tranmission from sources in brain to surface where the EEG electrodes are placed, a volume conduction model is used with a boundary-element method.\vs
+
+Brain models: Single sphere or five concentric sphere model\\
+Calculate lead-field matrix to map current dipoles to the voltages on the scalp.
+
+\verb!Lead field matrix!\\
+From linear poisson equation linearity, it follows that the mapping is represented by a linear operator, so that the resultant recordings $\phi_r = L_fs+n$, with noise $n$ and lead field matrix $L_f$. $L_f$ holds geometry and conductivity information of the model - projection from current sources at discrete locations in the brain to potential measurements at discrete recording points on the scalp.\vs
+
+$L_{f_{ij}}$: Potential $\phi_i$ measured at $j$ due to source $s_j$. Sources are defined by 3 orthogonal dipoles $s_{jx}, s_{jy}, s_{jz}$ and the positions are located on a grid.\vs
+
+Coordinates of dipoles found via 3D rect.-grid ($27\times 23\times 27$ voxels, with $d=5$ mm) and then human brain laid over the voxels.
+
+\verb!Conductivity model!\\
+3 main types: 
+\begin{itemize}
+\item Analytical methods: If conductivity field is easy to describe (symmetries)
+\item Boundary element methods: For piecewise const. conductivity fields (simplified geometry only on boundaries)
+\item FEM/FDM (volumic methods): For general, non-homogenous and anisotropic conductivity fields
+\end{itemize}\vs
+
+Precision of forward solution tested with relative difference measure (RDM) and magnitude ratio (MAG):\\
+$RDM(g_n,g_a) = \left|\left|\frac{g_n}{||g_n||}-\frac{g_a}{||g_a||}\right|\right| \in [0,2]$ - optimum \arr 0\vs
+
+$MAG(g_n,g_a) = \frac{||g_n||}{||g_a||}$ - optimum \arr 1 \vs
+
+wit $g_n$ by a numerical solver and $g_a$ by analytical solution and discrete $l^2$ norm $||\cdot||$.\vs
+
+\subsection{Boundary element method}
+BEM allows to calculate electric potential of a current source in an inhomogenous conductor by solving  following integral equation, if the conducting object is divided by closed surfaces $S_i$ into $n_s$ compartments:
+\begin{equation*}
+\bar{\sigma}_k \phi(r) = \sigma_0\phi_0(r) + \frac{1}{4\pi}\sum_{i=1}^{n_s} \Delta\sigma_i \oint_{S_i} \sigma(nr') \frac{r'-r}{|r'-r|^3} dS'_i
+\end{equation*}
+Surfaces are described by a large number of small triangles and the integrals are replaced by summations over these triangle areas.
+
+
+\subsection{FEM}
+FEM reduces continuous problem with infinite unknowns to a finite number by discretizing the region into elements. FEM can also capture anisotropic conductivities. Values between discrete points approximated via interpolation functions. These are specified in terms of field values at corners of elements (nodes). Linear interpolation potentials \arr $E = const.$ within element.\vs
+
+Given geometric model FEM assembles matrix eq. to find stiffness matrix $A$. Incorporate boundary conditions and source currents within $b$.
+Poisson equation reduces to $A_{ij}\phi_k = b_j$, with unknown potentials $\phi$ at the nodes.\vs
+
+$L_e$ matrix: Constructed via three orthogonal sources in each cell of a volume domain and for each dipole compute voltages at electrodes. For a mesh of $N$ tetrahedral elements this requires $N\times 3$ forward solutions.\vs
+
+\subsubsection{Construct lead-field matrix}
+\verb!Element basis!\\
+Constraint - maximal possible resolution of sources: One dipole per tetrahedral element. Calculate potentials throughout the entire volume. Use principle of reciprocity (applicability of reciprocity to anisotropic conductors).\vs
+
+Given dipole $p$, to find $\phi_{AB}$, it is sufficient to know $E$ at dipole location resulting from current $I$ placed between $A$ and $B$. $\frac{E\cdot P}{-I} = \phi_A - \phi_B$.
+
+Reciprocity principle: Unit current between 3 and $G$. Then voltage difference between 3 and $G$ will be equal to the dot product of $p$ and $E_e$, due to dipole source $p$ in element $e$.\\
+Invert (iterative forward) solution: Place a source and sink at pairs of electrodes and for each pair compute resulting $E$-field in all elements.\\
+\textbf{Construction method:} Choose one electrode as ground (force $\phi$\arr$0$). For each other $M$ electrodes (one at a time), place a current source $I$ perpendicular to the surface at that electrode and a unit current sink at ground electrode. Compute forward solution which results in potential field $phi$ defined at each node. $\nabla \phi$ yields $E$ at each element in the head. \vs
+
+Compute row of $L_e$ by evaluating $(E-I)$ in every element. Repeat for each of $M$ source electrodes producing $L_e$, satisfying: $L_e s_e = \phi_r$.\\ Each orthogonal dipole in each element corresponds to a column of $L$, each electrode corresponds to a row of $L$. Each entry corresponds to the potential measured at a particular electrode due to a particular source.\vs
+
+\verb!Node basis!\\
+Based on divergence of the source current density vector at each node. The node oriented basis is derived from finite element stiffness matrix $A$ and the right-hand-side vector $s_n$. Solve well conditioned system: $\phi=A^{-1}s_n$.\\
+For source imaging we are only interested at nodes corresponding to scalp electrodes. Introduce matrix $R$ ($K\times M$, $K$ \# of nodes, $M$ \# of electrodes) that selects the electrode potentials out of $\phi$. Each row of R contains a single non zero entry - 1 located at column corresponding to the node index for that electrode: $\phi_r = R\phi = RA^{-1}s_n = L_ns_n$, with $L_n = RA^{-1}$ (node-oriented lead-field basis).\vs
+
+Compute $L_n$ by exploiting sparseness of $R$. Only construct $M$ columns of $A^{-1}$ by solving: $A(A^{-1})_m = I_m$, where $(A^{-1})_m$ is unknown for source $m$. Generate $M$ forward solutions.\vs
+Columns correspond to nodes (94\% fewer columns). Best suited for distributed source configurations.\vs
+
+\verb!Comparison: Element basis vs. node basis!\\
+$L_e$ is based on having a dipole moment of particular strength and orientation in each element. $L_e$ is more useful for reconstructing discrete dipolar sources. Appropriate for localizing very focal neural activity (epileptic seizures or motor control tasks). Size of basis $[M\times(N\times 3)]$. Using this for source imaging \arr solution will be under-determined. \vs\vs
+
+$L_n$ is defined with values at the nodes. Works best for recovering less focal sourcesm, e.g. coordinated activity occuring at multiple neural locations (language processing or complex tasks). Size $[M\times K]$ - less under-determined than the element-basis.
+
+\subsection{Dynamic imaging of coherent sources}
+Introduce spatial filter to compute power and coherence at any location in the brain as a linear transformation. Spatial filter relates EM-field on the surface to underlaying neural activity (modeled as (sum of) current dipole(s)) in a certain brain region.\\
+
+\verb!Inverse solution (Spatial filter)!\\
+$x$ being a $N$-vector containing potentials measured at $N$ electrode sides. Potential due to a single dipole with location $q$ is given: $x=H(q)m(q)$, where $H(q)$ is $N\times 3$ transfer function matrix and $m(q)$ is a 3-vector containing the $(x,y,z)$-components of the dipole moment.\\
+Linear medium ($x$ created by $R$ active dipoles at $q_i$, $i=[1,R]$ and noise $n$) \arr superposition of potentials: $x=\sum_{i=1}^R H(q_i)m(q_i)+n$. The spatial filter uses the covMat of $x$ - $x$ does not contain temporal information, it represents the spatial distribution of potential at the measurement sites.\\
+Electrical activity of neuron is assumed to be a random process \arr model dipole moment as random quantity described by mean and cov:\\
+$\bar{m}(q_i) = E\{m(q_i)\}$, $C(q_i)=E\{[m(q_i)-\bar{m}(q_i)][m(q_i)-\bar{m}(q_i)]^T\}$.\\
+We assume $E\{n\}=0$ and covMat $Q$, then the moments associated with different dipoles are not correlated, hence $C(q_i)=0$ and $\bar{m}(x)=E\{x\}=\sum_{i=1}^L H(q_i)m(q_i)$, with $L$ amount of non-correlated dipoles. CovMat of measured potentials $C(x) = \sum_{i=1}^R H(q_i)C(q_i)H^T(q_i)+Q$.\vs
+
+Three component filter output $y = Z^T(q_0)x$, with constraint for ideal narrowband filter: $Z^T(q_0)H(q)=I \text{ for } q\in Q_0, 0 \text{ for } q \not\in Q_0 \text{ and } q\in B$, with volume of brain $B$\vs
+
+Optimal filter $z(q_0)$ satisfies:\\
+$\min_{z(q_0)} \text{tr}\{C(y)\}$, s.t. $Z^T(q_0)H(q)=I$\vs
+
+Solve with Lagrange approach, do fancy shit, end up with LCMV:\vs
+
+\verb!Linear constrained minimium variance (LCMV) spat.filt.!\\
+$Z(q_0) = (H^T(q_0)C^{-1}(x)H(q_0))^-1 H^T(q_0)C^{-1}(x)$\\
+Aim of LCMV is to design a bank of spatial filters that attenuates from other locations and allows only signal generated from a particular location in the brain.
+
+\subsection{Minimum Norm Estimates}
+With minnimal apriori info about source, this gives best estimates. Use MNE to overcome difficulties at inter/extrapolating magn-field/elec-pot maps. Calculate $H$ or $E$ at desired points directly from MNE. Lead field describes sensitivity pattern of magnetometer to the primary current.\vs
+
+Primary current density $J^p(r)=J_{tot}(r) - \sigma(r)E(r)$, position vector $r$. $J^p$ results from conversion into electrical energy - "battery of the circuit". Output of magnetometer $B_i = \int L_i(r)J^p(r)d\nu$, with lead field $L_i(r)$ (describes sensitivity distribution of $i$th magnetometer).\vs
+
+Inserting dipolar prim-current distribution into previous eq yields: $B_i(Q,r')=L_i(r')Q$, with $B_i(\cdot)$ resulting from arbitrary dipole $Q$ at $r'$.\vs
+
+\subsection{LORETA - Low resolution electromagnetic tomography}
+Find a unique solution for 3D distribution of infinite set of different possible solutions. Assume that neighbouring neurons are simultaneously and synchronously active.\\ 
+For noise free instantaneous measurements the discrete problem is:\\
+$\min_j||BWJ||^2$, s.t. $\phi = KJ$, \\
+with EEG/MEG measurements $\phi$, $J$ 3$M$-vector of current densities $j$ (3-vec) at $M$ points with known locations in brain volume. Transfer matrix $K$ consisting of lead-field vectors. $B$ discrete Laplacian operator. $Z=WJ=(z_1^T,...,z_M^T)^T$, where $z$ is weighted current density. $BZ=(I_1^T,...,I_M^T)^T$ is the discrete Laplacian.\vs
+
+Unique solution: $\hat{J}=T\phi$.\vs
+
+Dependance Parameters:\\
+Number and positioning of the electrodes. Effect of number of electrodes on source localization. The choice of reference. Electrode positions and interpolation algorithms
