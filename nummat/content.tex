@@ -8,8 +8,71 @@
 
 \section{Lineare Gleichungssysteme}
 \subsection{Allgemeine Aufgabenstellung}
+Geg.: $\v{A} \in \Rr{n}{n}$, $\v{b} \in \R{n}$ \\
+Ges.: $\v{x} \in \R{n}$ \\
+\centering $\v{Ax}=\v{b}$ \flushleft
 \subsection{Dreiecksmatrizen}
+Untere Dreiecksmatrix $\v{L} \in \Rr{n}{n}$ und obere Dreiecksmatrix $\v{R} \in \Rr{n}{n}$.\\
+\textsc{Regul\a re/invertierbare/nicht-singul\a re Matrix}\\
+Matrix $\v{A}$ ist regul\a r, wenn $\det \v{A}\neq 0$. Determinante einer $\Delta$Matrix ist das Produkt ihrer Diagonalelemente. $\v{L}$ und $\v{R}$ sind regul\a r, wenn alle Diagonalelemente $\neq 0$.\\
+
+\textsc{Vorw\a rtseinsetzen}\\
+\centering $\v{Ly}=\v{b}$ \flushleft
+Rechenaufwand: $n^2$ AO \\
+Um Speicher zu sparen  $b_i \leftarrow y_i$.\vspace{0.1cm}
+
+{\addtolength{\leftskip}{20mm}
+\hrulefill\\
+for $j=1:n$\\
+\quad $x_j \leftarrow b_j/l_{jj}$\\
+\quad for $i=j+1:n$\\
+\qquad $b_i \leftarrow b_i-l_{ij}x_j$\\
+\hrulefill\\
+}
+
+\textsc{R\u ckw\a rtseinsetzen}\\
+\centering $\v{Rx}=\v{y}$ \flushleft 
+Rechenaufwand: $n^2$ AO \\
+Um Speicher zu sparen  $b_i \leftarrow x_i$.\vspace{0.1cm}
+
+{\addtolength{\leftskip}{20mm}
+\hrulefill\\
+for $j=n:1$\\
+\quad $x_j \leftarrow b_j/r_{jj}$\\
+\quad for $i=1:j-1$\\
+\qquad $b_i \leftarrow b_i-r_{ij}x_j$\\
+\hrulefill\\
+}
+
 \subsection{LR-Zerlegung}
+Sei $\v{A} \in \Rr{n}{n}$ und $\v{L},\v{R} \in \Rr{n}{n}$\\
+\centering $\v{A}=\v{LR}$ \flushleft
+
+Ansatz: \\
+Matrizen $\v{A}$, $\v{L}$, $\v{R}$ in Teilmatrizen $\v{A}_{**}$, $\v{A}_{*1}$, $\v{A}_{1*}$, $\v{L}_{**}$, $\v{L}_{*1}$, $\v{R}_{**}$, $\v{R}_{1*}$ zerlegen.\\ Es folgen 4 Gleichungen aus $\v{A}=\v{LR}$:
+\begin{align*}
+a_{11}     &= l_{11}r_{11} & & \\
+\v{A}_{*1} &= \v{L}_{*1}r_{11} &\Leftrightarrow \v{L}_{*1} &= \v{A}_{*1}/r_{11} \\ 
+\v{A}_{1*} &= l_{11}\v{R}_{1*} &\Leftrightarrow \v{R}_{1*} &= \v{A}_{1*}\\
+\v{A}_{**} &= \v{L}_{*1}\v{R}_{1*}+\v{L}_{**}\v{R}_{**} & &
+\end{align*}
+Per Def. $l_{11}=1$ und damit $r_{11}=a_{11}$, sodass
+\begin{equation}
+\v{A}_{**} - \v{L}_{*1}\v{R}_{1*} = \v{L}_{**}\v{R}_{**}
+\end{equation}
+
+\textsc{Praktische Umsetzung}\\
+Elemente von $\v{A}$ \u berschreiben, sodass:
+\begin{equation}
+\begin{pmatrix}
+r_{11} & r_{12} & \cdots    & r_{1n} \\
+l_{21} & r_{22} & \ddots    & \vdots \\
+\vdots & \ddots & \ddots    & r_{n-1,n} \\
+l_{n1} & \cdots & l_{n,n-1} & r_{nn} 
+\end{pmatrix}
+\end{equation}
+
+
 \subsection{Fehlerverst\a rkung}
 \subsection{QR-Zerlegung}
 \subsection{Ausgleichsprobleme}
@@ -36,3 +99,4 @@
 \section{Numerische Integration}
 \subsection{Quadraturformeln}
 \subsection{Fehleranalyse}
+\clearpage

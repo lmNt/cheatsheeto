@@ -11,6 +11,7 @@
 \usepackage{multirow}
 \usepackage{xcolor}
 \usepackage{color}
+\usepackage{listings}
 \renewcommand{\a}{\"{a}}
 \renewcommand{\o}{\"{o}}
 \renewcommand{\u}{\"{u}}
@@ -20,6 +21,24 @@
 \newcommand{\s}{\ss}
 \let\mbb\boldsymbol
 \renewcommand\boldsymbol{\mbb}
+% vector, bold face non italic
+\newcommand{\R}[1]{\mathbb{R}^{#1}}
+\newcommand{\Rr}[2]{\mathbb{R}^{#1 \times #2}}
+\renewcommand{\v}[1]{\mbox{\bf #1}}
+% vector, bold face italic
+%\renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
+
+
+% python code style for listings
+\lstset{
+language=Python,
+basicstyle=\small\sffamily,
+numbers=left,
+numberstyle=\tiny,
+frame=tb,
+columns=fullflexible,
+showstringspaces=false
+}
 
 % To make this come out properly in landscape mode, do one of the following
 % 1.
