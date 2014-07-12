@@ -228,12 +228,24 @@ for $k=1:\min(m,n)$ \qquad {\scriptsize // Loop \u ber Diagonale}\\
 \qquad {\scriptsize // Diag.element aktual., Giv.-Rot. in aktueller It. speichern}\\ 
 \qquad $a_{kk} \leftarrow ca_{kk}+sa_{ik}$, $a_{ik}\leftarrow \rho$\\
 \qquad for $j=k+1:n$ {\scriptsize // Loop \u ber Elemente in der $k$-ten Zeile}\\
+\qquad \quad {\scriptsize // Giv-Rot auf Zeile anwenden} \\
 \qquad \quad $\alpha \leftarrow a_{kj}$, $a_{kj} \leftarrow c\alpha+sa_{ij}$, $a_{ij} \leftarrow -s\alpha + ca_{ij}$ \\
 \hrulefill\\
 }
+Aufwand: $6n^2+2n^3$ (quadratische Matrix) ~3x mehr als LR-Z
+
+\textsc{L\o sen Gleichungssystem $\v{Ax}=\v{b}$}\\
+$\v{b}=\v{Ax}=\v{QRx}=\v{Qy}$ \quad $\Leftrightarrow$ \quad 1.) $\v{y}=\v{Q}^*\v{b}$ \quad 2.) $\v{y}=\v{Rx}$.\vspace{0.2cm}
+
+1.) Qr\_transform: \U ber einzelne $G_{ij}$ (oben links angefangen) iterieren und auf $b$ multiplizieren. \\
+2.) R\u ckw\a rtseinsetzen.\vspace{0.2cm}
+
+\textsc{Effizientere QR-Z}\\
+Householder-Spiegelungen: Aufwand ~2x mehr als LR-Z.\\
+Mit Optimierungen bei Speicherzugriffen bei QR-Z \a hnlich schnell wie LR-Z.\vspace{0.2cm}
 
 \subsection{Ausgleichsprobleme}
-
+\emph{Wir suchen $\v{x}$ so, dass alle Gleichungen m\o glichst gleich gut erf\u llt werden}.
 
 \section{Nichtlineare Gleichungssysteme}
 \subsection{Bisektionsverfahren}
