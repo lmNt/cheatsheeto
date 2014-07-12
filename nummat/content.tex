@@ -126,8 +126,113 @@ for $k=1:n$\\
 \qquad\quad $a_{ij} \leftarrow a_{ij}-a_{ik}a_{kj}$\\
 \hrulefill\\
 }
+$\v{p}$ protokolliert, welche Vertauschungen durchgef\u hrt wurden, um sie sp\a ter auf $\v{b}$ anwenden zu k\o nnen.\\
+Aufwand: $\frac{2}{3}n^3$.\\
+
+\textsc{Sonderfall: $\v{A}$ positiv definit}\\
+TODO.
+
+
 \subsection{Fehlerverst\a rkung}
+\textsc{Norm des Matrix-Vektor-Produkts}\\
+\emph{Wie stark \a ndert sich die L\a nge eines Vektors wenn er mit $\v{A}$ multipliziert wird. Mapping von Einheitskreis auf Ellipse.}.
+F\u r $\v{A} \in \Rr{n}{n}$ gilt:
+\begin{align*}
+\alpha_2(\v{A}) &= \min\{\Vert \v{Ay} \Vert_2 : \v{y}\in\R{n}, \Vert \v{y} \Vert_2 =1 \} \\
+\beta_2(\v{A}) &= \max\{\Vert \v{Ay} \Vert_2 : \v{y}\in\R{n}, \Vert \v{y} \Vert_2 =1 \} 
+\end{align*}
+und
+\begin{align*}
+\alpha_2(\v{A})\Vert \v{z} \Vert_2 \leq \Vert \v{Az} \Vert_2 \leq \beta_2(\v{A})\Vert \v{z} \Vert_2
+\end{align*}
+Eigenschaften der Norm:
+\begin{align*}
+\Vert \v{x} \Vert &= 0 \Leftrightarrow \v{x} = 0 \\
+\Vert \lambda \v{x} \Vert &= | \lambda | \Vert \v{x} \Vert \\
+\Vert \v{x} + \v{y} \Vert &\leq \Vert \v{x} \Vert+\Vert \v{y} \Vert
+\end{align*}
+TODO
+
 \subsection{QR-Zerlegung}
+\emph{F\u r jede Matrix gibt es eine QR-Z}.\\
+
+\textsc{LR-Z: Schlecht konditioniertes Problem}\\
+$\kappa_2(\v{A}) \gg 1$, $\kappa_2(\v{A}) \leq \kappa_2(\v{L})\kappa_2(\v{R})$\\
+Kritisch falls $\kappa_2(\v{L})\kappa_2(\v{R}) \gg \kappa_2(\v{A})$.\\
+
+Ziel: Suche Transformationen $\v{Q} \in \Rr{n}{n}$, die die Norm unver\a ndert lassen:
+\begin{align*}
+\Vert \v{Qy} \Vert_2 = \Vert y \Vert_2
+\end{align*}
+Mit Hinzunahme des Skalarprodukts:
+\begin{align*}
+\langle \v{y}, \v{y} \rangle_2 = \Vert \v{y} \Vert_2^2 = \Vert \v{Qy} \Vert_2^2 = \langle \v{Qy}, \v{Qy} \rangle_2 = \langle \v{y}, \v{Q}^*\v{Qy} \rangle_2
+\end{align*}
+muss $\v{Q}^*\v{Q} = \v{I}$ gelten.
+
+Gesucht: $\v{A}=\v{QR}$.\\
+Konditionszahl bzw. Fehlerverst\a rkung wird nicht verschlechtert: $\alpha_2(\v{A}) = \alpha_2(\v{R})$, $\beta_2(\v{A}) = \beta_2(\v{R})$\\
+$\kappa_2(\v{A})= \kappa_2(\v{R})$.\\
+
+\textsc{Givens-Rotation}\\
+Mit Hilfe von Givens-Rotationen k\o nnen wir beliebige $\v{A}\in \Rr{m}{n}$ auf obere $\Delta$gestalt bringen.
+\begin{align*}
+\v{Q}=\begin{pmatrix}
+c & s \\
+-s & c
+\end{pmatrix}
+\text{ und }
+\v{Qy} = \begin{pmatrix}
+cy_1 + sy_2 \\ 0
+\end{pmatrix}
+\end{align*}
+Konsekutiv Givens-Rotationen $\v{Q}_{ij}$ $i$-te und $j$-te Zeile anwenden um Eintrag $a_{ij}$ zu beseitigen. Bsp. $\v{A} \in \Rr{4}{3}$:
+\begin{align*}
+\v{R} = \v{Q}_{43}\v{Q}_{32}\v{Q}_{42}\v{Q}_{21}\v{Q}_{31}\v{Q}_{41}\v{A} \\
+\underbrace{\v{Q}_{41}^*\v{Q}_{31}^*\v{Q}_{21}^*\v{Q}_{42}^*\v{Q}_{32}^*\v{Q}_{43}^*}_{\v{Q}}\v{R}=\v{A}
+\end{align*}
+
+\textsc{Kompakte Darstellung}\\
+\emph{Verwende Nulleintr\a ge von $\v{A}$ bzw. $\v{R}$ um $\v{Q}_{ij}$ zu beschreiben}.\\
+Finde Givens-Rotation:
+\begin{align*}
+\rho = 
+\begin{cases}
+s = \rho, c=\sqrt{1-s^2}  &\text{falls $|\rho|<1$} \\
+c = 1/\rho, s=\sqrt{1-c^2} &\text{falls $|\rho|>1$} \\
+c = 1, s=0 &\text{falls $\rho=1$}
+\end{cases}
+\end{align*}
+
+Speichern der QR-Z in $\v{A}$:
+\begin{equation}
+\begin{pmatrix}
+r_{11} & r_{12} & \cdots    & r_{1n} \\
+\rho_{21} & r_{22} & \ddots    & \vdots \\
+\vdots & \ddots & \ddots    & r_{n-1,n} \\
+\rho_{n1} & \cdots & \rho_{n,n-1} & r_{nn} 
+\end{pmatrix}
+\end{equation}
+
+\textsc{Qr Decomp von $\v{A} \in \Rr{m}{n}$}\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+for $k=1:\min(m,n)$ \qquad {\scriptsize // Loop \u ber Diagonale}\\
+\quad for $i=k+1:m$ \qquad {\scriptsize // Loop \u ber Elemente unter Diagonalen}\\
+\qquad if $a_{ik}=0$\\
+\qquad\quad $\rho \leftarrow 1$, $c \leftarrow 1$, $s \leftarrow 0$ \\
+\qquad else if $|a_{kk}|\geq|a_{ik}|$ \qquad {\scriptsize // Vgl. mit Diag.element}\\
+\qquad\quad $\tau \leftarrow a_{ik}/a_{kk}$, $\rho \leftarrow \tau/\sqrt{\tau^2+1}$, $s \leftarrow \rho$, $c\leftarrow \sqrt{1-s^2}$ \\
+\qquad else \qquad\qquad\qquad\quad\qquad {\scriptsize // Vgl. mit Diag.element} \\
+\qquad\quad $\tau \leftarrow a_{kk}/a_{ik}$, $\rho \leftarrow \sqrt{\tau^2+1}/\tau$, $c \leftarrow 1/\rho$, $s\leftarrow \sqrt{1-c^2}$ \\
+\qquad {\scriptsize // Diag.element aktual., Giv.-Rot. in aktueller It. speichern}\\ 
+\qquad $a_{kk} \leftarrow ca_{kk}+sa_{ik}$, $a_{ik}\leftarrow \rho$\\
+\qquad for $j=k+1:n$ {\scriptsize // Loop \u ber Elemente in der $k$-ten Zeile}\\
+\qquad \quad {\scriptsize // Giv-Rot auf Zeile anwenden} \\
+\qquad \quad $\alpha \leftarrow a_{kj}$, $a_{kj} \leftarrow c\alpha+sa_{ij}$, $a_{ij} \leftarrow -s\alpha + ca_{ij}$ \\
+\hrulefill\\
+}
+
 \subsection{Ausgleichsprobleme}
 
 
