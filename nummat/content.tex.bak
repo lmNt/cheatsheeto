@@ -12,15 +12,17 @@ Geg.: $\v{A} \in \Rr{n}{n}$, $\v{b} \in \R{n}$ \\
 Ges.: $\v{x} \in \R{n}$ \\
 \centering $\v{Ax}=\v{b}$ \flushleft
 \subsection{Dreiecksmatrizen}
-Untere Dreiecksmatrix $\v{L} \in \Rr{n}{n}$ und obere Dreiecksmatrix $\v{R} \in \Rr{n}{n}$.\\
+Untere Dreiecksmatrix $\v{L} \in \Rr{n}{n}$ und obere Dreiecksmatrix $\v{R} \in \Rr{n}{n}$.\vspace{0.2cm}
+
 \textsc{Regul\a re/invertierbare/nicht-singul\a re Matrix}\\
-Matrix $\v{A}$ ist regul\a r, wenn $\det \v{A}\neq 0$. Determinante einer $\Delta$Matrix ist das Produkt ihrer Diagonalelemente. $\v{L}$ und $\v{R}$ sind regul\a r, wenn alle Diagonalelemente $\neq 0$.\\
+Matrix $\v{A}$ ist regul\a r, wenn $\det \v{A}\neq 0$. Determinante einer $\Delta$Matrix ist das Produkt ihrer Diagonalelemente. $\v{L}$ und $\v{R}$ sind regul\a r, wenn alle Diagonalelemente $\neq 0$.\vspace{0.2cm}
 
 \textsc{Vorw\a rtseinsetzen}\\
 \centering $\v{Ly}=\v{b}$ \flushleft
 Rechenaufwand: $n^2$ AO \\
-Um Speicher zu sparen  $b_i \leftarrow y_i$.\vspace{0.1cm}
+Um Speicher zu sparen  $b_i \leftarrow y_i$.\vspace{0.2cm}
 
+\verb!forward_subst!\\
 {\addtolength{\leftskip}{0mm}
 \hrulefill\\
 for $j=1:n$\\
@@ -33,8 +35,9 @@ for $j=1:n$\\
 \textsc{R\u ckw\a rtseinsetzen}\\
 \centering $\v{Rx}=\v{y}$ \flushleft 
 Rechenaufwand: $n^2$ AO \\
-Um Speicher zu sparen  $b_i \leftarrow x_i$.\vspace{0.1cm}
+Um Speicher zu sparen  $b_i \leftarrow x_i$.\vspace{0.2cm}
 
+\verb!backward_subst!\\
 {\addtolength{\leftskip}{0mm}
 \hrulefill\\
 for $j=n:1$\\
@@ -83,6 +86,7 @@ Aufwand: \emph{kubisch} \\
 $\downarrow$ Aufwand: Nur 1x f\u r jede Matrix betreiben. Sobald LR-Decomp vorliegt nur noch \emph{quadratischer} Aufwand \\ 
 $\Downarrow$ Aufwand: Tridiagonalmatrix. Erster Schritt mit 3 AOPs. Restmatrix bleibt tridiagonal. Aufwand $3n$ + $6n$ f\u r R-und F-Einsetzen.\vspace{0.2cm}
 
+\verb!lr_decomp!\\
 {\addtolength{\leftskip}{0mm}
 \hrulefill\\
 for $k=1:n$\\
@@ -110,7 +114,7 @@ Pivotisierung: Finde betragsmaximalstes Element in der aktuellen Spalte, welches
 $\v{A}\v{x} = \v{b} \Leftrightarrow \v{P}\v{A}\v{x} = \v{P}\v{b} \Leftrightarrow \v{L}\v{R}\v{x}=\v{P}\v{b}$.\\
 1.) $\v{Ly}=\tilde{\v{b}}$ \quad 2.) $\v{Rx} = \v{y}$
 
-\textsc{LR PIVOT}\\
+\verb!lr_pivot!\\
 {\addtolength{\leftskip}{0mm}
 \hrulefill\\
 for $k=1:n$\\
@@ -127,7 +131,7 @@ for $k=1:n$\\
 \hrulefill\\
 }
 $\v{p}$ protokolliert, welche Vertauschungen durchgef\u hrt wurden, um sie sp\a ter auf $\v{b}$ anwenden zu k\o nnen.\\
-Aufwand: $\frac{2}{3}n^3$.\\
+Aufwand: $\frac{2}{3}n^3$.\vspace{0.2cm}
 
 \textsc{Sonderfall: $\v{A}$ positiv definit}\\
 TODO.
@@ -214,7 +218,7 @@ r_{11} & r_{12} & \cdots    & r_{1n} \\
 \end{pmatrix}
 \end{equation}
 
-\textsc{Qr Decomp von $\v{A} \in \Rr{m}{n}$}\\
+\verb!Qr Decomp von! $\v{A} \in \Rr{m}{n}$\\
 {\addtolength{\leftskip}{0mm}
 \hrulefill\\
 for $k=1:\min(m,n)$ \qquad {\scriptsize // Loop \u ber Diagonale}\\
@@ -232,10 +236,10 @@ for $k=1:\min(m,n)$ \qquad {\scriptsize // Loop \u ber Diagonale}\\
 \qquad \quad $\alpha \leftarrow a_{kj}$, $a_{kj} \leftarrow c\alpha+sa_{ij}$, $a_{ij} \leftarrow -s\alpha + ca_{ij}$ \\
 \hrulefill\\
 }
-Aufwand: $6n^2+2n^3$ (quadratische Matrix) ~3x mehr als LR-Z
+Aufwand: $6n^2+2n^3$ (quadratische Matrix) ~3x mehr als LR-Z. \vspace{0.2cm}
 
 \textsc{L\o sen Gleichungssystem $\v{Ax}=\v{b}$}\\
-$\v{b}=\v{Ax}=\v{QRx}=\v{Qy}$ \quad $\Leftrightarrow$ \quad 1.) $\v{y}=\v{Q}^*\v{b}$ \quad 2.) $\v{y}=\v{Rx}$.\vspace{0.2cm}
+$\v{b}=\v{Ax}=\v{QRx}=\v{Qy}$ \quad $\Leftrightarrow$ \quad 1.) $\v{y}=\v{Q}^*\v{b}$ \quad 2.) $\v{y}=\v{Rx}$.
 
 1.) Qr\_transform: \U ber einzelne $G_{ij}$ (oben links angefangen) iterieren und auf $b$ multiplizieren. \\
 2.) R\u ckw\a rtseinsetzen.\vspace{0.2cm}
@@ -248,7 +252,43 @@ Mit Optimierungen bei Speicherzugriffen bei QR-Z \a hnlich schnell wie LR-Z.\vsp
 \emph{Wir suchen $\v{x}$ so, dass alle Gleichungen m\o glichst gleich gut erf\u llt werden}.
 
 \section{Nichtlineare Gleichungssysteme}
+\emph{Wir untersuchen nichtlineare Gleichungssysteme der Form}
+\begin{align*}
+&\text{Gegeben eine stetige Funktion $f:\R{n} \rightarrow \R{n}$, finde $\v{x}^* \in \R{n}$ mit} \\
+&f(\v{x}^*) = \v{0}
+\end{align*}
+\emph{Transformieren in ein Nullstellenproblem}.
 \subsection{Bisektionsverfahren}
+\emph{Einfache Technik, das in jedem Schritt den Fehler mindestens halbiert. Basierend auf dem Zwischenwertsatz f\u r stetige Funktionen.}\vspace{0.2cm}
+
+\textsc{Zwischenwertsatz}\\
+Eine reele Funktion $f$, die in $[a,b]$ stetig ist, nimmt jeden Wert zwischen $f(a)$ und $f(b)$ an. Haben $f(a)$ und $f(b)$ verschiedene Vorzeichen, so ist eine Existenz mindestens einer Nullstelle in $[a,b]$ garantiert.\vspace{0.2cm}
+
+\textsc{Verfahren in mathematischer Notation}\\
+\begin{align*}
+(a^{(0)}, b^{(0)}) &= (a,b)\\
+x^{(m)} &= \frac{a^{(m)} + b^{(m)}}{2} \\
+(a^{(m+1)}, b^{(m+1)}) &= \begin{cases}
+(a^{(m)}, x^{(m)}) & \text{ if } f(a^{(m)})f(x^{(m)}) < 0 \\
+(x^{(m)}, b^{(m)}) & \text{ sonst.}
+\end{cases}
+\end{align*}
+
+
+\verb!Bisection!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+$f_a \leftarrow f(a)$, $f_b \leftarrow f(b)$\\
+\verb!while! $b-a>\epsilon$\\
+\quad $x \leftarrow (a+b)/2$ \\
+\quad $f_x \leftarrow f(x)$ \\
+\quad \verb!if! $f_af_x < 0$ \\ 
+\qquad $b \leftarrow x$, $f_b \leftarrow f_x$ \\
+\quad \verb!else! \\
+\qquad $a \leftarrow x$, $f_a \leftarrow f_x$ \\
+\hrulefill\\
+}
+
 \subsection{Allgemeine Fixpunktiterationen}
 \subsection{Newton-Verfahren}
 
