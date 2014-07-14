@@ -259,7 +259,8 @@ Mit Optimierungen bei Speicherzugriffen bei QR-Z \a hnlich schnell wie LR-Z.\vsp
 \end{align*}
 \emph{Transformieren in ein Nullstellenproblem}.
 \subsection{Bisektionsverfahren}
-\emph{Einfache Technik, das in jedem Schritt den Fehler mindestens halbiert. Basierend auf dem Zwischenwertsatz f\u r stetige Funktionen.}\vspace{0.2cm}
+\emph{Einfache Technik, das in jedem Schritt den Fehler mindestens halbiert. Basierend auf dem Zwischenwertsatz f\u r stetige Funktionen.}\\
+\textbf{Funkioniert nur f\u r 1D.}\vspace{0.2cm}
 
 \textsc{Zwischenwertsatz}\\
 Eine reele Funktion $f$, die in $[a,b]$ stetig ist, nimmt jeden Wert zwischen $f(a)$ und $f(b)$ an. Haben $f(a)$ und $f(b)$ verschiedene Vorzeichen, so ist eine Existenz mindestens einer Nullstelle in $[a,b]$ garantiert.\vspace{0.2cm}
@@ -288,9 +289,86 @@ $f_a \leftarrow f(a)$, $f_b \leftarrow f(b)$\\
 \qquad $a \leftarrow x$, $f_a \leftarrow f_x$ \\
 \hrulefill\\
 }
+Aufwand: $m+2$ Auswertungen von $f$ und $2m$ Rechenoperationen, mit $m=\lceil \log_2((b-a)/\epsilon)\rceil$ Schritten. Hohe Stabilit\a t und jedes konstruierte Intervall muss eine Nullstelle enthalten. Nur auf reelwertige Funktionen auf geeigneten Intervallen anwendbar.
 
 \subsection{Allgemeine Fixpunktiterationen}
-\subsection{Newton-Verfahren}
+\textsc{Iteration}\\
+$U \subseteq \R{n}$ eine abgeschlossene Teilmenge und $\Phi: U \rightarrow U$ eine (Selbst-)Abbildung. Dann ist $\Phi$ eine Iteration auf $U$. Folge der Iterierten $\v{x}^{(m+1)} = \Phi(\v{x}^{(m)})$. Kontruiere Iteration so, dass $\Phi$ gegen gesuchte L\o sung $\v{x}^*$ konvergiert. Es soll $\phi(\v{x}^*) = \v{x}^*$ gelten. \emph{Die L\o sung muss ein Fixpunkt von $\Phi$ sein.}\vspace{0.2cm}
+
+\textsc{Mittelwertsatz der Differentialrechnung}\\
+Zwischen $a$ und $b$ von $f$ gibt es mindestens einen Kurvenpunkt, f\u r den die Tangente an $\eta$ parallel zur Sekante durch $a$ und $b$ ist:
+$(b-a)f'(\eta) = f(b)-f(a)$. \vspace{0.2cm}
+
+\textsc{TODO: W\a hlen der richtigen Iteration}\\
+
+\textsc{Fixpunktsatz von Banach}\\
+Sei $\Phi$ eine Iteration auf einer \textbf{abgeschlossenen} Menge $U \subseteq \R{n}$ (\textbf{Selbstabbildung}). Sei $L \in [0,1)$ so gegeben, dass: $\Vert \Phi(\v{x}) - \Phi(\v{y}) \Vert \leq L \Vert \v{x} - \v{y} \Vert$ f\u r alle $\v{x},\v{y} \in U$. \textbf{Kontraktion}. $\Phi$ besitzt \textbf{genau} einen Fixpunkt und die Folge der Iterierten konvergiert f\u r jeden Startwert $\v{x}^{(0)} \in U$ gegen diesen Fixpunkt.\\
+Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-posteriori} (Pr\u fen ob N\a herung schon genau genug):
+\begin{align*}
+\Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{L^m}{1-L} \Vert \v{x}^{(1)} - \v{x}^{(0)} \Vert \\
+\Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{1}{1-L} \Vert \v{x}^{(m)} - \v{x}^{(m+1)} \Vert \quad \forall m \in \mathbb{N}_0
+\end{align*}
+
+\subsection{1D-Newton-Verfahren}
+$U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig differenzierbar mit Nullstelle $v{x}^*\in U$, so dass $f(\v{x}^*)=\v{0}$. Ziel: Konstruiere Iteration $\Phi$, die $\v{x}^*$ als Nullstelle besitzt.\vspace{0.2cm}
+
+\textsc{Taylor} \\
+\textbf{TODO}\\
+\begin{equation*}
+0 = f(x^*) = f(x) + f'(x)(x^* - x) + \cancel{\frac{f''(\eta)}{2}(x^*-x)^2}
+\end{equation*}\vspace{0.2cm}
+
+\textsc{Eindimensionales Newton-Verfahren}\\
+\begin{equation*}
+\Phi : U \rightarrow \mathbb{R} \qquad x \rightarrow x- \frac{f(x)}{f'(x)}
+\end{equation*}
+
+\emph{Indem der dritte Term der Taylorreihe $\cancel{\text{wegf\a llt}}$, approximieren wir die Funktion $f$ durch ihre Tangente im Punkt $x$. Die Nullstelle der Tangente ist die n\a chste Iterierte $\Phi(x)$.}\vspace{0.2cm}
+
+\textsc{Konvergenz}\\
+Sei $r\in \mathbb{R}_{>0}$ und $U=(x^*-r, x^*+r)$ und gelte $f\in C^2(U)$, $|1/f'(x)|\leq C_1 \forall x\in U$, $|f''(x)| \leq C_2 \forall x\in U$ und $r \leq \frac{2}{C_1C_2}$, dann ist die Abbildung $\Phi$ f\u r das Newton Verfahren eine Selbstabbildung auf $U$, sodass gilt:
+\begin{align*}
+|\Phi(x) - x^* | \leq \frac{C_1C_2}{2}|x-x^*|^2 \qquad \forall x\in U
+\end{align*}
+
+Newton-Verfahren konvergiert, falls $x^{(0)}$ in $U$ liegt. Konvergenz ist umso schneller, je n\a her die Iterierten an der L\o sung liegen. \textbf{Quadratische Konvergenz}.
+
+\subsection{ND-Newton-Verfahren}
+\textsc{Hauptsatz der Integral- und Differentialrechnung}\\
+\begin{align*}
+f(b)-f(a) = \int_a^b f'(t) dt
+\end{align*}\vspace{0.2cm}
+
+\textsc{Newton-Verfahren}\\
+Sei $U \subseteq \R{n}$ und $Df(\v{x})$ f\u r alle $\v{x} \in U$ regul\a r (also invertierbar). Es gilt:
+\begin{align*}
+\Phi : U \rightarrow \R{d}, \qquad \v{x} \mapsto \v{x} - Df(\v{x})^{-1}f(\v{x})
+\end{align*}\vspace{0.2cm}
+
+\textsc{Konvergenz}\\
+Sei $r\in \mathbb{R}_{>0}$ und $U= K(\v{x}^*,r)$ und gelte \\
+$f\in C^1(U,\R{b})$,\\
+ $\Vert Df(\v{x})^{-1}\Vert_2 \leq C_1 \forall \v{x} \in U$,\\
+$\Vert Df(\v{x}) - Df(\v{y})\Vert_2 \leq C_2 \vert \v{x} - \v{y} \Vert_2 \forall \v{x}, \v{y} \in U$ und \\
+$r\leq \frac{2}{C_1C_2}$.\\
+Dann ist $\Phi$ eine Selbstabbildung auf der Kugel $U$ und es gilt
+\begin{align*}
+\Vert \Phi(\v{x}) - \v{x}^*\Vert_2 \leq \frac{C_1C_2}{2}\Vert \v{x} - \v{x}^* \Vert_2^2 \qquad \forall \v{x}\in U
+\end{align*}
+Quadratische Konvergenz unter schw\a cheren Voraussetzungen, denn $f'$ muss Lipschitz-stetig sein.\vspace{0.2cm}
+
+\textsc{Umsetzung}\\
+Anstatt Inverse Jacobimatrix zu berechnen, lineares Gleichungssystem nach $\v{d}$ l\o sen (erh\o hte numerische Stabilit\a t):
+\begin{align*}
+\v{x}^{(m+1)} = \v{x}^{(m)} + \v{d}^{(m)} &\qquad \v{d}^{(m)} = -Df(\v{x}^{(m)})^{-1}f(\v{x}^{(m)})\\
+Df(\v{x}^{(m)})\v{d}^{(m)} &= -f(\v{x}^{(m)})
+\end{align*}\vspace{0.2cm}
+
+\textsc{Ged\a mpftes Newton-Verfahren}\\
+Um Divergenz zu vermeiden Newton-Richtung mit D\a mpfungsparameter $\sigma^{(m)}$ multiplizieren. Sorgt daf\u r, dass der Fehler nicht gr\o \s er als im vorangehenenden Schritt werden kann.
+\begin{align*}
+\v{x}^{(m+1)} = \v{x}^{(m)} + \sigma^{(m)}\v{d}^{(m)}
+\end{align*}
 
 \section{Eigenwertprobleme}
 \subsection{Vektoriteration}
