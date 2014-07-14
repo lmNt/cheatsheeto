@@ -4,6 +4,7 @@
 \usepackage{graphics, multirow}
 \usepackage{xcolor}
 \usepackage{color}
+\usepackage[makeroom]{cancel} % zum durchstreichen von gleichungen
 \topmargin0.0cm
 \headheight0.0cm
 \headsep0.0cm
@@ -21,14 +22,21 @@
 \newtheorem{question}{Question}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
-\let\mbb\boldsymbol
-\renewcommand\boldsymbol{\mbb}
 \renewcommand{\a}{\"{a}}
 \renewcommand{\o}{\"{o}}
 \renewcommand{\u}{\"{u}}
-\newcommand{\beequal}{\mathop{=}\limits^!}
-\newcommand{\ray}{\Lambda_A(\mbb{x})}
-\newcommand{\dray}{\nabla \Lambda_A(\mbb{x})}
+\newcommand{\A}{\"{A}}
+\renewcommand{\O}{\"{O}}
+\newcommand{\U}{\"{U}}
+\newcommand{\s}{\ss}
+\let\mbb\boldsymbol
+\renewcommand\boldsymbol{\mbb}
+% vector, bold face non italic
+\newcommand{\R}[1]{\mathbb{R}^{#1}}
+\newcommand{\Rr}[2]{\mathbb{R}^{#1 \times #2}}
+\renewcommand{\v}[1]{\mbox{\bf #1}}
+% vector, bold face italic
+%\renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
 
 \begin{document}
 \input{content.tex}
