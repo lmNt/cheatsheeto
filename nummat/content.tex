@@ -410,7 +410,7 @@ Sind $|\lambda_2|$ und $|\lambda_1|$ \a hnlich gro\s  , gibt es langsame Konverg
 \textbf{Numerische Probleme}: Iterationsfolge f\u hrt zu Vektoren mit sehr gro\s en ($|\lambda_1|>1$) oder sehr kleinen Eintr\a gen ($|\lambda_1|<1$).\\
 \textbf{L\o sung}: Normalisieren mit der Norm (also nur Skalierung):
 \begin{align*}
-\v{y}^{(m)} = \v{Ax}^{(m-1)} \quad \gamma^{(m)}= \Vert \v{y}^{(m)} \Vert_2 \quad \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)} \quad \forall m\in \mathbb{N}
+\v{y}^{(m)} = \v{Ax}^{(m-1)} \quad \gamma^{(m)}= \Vert \v{y}^{(m)} \Vert_2 \quad \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)} \\ \forall m\in \mathbb{N}
 \end{align*}
 
 \textsc{Rayleigh-Quotient}\\
@@ -445,10 +445,92 @@ $\v{y}$ wird f\u r die Berechnung von $\Lambda_A$, die Pr\u fung auf Konvergenz 
 
 \subsection{Inverse Iteration}
 \emph{Eigenet sich f\u r die Berechnung des kleinsten Eigenwerts (geben die niedrigsten Frequenzen f\u r Resonanzeffekte an)}.
+Wenn $\v{A}$ regul\a r, gilt:
+\begin{align*}
+\v{Ax} = \lambda\v{x} \quad\Leftrightarrow\quad \v{x} = \lambda\v{A}^{-1}\v{x} \quad\Leftrightarrow\quad \frac{1}{\lambda}\v{x} = \v{A}^{-1}\v{x}
+\end{align*}
+Also ist ein Eigenvektor von $\v{A}$ zu $\lambda$ auch ein Eigenvektor von $\v{A}^{-1}$ zu $1/\lambda$. Damit ist der betragskleinste EW von $\v{A}$ der Kehrwert des betragsgr\o \s ten EWs von $\v{A}^{-1}$.\\
+\textbf{Inverse Iteration}:
+\begin{align*}
+\v{y}^{(m)} = \v{A}^{-1}\v{x}^{(m-1)} \quad \gamma^{(m)} = \Vert \v{y}^{(m)} \Vert_2 \quad \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)} \\ \forall m\in \mathbb{N}
+\end{align*}
+Inverse von $\v{A}$ umgehen mit L\o sung von $\v{Ay}^{(m)} = \v{x}^{(m-1)}$.
+
+\textsc{Mit Shift}\\
+Falls $\mu \in \mathbb{R}$ kein Eigenwert von $\v{A}$, dann ist $\v{B}=(\v{A}-\mu \v{I})$ regul\a r. Mit EW $\lambda \in \mathbb{R}$ und EV $\v{x} \in \R{n}$. Dann ist $\frac{1}{\lambda-\mu}$ ein EW von $\v{B}^{-1}$. Der betragsgr\o \s te EW von $\v{B}^{-1}$ korrespondiert mit dem EW von $\v{A}$, der $\mu$ am n\a chsten liegt.
+\textbf{Inverse Iteration mit Shift}
+\begin{align*}
+\v{y}^{(m)} = (\v{A}-\mu \v{I})^{-1}\v{x}^{(m-1)} \quad \gamma^{(m)} = \Vert \v{y}^{(m)} \Vert_2 \\ \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)}  \qquad \forall m\in \mathbb{N}
+\end{align*}
+\vspace{3cm}
+
+\verb!invit_adaptive!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+Faktorisierung von $\v{B}$ berechnen. \\
+$\gamma \leftarrow \Vert \v{x} \Vert_2$, $\v{x} \leftarrow \v{x}/\gamma$ \\
+L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
+$\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
+while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\ 
+\quad $\gamma \leftarrow \Vert \v{y} \Vert_2$, $\v{x} \leftarrow \v{y}/\gamma$ \\
+\quad L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
+\quad $\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
+\hrulefill\\
+}
+QR/LR-Z muss nur einmal berechnet werden, danach relativ geringer Aufwand.
+Rayleigh-Quotient $\lambda$ wird gegen EW von $\v{B}^{-1}$ konvergieren - rekonstruieren des originalen EW von $\v{A}$ \u ber $1/\lambda +\mu$. \vspace{0.2cm}
+
+\textsc{Konvergenz}
+\begin{align*}
+\tan(\v{x}^{(m)}, \v{e}^{(1)}) \leq \left( \frac{|\lambda_1 - \mu |}{|\lambda_2 - \mu|}\right)^m \tan (\v{x}^{(0)}, \v{e}^{(1)})
+\end{align*} \vspace{0.2cm}
+
+\textsc{Rayleigh-Iteration}\\
+Je n\a her $\mu$ an $\lambda_1$, desto schnellere Konvergenz gegen den EV. Wenn $\v{x}^{(m)}$ eine gute N\a herung eines EVs ist, wird $\Lambda_A(\v{x}^{(m)}$ eine gute N\a herung des entsprechenden EWs sein (a.k.a \textbf{guter Shift-Parameter}).\\
+\textbf{Rayleigh-Iteration}:
+\begin{align*}
+\mu^{(m)} &= \Lambda_A(\v{x}^{(m-1)}) \\
+\v{y}^{(m)} &= (\v{A} - \mu^{(m)}\v{I})^{-1} \v{x}^{(m-1)}, \quad \v{x}^{(m)} = \frac{\v{y}^{(m)}}{\Vert \v{y}^{(m)} \Vert_2}, \quad \forall m\in \mathbb{N}
+\end{align*}
 
 
+\verb!invit_rayleigh!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+$\gamma \leftarrow \Vert \v{x} \Vert_2$, $\v{x} \leftarrow \v{x}/\gamma$ \\
+L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
+$\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
+$\mu \leftarrow 1/\lambda + \mu$ \\
+while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\ 
+\quad $\gamma \leftarrow \Vert \v{y} \Vert_2$, $\v{x} \leftarrow \v{y}/\gamma$ \\
+\quad L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
+\quad $\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
+\quad $\mu \leftarrow 1/\lambda + \mu$ \\
+\hrulefill\\
+}
+$\mu$ abh\a ngig von $m$, daher in jeder Schleife QR/LR-Z berechnen - wesentlich aufwendiger. Allerdings sehr schnelle (quadratische) Konvergenz bei guter N\a herung - jeder Schritt verdoppelt Anzahl korrekt berechneter Stellen.
 
 \subsection{Orthogonale Iteration}
+\emph{Ber\u cksichtigung $k$-facher Eigenwerte}.\\
+
+Konvergenz gegen von $\v{e}^{(1)}, ..., \v{e}^{(k)} \in \R{n}$ (zu $\lambda_1,...,\lambda_k$) aufgespannten Teilraum. Zusammenfassen von $k$ Iterierten in Matrix $\v{X}^{(m)}\in \Rr{n}{k}$
+\begin{align*}
+\v{X}^{(m)} = \v{A}^m \v{X}^{(0)} \text{ bzw. } \v{X}^{(m+1)} = \v{A} \v{X}^{(m)}  \qquad \forall m\in \mathbb{N}_0
+\end{align*}
+Spalten orthogonaler Matrix bilden orthonormale Basis und konvergieren nicht gegen denselben Raum (Einhaltung der LU). $\v{X}^{(m)}$ durch $\v{Q}^{(m)} \in \Rr{n}{k}$ und $\v{R}^{(m)} \in \Rr{k}{k}$ ersetzen: 
+\begin{align*}
+\v{X}^{(m)} = \v{Q}^m \v{R}^{(m)} \qquad \forall m\in \mathbb{N}_0
+\end{align*}
+Vermeiden der QR-Z von instabilen Matrizen $\v{X}^{(m)}$. Daher
+\begin{align*}
+\v{Y}^{(m+1)} =\v{AQ}^{(m)} \qquad \v{Y}^{(m+1)}= \v{Q}^{(m+1)}\widehat{\v{R}}^{(m+1)}
+\end{align*}
+und 
+\begin{align*}
+\v{X}^{(m+1)} = \v{Q}^{(m+1)} \v{R}^{(m+1)} \qquad \v{R}^{(m+1)} = \widehat{\v{R}}^{(m+1)}\v{R}^{(m)}
+\end{align*}
+
+Die Folge $(\v{Q}^{(m)})_{m=0}^\infty$ hei\s t orthogonale Iteration.
 \subsection{QR-Iteration}
 \subsection{Praktische QR-Iteration}
 
