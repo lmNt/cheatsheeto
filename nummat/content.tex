@@ -642,7 +642,7 @@ $d_{i,j}$ ist abh\a ngig von den St\u tzstellen $x_i$.\\
 
 Per Induktion folgt als Netwonsche Interpolationsformel:
 \begin{align*}
-p_{i,j}(x) = \sum_{k=i}^j d_{i,k}n_{i,k}(x) \quad \text{mit} \quad n_{i,j}(x)=\begin{cases} 1 & i=j \\ \prod_{k=1}^{j-1}(x-x_k)&\end{cases}
+p_{i,j}(x) = \sum_{k=i}^j d_{i,k}n_{i,k}(x) \text{ mit }  n_{i,j}(x)=\begin{cases} 1 & i=j \\ \prod_{k=1}^{j-1}(x-x_k)&\end{cases}
 \end{align*}
 
 \textsc{Effiziente Gestaltung}\\
@@ -684,8 +684,25 @@ Aufwand: $\frac{3}{2}m(m+1)$ - also quadratisch. Allerdings nur \emph{einmalige}
 
 \subsection{Approximation von Funktionen}
 \textsc{Interpolationsfehler}\\
+Sei $f\in C^{m+1}[a,b]$, sei $p$ die L\o sung der Interpolationsaufgabe und sei $x\in [a,b]$. Dann ex. $\eta \in [a,b]$ mit
+\begin{align*}
+f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
+\end{align*}
 
+\textsc{Unabh\a ngige Fehlerschranke}\\
+\begin{align*}
+\Vert f-p \Vert_{\infty,[a,b]} \leq \Vert (x - x_0 )...(x - x_m ) \Vert_{\infty,[a,b]} \frac{\Vert f^{(m+1)} \Vert_{\infty,[a,b]}}{(m+1)!}
+\end{align*}
 
+\textsc{Tschebyscheff-Interpolation}\\
+\begin{align*}
+\hat{x}_i = \frac{b+a}{2} + \frac{b-a}{2} \cos \left( \pi \frac{2i+1}{2m+2}\right)
+\end{align*}
+
+\textsc{Stabilit\a tskonstante / Bestapproximations}\\
+\begin{align*}
+\Vert f-p \Vert_{\infty,[a,b]} \leq (\Lambda_m + 1) \Vert f-q \Vert_{\infty,[a,b]} 
+\end{align*}
 
 \section{Numerische Integration}
 \subsection{Quadraturformeln}
