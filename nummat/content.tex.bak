@@ -511,7 +511,7 @@ while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\
 $\mu$ abh\a ngig von $m$, daher in jeder Schleife QR/LR-Z berechnen - wesentlich aufwendiger. Allerdings sehr schnelle (quadratische) Konvergenz bei guter N\a herung - jeder Schritt verdoppelt Anzahl korrekt berechneter Stellen.
 
 \subsection{Orthogonale Iteration}
-\emph{Ber\u cksichtigung $k$-facher Eigenwerte}.\\
+\emph{Ber\u cksichtigung $k$-facher Eigenwerte. Keine Probleme bei mehrfachen oder eng beieinanderliegenden Eigenwerten}.\\
 
 Konvergenz gegen von $\v{e}^{(1)}, ..., \v{e}^{(k)} \in \R{n}$ (zu $\lambda_1,...,\lambda_k$) aufgespannten Teilraum. Zusammenfassen von $k$ Iterierten in Matrix $\v{X}^{(m)}\in \Rr{n}{k}$
 \begin{align*}
@@ -531,13 +531,156 @@ und
 \end{align*}
 
 Die Folge $(\v{Q}^{(m)})_{m=0}^\infty$ hei\s t orthogonale Iteration.
+
+\verb!orthoit_rayleigh!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+Berechne $\v{Q}\widehat{\v{R}} = \v{X}$ \\
+$\v{Y} \leftarrow \v{AQ}$\\
+$\v{$\Lambda$} \leftarrow \v{Q}^*\v{Y}$ \\
+while $\Vert \v{Q$\Lambda$} - \v{Y} \Vert_2 > \epsilon$ \\
+\quad Berechne $\v{Q}\widehat{\v{R}} = \v{Y}$ \\
+\quad $\v{Y} \leftarrow \v{AQ}$\\
+\quad $\v{$\Lambda$} \leftarrow \v{Q}^*\v{Y}$ \\
+$\v{X} \leftarrow \v{Q}$ \\
+\hrulefill\\
+}
+
+Verallgemeinerung der Vektoriteration. Statt einzelnem Vektor - $k$-spaltige Matrix. Statt Iterierte zu EV zu machen - Orthonormalbasen verwenden.\\
+Aufwand: $nk^2$ AO/Schritt
+
+\textsc{Verfeinerungen}\\
+Inverse Iteration, Inverse Iteration mit Shift, Rayleigh-Iteration\\
+Deflation - entferne bereits konvergierte EV.
+
 \subsection{QR-Iteration}
+\emph{Alle EW und EV einer Matrix berechnen}.
+
+Aufwand: allgemeiner Fall proportional zu $n^3$.\\
+Konvergierte Teilmatrizen werden nicht ausgenutzt und langsame Konvergenz bei nah beieinander liegenden EW.
+
 \subsection{Praktische QR-Iteration}
 
+
 \section{Approximation von Funktionen}
+CAD, Bestimmung von Formeln zur nurmerischen Integration, numerische Differentiation, numerisches L\o sen von DGL...
+
 \subsection{Polynominterpolation}
+Polynome h\o chstens $m$-ten Grades $\Pi_m = \text{span}\{1,x,x^2,...,x^m\}$
+
+\textsc{Interpolationsaufgabe}\\
+F\u r gegebene Werte $f_0, ..., f_m$ und paarweise verschiedene St\u tzstellen $x_0, ..., x_m$ finde ein Polynom $p \in \Pi_m$, das erf\u llt:
+\begin{align*}
+p(x_i)=f_i \qquad \forall i\in \{0,...,m\}
+\end{align*}\vspace{0.2cm}
+
+\textsc{Lagrange-Polynome}\\
+F\u r jedes $i \in \{0,...,m\}$ ist $l_i : \mathbb{R} \rightarrow \mathbb{R}$
+\begin{align*}
+x \mapsto \prod_{\substack{k=0 \\ j\neq i}}^m \frac{x-x_k}{x_i - x_k}
+\end{align*}
+ein Polynom h\o chstens $m$-ten Grades. 
+\begin{align*}
+l_i(x_j) = \begin{cases}
+1 & \text{falls } i=j \\
+0 & \text{sonst}
+\end{cases}
+\qquad 
+l_i(x_i) = \prod_{\substack{k=0 \\ j\neq i}}^m \frac{x_i-x_k}{x_i - x_k} = 1
+\end{align*}
+F\u r beliebige $f_0, ..., f_m$ l\o st $p=\sum_{k=0}^m f_kl_k$ das Interpolationsproblem - eindeutig l\o sbar. Dieser Ansatz ist jedoch ineffizient. 
+Stattdessen... N-A-Verf.
+
 \subsection{Neville-Aitken-Verfahren}
+Idee: \emph{Von konstanten Polynomen ausgehend Polynome h\o heren Grades zu konstruieren. Gut geeignet f\u r Bestimmung an wenigen Stellen.}\\
+F\u r alle $i,j \in \{0,...m\}$ mit $i\leq j$ existiert genau ein Polynom $p_{i,j} \in \Pi_{j-i}$, das $p_{i,j}(x_k) = f_k \quad \forall k \in \{i,...,j\}$ erf\u llt .\\
+\textbf{Idee}: Interpolation h\o heren Grades l\a sst sich durch Konvexkombination von Polynomen niedrigeren Grades schreiben.\vspace{0.2cm}
+
+\textsc{Aitken-Rekurrenz}\\
+Sei $i,j \in \{0,...m\}$ mit $i < j$:
+\begin{align*}
+p_{i,j}(x) &= \frac{x-x_i}{x_j-x_i} p_{i+1,j}(x) + \frac{x_j-x}{x_j-x_i}p_{i,j-1}(x) \\
+&= p_{i+1,j}(x) + \frac{x_j-x}{x_j-x_i} (p_{i,j-1} - p_{i+1,j}(x))
+\end{align*}
+\begin{enumerate}
+\item Konstante Polynome $p_{i,i} = f_i$ bestimmen
+\item Mit Aitken-Rekurrenz lineare, quadratische, etc., Polynome konstruieren
+\item Bei Grad $m$ ergibt sich $p_{0,m}(x) = p(x)$.
+\end{enumerate}
+
+\begin{align*}
+\begin{array}{cccc}
+f_0 = p_{0,0}(x) &             &            &  \\
+f_1 = p_{1,1}(x) &  p_{0,1}(x) &            &  \\
+f_2 = p_{2,2}(x) &  p_{1,2}(x) & p_{0,2}(x) &  \\
+f_3 = p_{3,3}(x) &  p_{2,3}(x) & p_{1,3}(x) &  p_{0,3}(x) = p(x)
+\end{array}
+\end{align*}
+
+Algorithmus effizient: Spaltenweise von unten nach oben in-place.
+
+\verb!neville!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+for $n=1:m$ \qquad {\scriptsize // Loope \u ber Grad der Polynome} \\
+\quad for $j=m:n$ \quad {\scriptsize // von unten nach oben in einer Spalte} \\
+\qquad $i \leftarrow j-n$ \quad {\scriptsize // "Obere Ecke" des $\Delta$} \\
+\qquad $f_j \leftarrow ((x-x_i)f_j + (x_j-x)f_{j-1})/(x_j-x_i)$\\
+return $f_m$ \\
+\hrulefill\\
+}
+Aufwand: $\frac{7}{2}m (m+1)$ AO (quadratisch)
+
 \subsection{Newtons dividierte Differenzen}
+\emph{Auswertung in einigen Punkten ok bei quadratischem Aufwand. Bei Rendering bspw. jedoch zu aufwendig. Reduzierung des Aufwands durch Berechnung von Hilfsgr\o \s en im Voraus.}\\
+
+\textbf{Idee}: Hat man $p_{i,j-1}$ bereits bestimmt, so sucht man nach einem Korrekturterm, durch dessen Erg\a nzung man $p_{i,j}$ erh\a lt - Newton-Darstellung:
+\begin{align*}
+p_{i,j}(x) = p_{i,j-1}(x) + d_{i,j}(x- x_i)...(x-x_{j-1})
+\end{align*}
+$d_{i,j}$ ist abh\a ngig von den St\u tzstellen $x_i$.\\
+
+Per Induktion folgt als Netwonsche Interpolationsformel:
+\begin{align*}
+p_{i,j}(x) = \sum_{k=i}^j d_{i,k}n_{i,k}(x) \quad \text{mit} \quad n_{i,j}(x)=\begin{cases} 1 & i=j \\ \prod_{k=1}^{j-1}(x-x_k)&\end{cases}
+\end{align*}
+
+\textsc{Effiziente Gestaltung}\\
+\begin{enumerate}
+\item $s_m(x)=d_{0,m}$ bestimmen
+\item $s_{m-1}(x)$ berechnen mit $s_i(x)=d_{0,i}+(x-x_i)s_{i+1}(x)$
+\item Stoppe, wenn $s_0(x)=p(x)$ berechnet
+\end{enumerate}
+
+\verb!eval_newton!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+$s \leftarrow d_m$ \\
+for $i=m-1:0$ \\
+\quad $s \leftarrow d_i+(x-x_i)s$ \\
+return $s$ \qquad {\scriptsize // returns $s_0(x)$} \\
+\hrulefill\\
+}
+mit $\v{d}=(d_{0,0},...,d_{0,m})$.\\
+Aufwand: $3m$ AO. \vspace{0.2cm}
+
+\textsc{Newtons dividierte Differenzen}\\
+Newtonsche Interpolationsformel in Aitken-Rekurrenz einsetzen ergibt mit Koeffizientenvergleich der f\u hrenden Koeffizienten ergibt sich:
+\begin{align*}
+d_{i,j}=\frac{d_{i+1,j}-d_{i,j-1}}{x_j-x_i} \left(=f_j = \frac{f_j-f_{j-1}}{x_j-x_i}\right)
+\end{align*}
+
+\verb!newton_diff!\\
+{\addtolength{\leftskip}{0mm}
+\hrulefill\\
+for $n=1:m$ \\
+\quad for $j=m:n$ {\scriptsize // von unten nach oben in der Spalte} \\
+\qquad $i \leftarrow j-n$\\
+\qquad $f_j \leftarrow (f_j-f_{j-1})/(x_j-x_i)$\\
+\hrulefill\\
+}
+\U berschreibt $f_0,...,f_m$ mit $d_{0,0},...,d_{0,m}$
+
 \subsection{Approximation von Funktionen}
 
 \section{Numerische Integration}
