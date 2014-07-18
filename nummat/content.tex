@@ -547,7 +547,7 @@ $\v{X} \leftarrow \v{Q}$ \\
 }
 
 Verallgemeinerung der Vektoriteration. Statt einzelnem Vektor - $k$-spaltige Matrix. Statt Iterierte zu EV zu machen - Orthonormalbasen verwenden.\\
-Aufwand: $nk^2$ AO/Schritt
+Aufwand: $nk^2$ AO/Schritt. \vspace{0.2cm}
 
 \textsc{Verfeinerungen}\\
 Inverse Iteration, Inverse Iteration mit Shift, Rayleigh-Iteration\\
@@ -555,8 +555,21 @@ Deflation - entferne bereits konvergierte EV.
 
 \subsection{QR-Iteration}
 \emph{Alle EW und EV einer Matrix berechnen}.
+\textbf{Vor\u berlegung}:
+Multiplikation mit orthonormaler (orthog. + $\Vert\cdot\Vert$ aller Vektoren $=1$) Matrix $\v{Q}$ hei\s t \A hnlichkeitstransformation - EW von $\v{A}$ bleiben erhalten. $\v{Ax} =\lambda \v{x} \Leftrightarrow \v{Q}^*\v{AQQ}^*\v{x}= \lambda \v{Q}^* \v{x}$.\\
+\textbf{Idee}: Durch MP mit $\v{Q}$, z.B. $\v{A}$ auf oberer $\Delta$Matrix bringen, um einfacher die EW zu berechnen.\vspace{0.2cm}
 
-Aufwand: allgemeiner Fall proportional zu $n^3$.\\
+\textsc{Zusammenfassung Unterraumiteration}\\
+$(\v{Q}^{(m)})^*\v{A}\v{Q}^{(m)} = \v{A}^{(m)} \rightarrow \v{R} \text{ f\u r } m \rightarrow \infty$. Diagonaleintr\a ge in $\v{A}^{(m)}$ sind Approximationen f\u r die EW von $\v{A}$. F\u r $k \rightarrow \infty$ streben die Fehler der Approximationen gegen 0. Konvergenzgeschwindigkeit durch $\left|\frac{\lambda_{l+1}}{\lambda_l}\right|, l=\{1,...,m\}$ gegeben. Die EWs stehen der Gr\o \s e nach sortiert auf der Diagonalen von $\v{R}$.\vspace{0.2cm}
+
+\textsc{QR-Iteration}\\
+$\v{A}^{(m)}$ aus Unterraumiteration rekursiv (also $\v{A}^{(m)}$ aus $\v{A}^{(m-1)}$ berechnen.\\
+Sei $\tilde{\v{A}}^{(m-1)} = \v{QR}$ und $\tilde{\v{A}}^{(m)} = \v{RQ}$, dann gilt $\tilde{\v{A}}=\v{A}^{(m)} \quad \forall m=0,1,2,...,$.\\ 
+Falls f\u r irgendein $k \in \{1,...,n-1\} \quad |\lambda_{k+1}|<|\lambda_k|$ gilt, werden die unteren $n-k$ Zeilen der ersten $k$ Spalten gegen Null konvergieren.\\
+Ziel: $\tilde{\v{A}}^{(0)}$ tridiagonal, um schnell zu rechnen. (Aufwand $\approx n$ pro Schritt)
+\vspace{0.2cm}
+
+Aufwand: 1 QR-Z pro Schritt. Aufwand proportional zu $n^3$.\\
 Konvergierte Teilmatrizen werden nicht ausgenutzt und langsame Konvergenz bei nah beieinander liegenden EW.
 
 \subsection{Praktische QR-Iteration}
@@ -705,6 +718,61 @@ f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
 \end{align*}
 
 \section{Numerische Integration}
+\emph{Anwendung in Berechnung von Integralen von Funktionen (Normalverteilung).}\\
+
+\textbf{Aufgabe}:
+Gegeben sind ein nicht-leeres Intervall $[a,b]$ und eine stetige
+Funktion $f \in C[a,b]$, zu approximieren ist das Integral
+\begin{align*}
+\int_a^b f(x) dx
+\end{align*}
+
 \subsection{Quadraturformeln}
+\textsc{Quadraturformel}\\
+Seien $m \in \mathbb{N}_0$, Punkte $x_0, ..., x_m \in [a,b]$ und $w_0, ..., w_m \in \mathbb{R}$ gegeben, dann definiert 
+\begin{align*}
+\mathcal{Q}_{[a,b]}: C[a,b] \rightarrow \mathbb{R}, \quad \int_c^d f(x) dx = \sum_{i=0}^m w_if(x_i)
+\end{align*}
+eine Quadraturformel, die jeder Funktion $f \in C[a,b]$ eine Approximation des Integrals durch Funktionswerte in den Quadraturpunkten $x_0 ,...,x_m$ und mit den Quadraturgewichten $w_0,...,w_m>0$ zuordnet.\vspace{0.2cm}
+
+\textsc{Mittelpunktregel}\\
+Gute N\a herung des Integrals, falls $f''$ und Intervall $[a,b]$ klein.
+\begin{align*}
+f \mapsto \mathcal{M}_{[a,b]}(f) = (b-a)f\left(\frac{b+a}{2}\right) &= \int_a^b f\left(\frac{b+a}{2}\right) dx\\
+\mathcal{I}_{[a,b]}(f)-\mathcal{M}_{[a,b]}(f) &= \frac{(b-a)^3}{24}f''(\eta)
+\end{align*}
+\textsc{Interpolatorische Quadratur}\\
+\begin{align*}
+\mathcal{I}_{[a,b]}(f) \approx \int_a^b p(x) dx = \int_a^b \sum_{i=0}^m f(x_i)l_i(x)dx=\sum_{i=0}^m f(x_i) \underbrace{\int_a^b l_i(x)dx}_{w_i}
+\end{align*}\vspace{0.2cm}
+
+\textsc{Newton-Cotes-Quadratur / Trapezregel}\\
+\begin{align*}
+x_i = \frac{m-i}{m}a + \frac{i}{m}b, \, \forall i\in \{0,...,m\}, \quad \mathcal{Q}_{[a,b]}(f)=\frac{b-a}{2}(f(a)+f(b))
+\end{align*}
+
+\textsc{Summierte Quadraturformel}\\
+\begin{align*}
+h&=\frac{b-a}{l} \quad y_i = a+ih \quad \forall i\in \{0,...,l\}\\
+\mathcal{I}_{[a,b]}(f)&=\int_a^b f(x)dx = \sum_{i=1}^l\int_{y_{i-1}}^{y_i} f(x)dx\\ &= \sum_{i=1}^l \mathcal{I}_{[y_{i-1},y_i]}(f) \approx \sum_{i=1}^l \mathcal{Q}_{[y_{i-1},y_i]}(f) = \mathcal{Q}_{[a,b],l}(f)
+\end{align*}
+
+\textsc{Summierte Mittelpunktregel}\\
+Jede beliebige Genauigkeit, falls $f''$ beschr\a nkt ist. Verdoppelung der Anzahl der Teilintervalle viertelt den Fehler.
+\begin{align*}
+\mathcal{M}_{[a,b],l}(f) = \sum_{i=1}^l \mathcal{M}_{[y_{i-1},y_i]}(f) &= h \sum_{i=1}^l f \left(\frac{y_i+y_{i-1}}{2}\right)\\
+\mathcal{I}_{[a,b]}(f)-\mathcal{M}_{[a,b],l}(f) &= \frac{(b-a)^3}{24l^2}f''(\eta)
+\end{align*}
+
 \subsection{Fehleranalyse}
 \clearpage
+
+
+
+
+
+
+
+
+
+
