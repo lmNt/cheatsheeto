@@ -249,7 +249,51 @@ Householder-Spiegelungen: Aufwand ~2x mehr als LR-Z.\\
 Mit Optimierungen bei Speicherzugriffen bei QR-Z \a hnlich schnell wie LR-Z.\vspace{0.2cm}
 
 \subsection{Ausgleichsprobleme}
-\emph{Wir suchen $\v{x}$ so, dass alle Gleichungen m\o glichst gleich gut erf\u llt werden}.
+\emph{Wir suchen $\v{x}$ so, dass alle Gleichungen m\o glichst gleich gut erf\u llt werden - oder - von unbekannten Parametern abh\a ngige Kurve durch Messdaten in unterschiedlichen APs zu \emph{fitten}}.
+
+\textsc{Grundlagen}\\
+Wir suchen die unbekannte Funktion $y$ aus den Messwerten $b$, sodass $b_i =y(t_i) \quad \forall i\in \{1,...,m\}$. \\ Annahme: $y$ setzt sich zusammen aus Linearkombination bekannter Funktionen $y_1, ..., y_m$ mit $n<m$ mit Faktoren $x_1, ...,x_m$ sodass: $y(t) = x_1y_1(t) + ... + x_ny_n(t)$ bzw. $b_i = y(t_i) = x_1y_1(t_i) + ... + x_ny_n(t_i)$. Als Gleichungssystem schreiben - \u berbestimmt $m$ Gleichungen f\u r $n$ Unbekannte - mehr Messwerte als Unbekannte:
+\begin{align*}
+\begin{pmatrix}
+b_1 \\
+\vdots\\
+b_m
+\end{pmatrix}
+=
+\begin{pmatrix}
+y_1(t_1) & \cdots & y_n(t_1)\\
+\vdots & \ddots & \vdots \\
+y_1(t_m) & \cdots & y_n(t_m)
+\end{pmatrix}
+\begin{pmatrix}
+x_1 \\
+\vdots\\
+x_n
+\end{pmatrix}
+\end{align*}
+
+\textsc{Aufgabe}\\
+Suche $\v{x} \in \R{n}$ mit $\Vert \v{Ax}-\v{b} \Vert_2 \leq \Vert \v{Az}-\v{b} \Vert_2 \quad \forall \v{z} \in \R{n}$ - also optimale N\a herung. Falls $\v{A}$ injektiv, dann ex. genau eine L\o sung. Es gelte $\v{A}=\v{QR}$ mit $\v{Q} \in \Rr{m}{m}$ und $\v{R} \in \Rr{m}{n}$.
+\begin{align*}
+\Vert \v{Az}-\v{b} \Vert_2 &= \Vert \v{QRz}-\v{QQ}^*\v{b} \Vert_2 = \Vert \v{Q}(\v{Rz}-\v{Q}^*\v{b} \Vert_2 \\&= \Vert \v{Rz}-\v{Q}^*\v{b} \Vert_2
+\end{align*}
+F\u r $\v{R}$ gilt: $\v{R} = \begin{pmatrix}
+\widehat{\v{R}} \\
+\v{0}
+\end{pmatrix} \quad \widehat{\v{R}} \in \Rr{n}{n}$ und beide injektiv und $\widehat{\v{R}}$ regul\a r. Au\s erdem $\v{Q}^*\v{b}=\begin{pmatrix}
+\widehat{\v{b}} \\ \v{b}_0
+\end{pmatrix} \quad \widehat{\v{b}}\in \R{n}, \v{b}_0 \in \R{m-n}$. Norm ausnutzen ergibt: $\Vert \widehat{\v{R}}\v{z}-\widehat{\v{b}}\Vert_2^2 + \Vert \v{b}_0 \Vert_2^2$. Es folgt:
+\begin{align*}
+\Vert \v{Ax}-\v{b}\Vert_2^2 = \Vert \v{Rx}-\v{Q}^*\v{b}\Vert_2^2 = \underbrace{\Vert \widehat{\v{R}}\v{x}-\widehat{\v{b}}\Vert_2^2}_{\text{l\o se } \widehat{\v{R}}\v{z}=\widehat{\v{b}} \text{ oben}} + \Vert \v{b}_0 \Vert_2^2 =  \Vert \v{b}_0 \Vert_2^2 \\ 
+\leq \Vert \widehat{\v{R}}\v{z}-\widehat{\v{b}}\Vert_2^2 + \Vert \v{b}_0 \Vert_2^2 = \Vert \v{Rz}-\v{Q}^*\v{b} \Vert_2^2 = \Vert \v{Az}-\v{b} \Vert_2^2
+\end{align*}
+
+\textsc{Normalengleichung}\\
+Anstatt mit QR-Zerlegung zu l\o sen, Normalengleichung nutzen - bei Ausnutzung von $\v{A}^*\v{A}$ symmetrisch schneller als QR Ansatz:
+\begin{align*}
+\v{A}^*\v{Ax} = \v{A}^*\v{b}
+\end{align*}
+Nachteil, m\o gliche Fehlerverst\a rkung durch $\kappa_2(\v{A}^*\v{A})=\kappa_2(\v{A})^2$
 
 \section{Nichtlineare Gleichungssysteme}
 \emph{Wir untersuchen nichtlineare Gleichungssysteme der Form}
@@ -293,7 +337,7 @@ Aufwand: $m+2$ Auswertungen von $f$ und $2m$ Rechenoperationen, mit $m=\lceil \l
 
 \subsection{Allgemeine Fixpunktiterationen}
 \textsc{Iteration}\\
-$U \subseteq \R{n}$ eine abgeschlossene Teilmenge und $\Phi: U \rightarrow U$ eine (Selbst-)Abbildung. Dann ist $\Phi$ eine Iteration auf $U$. Folge der Iterierten $\v{x}^{(m+1)} = \Phi(\v{x}^{(m)})$. Kontruiere Iteration so, dass $\Phi$ gegen gesuchte L\o sung $\v{x}^*$ konvergiert. Es soll $\phi(\v{x}^*) = \v{x}^*$ gelten. \emph{Die L\o sung muss ein Fixpunkt von $\Phi$ sein.}\vspace{0.2cm}
+$U \subseteq \R{n}$ eine abgeschlossene Teilmenge und $\Phi: U \rightarrow U$ eine (Selbst-)Abbildung. Dann ist $\Phi$ eine Iteration auf $U$. Folge der Iterierten $\v{x}^{(m+1)} = \Phi(\v{x}^{(m)})$. Kontruiere Iteration so, dass $\Phi$ gegen gesuchte L\o sung $\v{x}^*$ konvergiert. Es soll $\Phi(\v{x}^*) = \v{x}^*$ gelten. \emph{Die L\o sung muss ein Fixpunkt von $\Phi$ sein.}\vspace{0.2cm}
 
 \textsc{Mittelwertsatz der Differentialrechnung}\\
 Zwischen $a$ und $b$ von $f$ gibt es mindestens einen Kurvenpunkt, f\u r den die Tangente an $\eta$ parallel zur Sekante durch $a$ und $b$ ist:
@@ -310,7 +354,7 @@ Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-
 \end{align*}
 
 \subsection{1D-Newton-Verfahren}
-$U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig differenzierbar mit Nullstelle $v{x}^*\in U$, so dass $f(\v{x}^*)=\v{0}$. Ziel: Konstruiere Iteration $\Phi$, die $\v{x}^*$ als Nullstelle besitzt.\vspace{0.2cm}
+$U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig differenzierbar mit Nullstelle $\v{x}^*\in U$, so dass $f(\v{x}^*)=\v{0}$. Ziel: Konstruiere Iteration $\Phi$, die $\v{x}^*$ als Nullstelle besitzt.\vspace{0.2cm}
 
 \textsc{Taylor} \\
 \textbf{TODO}\\
@@ -391,7 +435,7 @@ $\v{A} = \v{A}^*$. Mit Hauptachsentransformation auf Diagonalgestalt bringen, so
 sodass sich f\u r gro\s e Werte von $m$ (aufgrund der absteigenden Sortierung) die ersten Komponenten gegen\u ber dem Rest durchsetzen. \vspace{0.2cm}
 
 \textsc{Dominanter Eigenwert}\\
-Gilt $|\lambda_1| > |\lambda_2| \leq ... \leq |\lambda_n|$ so werden $\hat{\v{x}}^{(m)}$ gegen ein Vielfaches von $\hat{\v{e}}^{(1)} = \begin{pmatrix}
+Gilt $|\lambda_1| > |\lambda_2| \geq ... \geq |\lambda_n|$ so werden $\hat{\v{x}}^{(m)}$ gegen ein Vielfaches von $\hat{\v{e}}^{(1)} = \begin{pmatrix}
 1 & 0 & \cdots & 0
 \end{pmatrix}^*$
 konvergieren. Der erste Einheitsvektor ist ein Eigenvektor zu $\lambda_1$, sodass wir Konvergenz gegen einen Eigenvektor erhalten. \vspace{0.2cm}
