@@ -378,7 +378,7 @@ $U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig dif
 
 \textsc{Eindimensionales Newton-Verfahren}\\
 \begin{equation*}
-\Phi : U \rightarrow \mathbb{R} \qquad x \rightarrow x- \frac{f(x)}{f'(x)}
+\Phi : U \rightarrow \mathbb{R} \qquad x \rightarrow x- \frac{f(x)}{f'(x)} = x^*
 \end{equation*}
 
 \emph{Indem der dritte Term der Taylorreihe $\cancel{\text{wegf\a llt}}$, approximieren wir die Funktion $f$ durch ihre Tangente im Punkt $x$. Die Nullstelle der Tangente ist die n\a chste Iterierte $\Phi(x)$.}\vspace{0.2cm}
@@ -657,7 +657,7 @@ l_i(x_j) = \begin{cases}
 0 & \text{sonst}
 \end{cases}
 \qquad 
-l_i(x_i) = \prod_{\substack{k=0 \\ j\neq i}}^m \frac{x_i-x_k}{x_i - x_k} = 1
+l_i(x_i) = \prod_{\substack{k=0 \\ k\neq i}}^m \frac{x_i-x_k}{x_i - x_k} = 1
 \end{align*}
 F\u r beliebige $f_0, ..., f_m$ l\o st $p=\sum_{k=0}^m f_kl_k$ das Interpolationsproblem - eindeutig l\o sbar. Dieser Ansatz ist jedoch ineffizient. 
 Stattdessen... N-A-Verf.
