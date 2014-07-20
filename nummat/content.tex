@@ -190,7 +190,7 @@ c & s \\
 cy_1 + sy_2 \\ 0
 \end{pmatrix}
 \end{align*}
-Konsekutiv Givens-Rotationen $\v{Q}_{ij}$ $i$-te und $j$-te Zeile anwenden um Eintrag $a_{ij}$ zu beseitigen. Bsp. $\v{A} \in \Rr{4}{3}$:
+Konsekutiv Givens-Rotationen $\v{Q}_{ij}$ $i$-te Zeile in $j$-te Spalte anwenden um Eintrag $a_{ij}$ zu beseitigen. Bsp. $\v{A} \in \Rr{4}{3}$:
 \begin{align*}
 \v{R} = \v{Q}_{43}\v{Q}_{32}\v{Q}_{42}\v{Q}_{21}\v{Q}_{31}\v{Q}_{41}\v{A} \\
 \underbrace{\v{Q}_{41}^*\v{Q}_{31}^*\v{Q}_{21}^*\v{Q}_{42}^*\v{Q}_{32}^*\v{Q}_{43}^*}_{\v{Q}}\v{R}=\v{A}
@@ -722,7 +722,7 @@ mit $\v{d}=(d_{0,0},...,d_{0,m})$.\\
 Aufwand: $3m$ AO. \vspace{0.2cm}
 
 \textsc{Newtons dividierte Differenzen}\\
-Newtonsche Interpolationsformel in Aitken-Rekurrenz einsetzen ergibt mit Koeffizientenvergleich der f\u hrenden Koeffizienten ergibt sich:
+Newtonsche Interpolationsformel in Aitken-Rekurrenz einsetzen ergibt mit Koeffizientenvergleich der f\u hrenden Koeffizienten:
 \begin{align*}
 d_{i,j}=\frac{d_{i+1,j}-d_{i,j-1}}{x_j-x_i} \left(=f_j = \frac{f_j-f_{j-1}}{x_j-x_i}\right)
 \end{align*}
@@ -748,7 +748,7 @@ f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
 
 \textsc{Unabh\a ngige Fehlerschranke}\\
 \begin{align*}
-\Vert f-p \Vert_{\infty,[a,b]} \leq \Vert (x - x_0 )...(x - x_m ) \Vert_{\infty,[a,b]} \frac{\Vert f^{(m+1)} \Vert_{\infty,[a,b]}}{(m+1)!}
+\Vert f-p \Vert_{\infty,[a,b]} \leq \Vert \underbrace{(x - x_0 )...(x - x_m )}_{\omega(x)} \Vert_{\infty,[a,b]} \frac{\Vert f^{(m+1)} \Vert_{\infty,[a,b]}}{(m+1)!}
 \end{align*}
 
 \textsc{Tschebyscheff-Interpolation}\\
@@ -756,7 +756,7 @@ f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
 \hat{x}_i = \frac{b+a}{2} + \frac{b-a}{2} \cos \left( \pi \frac{2i+1}{2m+2}\right)
 \end{align*}
 
-\textsc{Stabilit\a tskonstante / Bestapproximations}\\
+\textsc{Stabilit\a tskonstante / Bestapproximation}\\
 \begin{align*}
 \Vert f-p \Vert_{\infty,[a,b]} \leq (\Lambda_m + 1) \Vert f-q \Vert_{\infty,[a,b]} 
 \end{align*}
