@@ -154,8 +154,22 @@ Eigenschaften der Norm:
 \Vert \v{x} \Vert &= 0 \Leftrightarrow \v{x} = 0 \\
 \Vert \lambda \v{x} \Vert &= | \lambda | \Vert \v{x} \Vert \\
 \Vert \v{x} + \v{y} \Vert &\leq \Vert \v{x} \Vert+\Vert \v{y} \Vert
+Q\end{align*}
+
+\textsc{Konditionszahl}
+\begin{align*}
+\alpha_2(\v{A})&=\frac{1}{\Vert \v{A}^{-1} \Vert_2}, \qquad \beta_2(\v{A})=\Vert \v{A}\Vert_2 \\
+\kappa_2(\v{A}) &= \Vert \v{A} \Vert_2 \Vert \v{A}^{-1} \Vert_2 = \frac{\beta_2(\v{A})}{\alpha_2(\v{A}}
 \end{align*}
-TODO
+
+\textsc{Matrixprodukt}\\
+Mit $\v{A} \in \Rr{n}{m}$ und $\v{B} \in \R{m}{k}$ gilt:
+\begin{align*}
+\alpha_2(\v{AB}) \geq \alpha_2(\v{A})\alpha_2(\v{B}) \qquad \beta_2(\v{AB}) \geq \beta_2(\v{A})\beta_2(\v{B})
+\end{align*}
+
+\textsc{St\o rung der Matrix}\\
+Der relative Fehler l\a sst sich beschr\a nken. TODO: WIESO ETC
 
 \subsection{QR-Zerlegung}
 \emph{F\u r jede Matrix gibt es eine QR-Z}.\\

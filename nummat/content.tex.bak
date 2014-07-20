@@ -154,8 +154,19 @@ Eigenschaften der Norm:
 \Vert \v{x} \Vert &= 0 \Leftrightarrow \v{x} = 0 \\
 \Vert \lambda \v{x} \Vert &= | \lambda | \Vert \v{x} \Vert \\
 \Vert \v{x} + \v{y} \Vert &\leq \Vert \v{x} \Vert+\Vert \v{y} \Vert
+Q\end{align*}
+
+\textsc{Konditionszahl}
+\begin{align*}
+\alpha_2(\v{A})&=\frac{1}{\Vert \v{A}^{-1} \Vert_2}, \qquad \beta_2(\v{A})=\Vert \v{A}\Vert_2 \\
+\kappa_2(\v{A}) &= \Vert \v{A} \Vert_2 \Vert \v{A}^{-1} \Vert_2 = \frac{\beta_2(\v{A})}{\alpha_2(\v{A}}
 \end{align*}
-TODO
+
+\textsc{Matrixprodukt}\\
+Mit $\v{A} \in \Rr{n}{m}$ und $\v{B} \in \R{m}{k}$ gilt:
+\begin{align*}
+
+\end{align*}
 
 \subsection{QR-Zerlegung}
 \emph{F\u r jede Matrix gibt es eine QR-Z}.\\
@@ -756,7 +767,7 @@ f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
 \hat{x}_i = \frac{b+a}{2} + \frac{b-a}{2} \cos \left( \pi \frac{2i+1}{2m+2}\right)
 \end{align*}
 
-\textsc{Stabilit\a tskonstante / Bestapproximations}\\
+\textsc{Stabilit\a tskonstante / Bestapproximation}\\
 \begin{align*}
 \Vert f-p \Vert_{\infty,[a,b]} \leq (\Lambda_m + 1) \Vert f-q \Vert_{\infty,[a,b]} 
 \end{align*}
