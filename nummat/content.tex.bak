@@ -165,8 +165,11 @@ Q\end{align*}
 \textsc{Matrixprodukt}\\
 Mit $\v{A} \in \Rr{n}{m}$ und $\v{B} \in \R{m}{k}$ gilt:
 \begin{align*}
-
+\alpha_2(\v{AB}) \geq \alpha_2(\v{A})\alpha_2(\v{B}) \qquad \beta_2(\v{AB}) \geq \beta_2(\v{A})\beta_2(\v{B})
 \end{align*}
+
+\textsc{St\o rung der Matrix}\\
+Der relative Fehler l\a sst sich beschr\a nken. TODO: WIESO ETC
 
 \subsection{QR-Zerlegung}
 \emph{F\u r jede Matrix gibt es eine QR-Z}.\\
@@ -375,7 +378,7 @@ $U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig dif
 
 \textsc{Eindimensionales Newton-Verfahren}\\
 \begin{equation*}
-\Phi : U \rightarrow \mathbb{R} \qquad x \rightarrow x- \frac{f(x)}{f'(x)}
+\Phi : U \rightarrow \mathbb{R} \qquad x \mapsto x- \frac{f(x)}{f'(x)} \quad  {\rightarrow}_{m \rightarrow \infty} x^*
 \end{equation*}
 
 \emph{Indem der dritte Term der Taylorreihe $\cancel{\text{wegf\a llt}}$, approximieren wir die Funktion $f$ durch ihre Tangente im Punkt $x$. Die Nullstelle der Tangente ist die n\a chste Iterierte $\Phi(x)$.}\vspace{0.2cm}
@@ -654,7 +657,7 @@ l_i(x_j) = \begin{cases}
 0 & \text{sonst}
 \end{cases}
 \qquad 
-l_i(x_i) = \prod_{\substack{k=0 \\ j\neq i}}^m \frac{x_i-x_k}{x_i - x_k} = 1
+l_i(x_i) = \prod_{\substack{k=0 \\ k\neq i}}^m \frac{x_i-x_k}{x_i - x_k} = 1
 \end{align*}
 F\u r beliebige $f_0, ..., f_m$ l\o st $p=\sum_{k=0}^m f_kl_k$ das Interpolationsproblem - eindeutig l\o sbar. Dieser Ansatz ist jedoch ineffizient. 
 Stattdessen... N-A-Verf.
