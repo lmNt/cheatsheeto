@@ -435,9 +435,9 @@ Eigenwertproblem in die Form eines linearen Gleichungssystems bringen:
 \end{align*}\\
 Finden der Nullstellen des \emph{charpoly}s ist ein schlecht konditioniertes Problem (nur geeignet f\u r kleine $n$). Deswegen andere Methode...\\
 \textbf{Annahmen}:
-$\v{A}$ diagonalisierbar, d.h. es existiert eine Basis aus EV von $\v{A}$: $\v{v}_1, ... \v{v}_n$. Es gilt $\Vert\v{v}_i\Vert_2=1$ und es existiert ein einfacher dominanter EW $\lambda_1$. Beliebigen Startvektor $\v{x}^{(0)}=c_1\v{v}_1+...+c_n\v{v}_n$ w\a hlen mit $c_1\neq 0$(!!). Wendet man die $k$-te Potenz von $\v{A}$ auf $\v{x}^{(0)}$ an, ergibt sich:
+$\v{A}$ diagonalisierbar, d.h. es existiert eine Basis aus EV von $\v{A}$: $\v{v}_1, ... \v{v}_n$. Es gilt $\Vert\v{v}_i\Vert_2=1$ und es existiert ein einfacher dominanter EW $\lambda_1$. Beliebigen Startvektor $\v{x}^{(0)}=c_1\v{v}_1+...+c_n\v{v}_n$ w\a hlen mit $c_1\neq 0$(!!). Oder anders: $\v{A} = \v{C}\widehat{\v{A}}\v{C}^{-1}$ mit $\widehat{\v{A}}=\text{diag}(\lambda_1,...,\lambda_n)$. Au\s erdem gilt $\v{A}^k = (\v{C}\widehat{\v{A}}\v{C}^{-1})...(\v{C}\widehat{\v{A}}\v{C}^{-1}) = \v{C}\widehat{\v{A}}^k\v{C}^{-1}$, bzw. $\v{A}^k\v{C} = \v{C}\widehat{\v{A}}^k$. Wendet man die $k$-te Potenz von $\v{A}$ auf $\v{x}^{(0)}$ an, ergibt sich:
 \begin{align*}
-\v{A}^k\v{x}^{(0)} = \sum_{j=1}^n c_j \v{A}^k \v{v}_j=\sum_{j=1}^n c_j \lambda_j^k \v{v}_j
+\v{A}^k\v{x}^{(0)} = \v{A}^k\v{C}\v{v}^{(0)} = \v{C}\widehat{\v{A}}^k\v{v}^{(0)} =  \sum_{j=1}^n c_j \v{A}^k \v{v}_j=\sum_{j=1}^n c_j \lambda_j^k \v{v}_j
 \end{align*}
 Also folgt:
 \begin{align*}
