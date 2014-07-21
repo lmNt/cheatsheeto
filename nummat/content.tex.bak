@@ -360,7 +360,7 @@ $(b-a)f'(\eta) = f(b)-f(a)$. \vspace{0.2cm}
 \textsc{TODO: W\a hlen der richtigen Iteration}\\
 
 \textsc{Fixpunktsatz von Banach}\\
-Sei $\Phi$ eine Iteration auf einer \textbf{abgeschlossenen} Menge $U \subseteq \R{n}$ (\textbf{Selbstabbildung}). Sei $L \in [0,1)$ so gegeben, dass: $\Vert \Phi(\v{x}) - \Phi(\v{y}) \Vert \leq L \Vert \v{x} - \v{y} \Vert$ f\u r alle $\v{x},\v{y} \in U$. \textbf{Kontraktion}. $\Phi$ besitzt \textbf{genau} einen Fixpunkt und die Folge der Iterierten konvergiert f\u r jeden Startwert $\v{x}^{(0)} \in U$ gegen diesen Fixpunkt.\\
+Sei $\Phi$ eine Iteration auf einer \textbf{abgeschlossenen} Menge $U \subseteq \R{n}, \quad \Phi : U \rightarrow U$ (\textbf{Selbstabbildung}: Kontraktion bleibt bei Iteration erhalten). Sei $L \in [0,1)$ so gegeben, dass: $\Vert \Phi(\v{x}) - \Phi(\v{y}) \Vert \leq L \Vert \v{x} - \v{y} \Vert$ f\u r alle $\v{x},\v{y} \in U$ (\textbf{Kontraktion}). $\Phi$ besitzt \textbf{genau} einen Fixpunkt und die Folge der Iterierten konvergiert f\u r jeden Startwert $\v{x}^{(0)} \in U$ gegen diesen Fixpunkt.\\
 Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-posteriori} (Pr\u fen ob N\a herung schon genau genug):
 \begin{align*}
 \Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{L^m}{1-L} \Vert \v{x}^{(1)} - \v{x}^{(0)} \Vert \\
@@ -371,17 +371,15 @@ Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-
 $U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig differenzierbar mit Nullstelle $\v{x}^*\in U$, so dass $f(\v{x}^*)=\v{0}$. Ziel: Konstruiere Iteration $\Phi$, die $\v{x}^*$ als Nullstelle besitzt.\vspace{0.2cm}
 
 \textsc{Taylor} \\
-\textbf{TODO}\\
 \begin{equation*}
 0 = f(x^*) = f(x) + f'(x)(x^* - x) + \cancel{\frac{f''(\eta)}{2}(x^*-x)^2}
-\end{equation*}\vspace{0.2cm}
-
+\end{equation*}
 \textsc{Eindimensionales Newton-Verfahren}\\
 \begin{equation*}
 \Phi : U \rightarrow \mathbb{R} \qquad x \mapsto x- \frac{f(x)}{f'(x)} \quad  {\rightarrow}_{m \rightarrow \infty} x^*
 \end{equation*}
 
-\emph{Indem der dritte Term der Taylorreihe $\cancel{\text{wegf\a llt}}$, approximieren wir die Funktion $f$ durch ihre Tangente im Punkt $x$. Die Nullstelle der Tangente ist die n\a chste Iterierte $\Phi(x)$.}\vspace{0.2cm}
+\emph{Indem der dritte Term der Taylorreihe $\cancel{\text{wegf\a llt}}$, approximieren wir die Funktion $f$ durch ihre Tangente im Punkt $x$ (lineare N\a herung). Die Nullstelle der Tangente ist die n\a chste Iterierte $\Phi(x)$.}\vspace{0.2cm}
 
 \textsc{Konvergenz}\\
 Sei $r\in \mathbb{R}_{>0}$ und $U=(x^*-r, x^*+r)$ und gelte $f\in C^2(U)$, $|1/f'(x)|\leq C_1 \forall x\in U$, $|f''(x)| \leq C_2 \forall x\in U$ und $r \leq \frac{2}{C_1C_2}$, dann ist die Abbildung $\Phi$ f\u r das Newton Verfahren eine Selbstabbildung auf $U$, sodass gilt:
@@ -389,25 +387,23 @@ Sei $r\in \mathbb{R}_{>0}$ und $U=(x^*-r, x^*+r)$ und gelte $f\in C^2(U)$, $|1/f
 |\Phi(x) - x^* | \leq \frac{C_1C_2}{2}|x-x^*|^2 \qquad \forall x\in U
 \end{align*}
 
-Newton-Verfahren konvergiert, falls $x^{(0)}$ in $U$ liegt. Konvergenz ist umso schneller, je n\a her die Iterierten an der L\o sung liegen. \textbf{Quadratische Konvergenz}.
+Newton-Verfahren konvergiert, falls $x^{(0)}$ in $U$ liegt (lokale Konvergenz). Konvergenz ist umso schneller, je n\a her die Iterierten an der L\o sung liegen. \textbf{Quadratische Konvergenz}.
 
 \subsection{ND-Newton-Verfahren}
-\textsc{Hauptsatz der Integral- und Differentialrechnung}\\
-\begin{align*}
-f(b)-f(a) = \int_a^b f'(t) dt
-\end{align*}\vspace{0.2cm}
+Herleitung \u ber Hilfsfunktionen $\gamma(t) = \v{x}+t(\v{x}^*-\v{x})$, $g(t)=f(\gamma(t))$ in $[0,1]$ und \emph{Hauptsatz der Integral- und Differentialrechnung} $
+f(b)-f(a) = \int_a^b f'(t) dt $ um h\o here Ableitungen (wie bei Taylor) zu vermeiden. $\v{0} = f(\v{x}^*) = g(1) = g(0) + \int_0^1 g'(t) dt = g(0) + g'(0) + \int_0^1 g'(t)-g'(0)dt = f(\v{x})+Df(\v{x})(\v{x}^*-\v{x}) + \mathfrak{C} = Df(\v{x})^{-1}f(\v{x}) + \v{x}^* - \v{x} + Df(\v{x})^{-1} \mathfrak{C}$. Umstellen nach $\v{x}^*$ und mit $Df(\v{x})^{-1} \mathfrak{C}$ vernachl\a ssigen ergibt Newton-Verfahren.\vspace{0.2cm}
 
 \textsc{Newton-Verfahren}\\
 Sei $U \subseteq \R{n}$ und $Df(\v{x})$ f\u r alle $\v{x} \in U$ regul\a r (also invertierbar). Es gilt:
 \begin{align*}
 \Phi : U \rightarrow \R{d}, \qquad \v{x} \mapsto \v{x} - Df(\v{x})^{-1}f(\v{x})
-\end{align*}\vspace{0.2cm}
+\end{align*}
 
 \textsc{Konvergenz}\\
 Sei $r\in \mathbb{R}_{>0}$ und $U= K(\v{x}^*,r)$ und gelte \\
 $f\in C^1(U,\R{b})$,\\
- $\Vert Df(\v{x})^{-1}\Vert_2 \leq C_1 \forall \v{x} \in U$,\\
-$\Vert Df(\v{x}) - Df(\v{y})\Vert_2 \leq C_2 \vert \v{x} - \v{y} \Vert_2 \forall \v{x}, \v{y} \in U$ und \\
+ $\Vert Df(\v{x})^{-1}\Vert_2 \leq C_1 \quad \forall \v{x} \in U$,\\
+$\Vert Df(\v{x}) - Df(\v{y})\Vert_2 \leq C_2 \vert \v{x} - \v{y} \Vert_2 \quad \forall \v{x}, \v{y} \in U$ (Lipschitz st\a tig)
 $r\leq \frac{2}{C_1C_2}$.\\
 Dann ist $\Phi$ eine Selbstabbildung auf der Kugel $U$ und es gilt
 \begin{align*}
@@ -420,7 +416,7 @@ Anstatt Inverse Jacobimatrix zu berechnen, lineares Gleichungssystem nach $\v{d}
 \begin{align*}
 \v{x}^{(m+1)} = \v{x}^{(m)} + \v{d}^{(m)} &\qquad \v{d}^{(m)} = -Df(\v{x}^{(m)})^{-1}f(\v{x}^{(m)})\\
 Df(\v{x}^{(m)})\v{d}^{(m)} &= -f(\v{x}^{(m)})
-\end{align*}\vspace{0.2cm}
+\end{align*}
 
 \textsc{Ged\a mpftes Newton-Verfahren}\\
 Um Divergenz zu vermeiden Newton-Richtung mit D\a mpfungsparameter $\sigma^{(m)}$ multiplizieren. Sorgt daf\u r, dass der Fehler nicht gr\o \s er als im vorangehenenden Schritt werden kann.
@@ -520,7 +516,6 @@ Falls $\mu \in \mathbb{R}$ kein Eigenwert von $\v{A}$, dann ist $\v{B}=(\v{A}-\m
 \begin{align*}
 \v{y}^{(m)} = (\v{A}-\mu \v{I})^{-1}\v{x}^{(m-1)} \quad \gamma^{(m)} = \Vert \v{y}^{(m)} \Vert_2 \\ \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)}  \qquad \forall m\in \mathbb{N}
 \end{align*}
-\vspace{3cm}
 
 \verb!invit_adaptive!\\
 {\addtolength{\leftskip}{0mm}
