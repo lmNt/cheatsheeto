@@ -425,40 +425,54 @@ Um Divergenz zu vermeiden Newton-Richtung mit D\a mpfungsparameter $\sigma^{(m)}
 \end{align*}
 
 \section{Eigenwertprobleme}
-\emph{Im Allgemeinen werden Eigenwertprobleme in der Form $\v{Ax}=\lambda \v{x}$, $\v{x}\neq 0$ untersucht.}
+\emph{Im Allgemeinen werden Eigenwertprobleme in der Form $\v{Ax}=\lambda \v{x}$, mit $\v{A}\in \Rr{n}{n}$ und $\v{x}\neq 0 \in \R{n}$ untersucht.}
 
 \subsection{Vektoriteration}
 \emph{Eignet sich f\u r die Berechnung des gr\o \s ten Eigenwerts.}
 Eigenwertproblem in die Form eines linearen Gleichungssystems bringen:
 \begin{align*}
-(\v{A} - \lambda \v{I}) \v{x} = \v{0}
-\end{align*}
+(\v{A} - \lambda \v{I}) \v{x} = \v{0} \quad \Leftrightarrow \quad \det(\v{A}-\lambda \v{I}) = 0
+\end{align*}\\
+Finden der Nullstellen des \emph{charpoly}s ist ein schlecht konditioniertes Problem (nur geeignet f\u r kleine $n$). Deswegen andere Methode...\\
 \textbf{Annahmen}:
-$\v{A} = \v{A}^*$. Mit Hauptachsentransformation auf Diagonalgestalt bringen, sodass eine orthogonale Matrix $\v{U} \in \R{n}{n}$ existiert, wo $\v{U}^*\v{AU}=\v{D}$ gilt, sodass die Eigenwerte $\lambda_n$ in absteigendem Betrag auf der Diagonalen von $\v{D}$ liegen. 
-\textbf{Motivation}: Wenn ein Vektor $\hat{\v{x}}^{(0)} \in \R{n}$ mit der $m$-ten Potenz der Matrix $\v{D}$ multipliziert wird, erh\a lt man neue Vektoren \begin{align*}
-\hat{\v{x}}^{(m)} = \v{D}^m \hat{\v{x}}^{(0)} = \begin{pmatrix}
-\lambda_1^m \hat{x}_1^{(0)}\\
-\vdots \\
-\lambda_n^m \hat{x}_n^{(0)}
-\end{pmatrix}
+$\v{A}$ diagonalisierbar, d.h. es existiert eine Basis aus EV von $\v{A}$: $\v{v}_1, ... \v{v}_n$. Es gilt $\Vert\v{v}_i\Vert_2=1$ und es existiert ein einfacher dominanter EW $\lambda_1$. Beliebigen Startvektor $\v{x}^{(0)}=c_1\v{v}_1+...+c_n\v{v}_n$ w\a hlen mit $c_1\neq 0$(!!). Wendet man die $k$-te Potenz von $\v{A}$ auf $\v{x}^{(0)}$ an, ergibt sich:
+\begin{align*}
+\v{A}^k\v{x}^{(0)} = \sum_{j=1}^n c_j \v{A}^k \v{v}_j=\sum_{j=1}^n c_j \lambda_j^k \v{v}_j
 \end{align*}
-sodass sich f\u r gro\s e Werte von $m$ (aufgrund der absteigenden Sortierung) die ersten Komponenten gegen\u ber dem Rest durchsetzen. \vspace{0.2cm}
+Also folgt:
+\begin{align*}
+\v{x}^{(k)} = \v{A}^k\v{x}^{(0)} = \lambda_1^k \left\{ c_1\v{v}_1 + \sum_{j=2}^n \left( \frac{\lambda_j}{\lambda_1}\right)^k c_j \v{v}_j \right\} = \lambda_1^k(c_1\v{v}_1 + \v{r}^k)
+\end{align*}
+wobei $\v{r}^k \rightarrow 0$ f\u r $k\rightarrow \infty$, da $\Vert \v{r}^k\Vert_2 = \mathcal{O}\left(\left|\frac{\lambda_2}{\lambda_1}\right|^k\right)$. Also strebt $\v{x}^{(k)} = \v{A}^k\v{x}^{(0)}$ gegen den ersten Eigenvektor $\v{v}_1$.
 
-\textsc{Dominanter Eigenwert}\\
-Gilt $|\lambda_1| > |\lambda_2| \geq ... \geq |\lambda_n|$ so werden $\hat{\v{x}}^{(m)}$ gegen ein Vielfaches von $\hat{\v{e}}^{(1)} = \begin{pmatrix}
-1 & 0 & \cdots & 0
-\end{pmatrix}^*$
-konvergieren. Der erste Einheitsvektor ist ein Eigenvektor zu $\lambda_1$, sodass wir Konvergenz gegen einen Eigenvektor erhalten. \vspace{0.2cm}
+
+%Mit Hauptachsentransformation auf Diagonalgestalt bringen, sodass eine orthogonale Matrix $\v{U} \in \Rr{n}{n}$ existiert, wo $\v{U}^{-1}\v{AU}=\v{D}$ gilt, sodass die Eigenwerte $\lambda_n$ in absteigendem Betrag auf der Diagonalen von $\v{D}$ liegen. $\v{A}$ besitzt somit nur reelle EW und $n$ LU zueinander orthogonale Eigenvektoren (Spalten von $\v{U}$).\\
+%\textbf{Motivation}: Wenn ein Vektor $\hat{\v{x}}^{(0)} \in \R{n}$ mit der $m$-ten Potenz der Matrix $\v{D}$ multipliziert wird, erh\a lt man neue Vektoren \begin{align*}
+%\hat{\v{x}}^{(m)} = \v{D}^m \hat{\v{x}}^{(0)} = \begin{pmatrix}
+%\lambda_1^m \hat{x}_1^{(0)}\\
+%\vdots \\
+%\lambda_n^m \hat{x}_n^{(0)}
+%\end{pmatrix}
+%\end{align*}
+%sodass sich f\u r gro\s e Werte von $m$ (aufgrund der absteigenden Sortierung) die ersten Komponenten gegen\u ber dem Rest durchsetzen. \vspace{0.2cm}
+%
+%\textsc{Dominanter Eigenwert}\\
+%Gilt $|\lambda_1| > |\lambda_2| \geq ... \geq |\lambda_n|$ so werden $\hat{\v{x}}^{(m)}$ gegen ein Vielfaches von $\hat{\v{e}}^{(1)} = \begin{pmatrix}
+%1 & 0 & \cdots & 0
+%\end{pmatrix}^*$
+%konvergieren. Der erste Einheitsvektor ist ein Eigenvektor zu $\lambda_1$, sodass wir Konvergenz gegen einen Eigenvektor erhalten. \vspace{0.2cm}
 
 \textsc{Konvergenz}\\
-$\v{e}^{(1)} = \v{U}\hat{\v{e}}^{(1)}$ ist Eigenvektor zu Eigenwert $\lambda_1$. Es gilt $\tan(\v{x}^{(0)}, \v{e}^{(1)}) < \infty$, also $\v{x}^{(0)}$ soll nicht senkrecht auf $\v{e}^{(1)}$ stehen. Dann gilt 
+$\v{e}_1$ ist Eigenvektor zu Eigenwert $\lambda_1$. Es gilt $\tan(\v{x}^{(0)}, \v{e}_1) < \infty$, also $\v{x}^{(0)}$ soll nicht senkrecht auf $\v{e}_1$ stehen. Dann gilt 
 \begin{align*}
-\tan(\v{x}^{(m)}, \v{e}^{(1)}) \leq \left(\frac{|\lambda_2|}{|\lambda_1|}\right)^m \tan(\v{x}^{(0)}, \v{e}^{(1)}) \qquad \forall m \in \mathbb{N}_0
+\tan(\v{x}^{(m)}, \v{e}_1) \leq \left(\frac{|\lambda_2|}{|\lambda_1|}\right)^m \tan(\v{x}^{(0)}, \v{e}_1) \qquad \forall m \in \mathbb{N}_0
 \end{align*}
-Sind $|\lambda_2|$ und $|\lambda_1|$ \a hnlich gro\s  , gibt es langsame Konvergenz.
+Oder Argumentation \u ber EW: $|\lambda^{(k)} - \lambda_1| = \mathcal{O}\left(\left|\frac{\lambda_2}{\lambda_1}\right|^k\right)$. \\
+Sind $|\lambda_2|$ und $|\lambda_1|$ \a hnlich gro\s  , gibt es langsame Konvergenz.\\
+Falls $\v{A}$ symmetrisch ist, sind die EV orthogonal und dann gilt $|\lambda^{(k)} - \lambda_1| = \mathcal{O}\left(\left|\frac{\lambda_2}{\lambda_1}\right|^{2k}\right)$.
 
-\textsc{Diagonalisierbare Matrizen}\\
-\textbf{TODO}\vspace{0.2cm}
+%\textsc{Diagonalisierbare Matrizen}\\
+%\textbf{TODO}\vspace{0.2cm}
 
 
 \textbf{Numerische Probleme}: Iterationsfolge f\u hrt zu Vektoren mit sehr gro\s en ($|\lambda_1|>1$) oder sehr kleinen Eintr\a gen ($|\lambda_1|<1$).\\
