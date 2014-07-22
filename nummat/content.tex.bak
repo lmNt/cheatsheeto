@@ -133,9 +133,8 @@ for $k=1:n$\\
 $\v{p}$ protokolliert, welche Vertauschungen durchgef\u hrt wurden, um sie sp\a ter auf $\v{b}$ anwenden zu k\o nnen.\\
 Aufwand: $\frac{2}{3}n^3$.\vspace{0.2cm}
 
-\textsc{Sonderfall: $\v{A}$ positiv definit}\\
-TODO.
-
+%\textsc{Sonderfall: $\v{A}$ positiv definit}\\
+%TODO.
 
 \subsection{Fehlerverst\a rkung}
 \textsc{Norm des Matrix-Vektor-Produkts}\\
@@ -167,6 +166,9 @@ Mit $\v{A} \in \Rr{n}{m}$ und $\v{B} \in \R{m}{k}$ gilt:
 \begin{align*}
 \alpha_2(\v{AB}) \geq \alpha_2(\v{A})\alpha_2(\v{B}) \qquad \beta_2(\v{AB}) \geq \beta_2(\v{A})\beta_2(\v{B})
 \end{align*}
+
+\textsc{St\o rung der rechten Seite}\\
+Der relative Fehler der L\o sung l\a sst sich absch\a tzen aus dem relativen Fehler der rechten Seite und der Konditionszahl $\kappa_2(\v{A})$: \\ $\frac{\Vert \v{x} - \widetilde{\v{x}} \Vert_2}{\Vert \v{x} \Vert_2} \leq \kappa_2(\v{A}) \frac{\Vert \v{b}-\widetilde{\v{b}}\Vert_2}{\Vert \v{b}\Vert_2}$
 
 \textsc{St\o rung der Matrix}\\
 Der relative Fehler l\a sst sich beschr\a nken. TODO: WIESO ETC
@@ -357,8 +359,6 @@ $U \subseteq \R{n}$ eine abgeschlossene Teilmenge und $\Phi: U \rightarrow U$ ei
 Zwischen $a$ und $b$ von $f$ gibt es mindestens einen Kurvenpunkt, f\u r den die Tangente an $\eta$ parallel zur Sekante durch $a$ und $b$ ist:
 $(b-a)f'(\eta) = f(b)-f(a)$. \vspace{0.2cm}
 
-\textsc{TODO: W\a hlen der richtigen Iteration}\\
-
 \textsc{Fixpunktsatz von Banach}\\
 Sei $\Phi$ eine Iteration auf einer \textbf{abgeschlossenen} Menge $U \subseteq \R{n}, \quad \Phi : U \rightarrow U$ (\textbf{Selbstabbildung}: Kontraktion bleibt bei Iteration erhalten). Sei $L \in [0,1)$ so gegeben, dass: $\Vert \Phi(\v{x}) - \Phi(\v{y}) \Vert \leq L \Vert \v{x} - \v{y} \Vert$ f\u r alle $\v{x},\v{y} \in U$ (\textbf{Kontraktion}). $\Phi$ besitzt \textbf{genau} einen Fixpunkt und die Folge der Iterierten konvergiert f\u r jeden Startwert $\v{x}^{(0)} \in U$ gegen diesen Fixpunkt.\\
 Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-posteriori} (Pr\u fen ob N\a herung schon genau genug):
@@ -366,6 +366,7 @@ Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-
 \Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{L^m}{1-L} \Vert \v{x}^{(1)} - \v{x}^{(0)} \Vert \\
 \Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{1}{1-L} \Vert \v{x}^{(m)} - \v{x}^{(m+1)} \Vert \quad \forall m \in \mathbb{N}_0
 \end{align*}
+Nachteil: $\Phi$ konstruieren mit Fixpunkt, wo $\v{x}$ eine Nullstelle hat.
 
 \subsection{1D-Newton-Verfahren}
 $U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig differenzierbar mit Nullstelle $\v{x}^*\in U$, so dass $f(\v{x}^*)=\v{0}$. Ziel: Konstruiere Iteration $\Phi$, die $\v{x}^*$ als Nullstelle besitzt.\vspace{0.2cm}
@@ -407,9 +408,9 @@ $\Vert Df(\v{x}) - Df(\v{y})\Vert_2 \leq C_2 \vert \v{x} - \v{y} \Vert_2 \quad \
 $r\leq \frac{2}{C_1C_2}$.\\
 Dann ist $\Phi$ eine Selbstabbildung auf der Kugel $U$ und es gilt
 \begin{align*}
-\Vert \Phi(\v{x}) - \v{x}^*\Vert_2 \leq \frac{C_1C_2}{2}\Vert \v{x} - \v{x}^* \Vert_2^2 \qquad \forall \v{x}\in U
+\Vert \v{x}^{(m+1)} - \v{x}^*\Vert_2 \leq \frac{C_1C_2}{2}\Vert \v{x}^{(m)} - \v{x}^* \Vert_2^2 \qquad \forall \v{x}\in U
 \end{align*}
-Quadratische Konvergenz unter schw\a cheren Voraussetzungen, denn $f'$ muss Lipschitz-stetig sein.\vspace{0.2cm}
+Quadratische Konvergenz unter schw\a cheren Voraussetzungen, denn $f'$ muss nur Lipschitz-stetig sein. Geeigneter Anfangswert $<\frac{C_1C_2}{2}$ \vspace{0.2cm}
 
 \textsc{Umsetzung}\\
 Anstatt Inverse Jacobimatrix zu berechnen, lineares Gleichungssystem nach $\v{d}$ l\o sen (erh\o hte numerische Stabilit\a t):
@@ -426,18 +427,18 @@ Um Divergenz zu vermeiden Newton-Richtung mit D\a mpfungsparameter $\sigma^{(m)}
 
 \section{Eigenwertprobleme}
 \emph{Im Allgemeinen werden Eigenwertprobleme in der Form $\v{Ax}=\lambda \v{x}$, mit $\v{A}\in \Rr{n}{n}$ und $\v{x}\neq 0 \in \R{n}$ untersucht.}
-
-\subsection{Vektoriteration}
-\emph{Eignet sich f\u r die Berechnung des gr\o \s ten Eigenwerts.}
 Eigenwertproblem in die Form eines linearen Gleichungssystems bringen:
 \begin{align*}
 (\v{A} - \lambda \v{I}) \v{x} = \v{0} \quad \Leftrightarrow \quad \det(\v{A}-\lambda \v{I}) = 0
 \end{align*}\\
 Finden der Nullstellen des \emph{charpoly}s ist ein schlecht konditioniertes Problem (nur geeignet f\u r kleine $n$). Deswegen andere Methode...\\
+\subsection{Vektoriteration}
+\emph{Eignet sich f\u r die Berechnung des gr\o \s ten Eigenwerts.}
+
 \textbf{Annahmen}:
 $\v{A}$ diagonalisierbar, d.h. es existiert eine Basis aus EV von $\v{A}$: $\v{v}_1, ... \v{v}_n$. Es gilt $\Vert\v{v}_i\Vert_2=1$ und es existiert ein einfacher dominanter EW $\lambda_1$. Beliebigen Startvektor $\v{x}^{(0)}=c_1\v{v}_1+...+c_n\v{v}_n$ w\a hlen mit $c_1\neq 0$(!!). Oder anders: $\v{A} = \v{C}\widehat{\v{A}}\v{C}^{-1}$ mit $\widehat{\v{A}}=\text{diag}(\lambda_1,...,\lambda_n)$. Au\s erdem gilt $\v{A}^k = (\v{C}\widehat{\v{A}}\v{C}^{-1})...(\v{C}\widehat{\v{A}}\v{C}^{-1}) = \v{C}\widehat{\v{A}}^k\v{C}^{-1}$, bzw. $\v{A}^k\v{C} = \v{C}\widehat{\v{A}}^k$. Wendet man die $k$-te Potenz von $\v{A}$ auf $\v{x}^{(0)}$ an, ergibt sich:
 \begin{align*}
-\v{A}^k\v{x}^{(0)} = \v{A}^k\v{C}\v{v}^{(0)} = \v{C}\widehat{\v{A}}^k\v{v}^{(0)} =  \sum_{j=1}^n c_j \v{A}^k \v{v}_j=\sum_{j=1}^n c_j \lambda_j^k \v{v}_j
+\v{A}^k\v{x}^{(0)} = \v{A}^k\v{C}\v{v}^{(0)} = \v{C}\widehat{\v{A}}^k\v{v}^{(0)} =  \sum_{j=1}^n c_j \widehat{\v{A}}^k \v{v}_j=\sum_{j=1}^n c_j \lambda_j^k \v{v}_j
 \end{align*}
 Also folgt:
 \begin{align*}
@@ -578,7 +579,7 @@ while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\
 $\mu$ abh\a ngig von $m$, daher in jeder Schleife QR/LR-Z berechnen - wesentlich aufwendiger. Allerdings sehr schnelle (quadratische) Konvergenz bei guter N\a herung - jeder Schritt verdoppelt Anzahl korrekt berechneter Stellen.
 
 \subsection{Orthogonale Iteration}
-\emph{Ber\u cksichtigung $k$-facher Eigenwerte. Keine Probleme bei mehrfachen oder eng beieinanderliegenden Eigenwerten}.\\
+\emph{Ber\u cksichtigung $k$-facher Eigenwerte. Keine Probleme bei mehrfachen oder eng beieinanderliegenden Eigenwerten. Praktisch identisch zu Vektoriteration}.\\
 
 Konvergenz gegen von $\v{e}^{(1)}, ..., \v{e}^{(k)} \in \R{n}$ (zu $\lambda_1,...,\lambda_k$) aufgespannten Teilraum. Zusammenfassen von $k$ Iterierten in Matrix $\v{X}^{(m)}\in \Rr{n}{k}$
 \begin{align*}
@@ -636,10 +637,10 @@ Falls f\u r irgendein $k \in \{1,...,n-1\} \quad |\lambda_{k+1}|<|\lambda_k|$ gi
 Ziel: $\tilde{\v{A}}^{(0)}$ tridiagonal, um schnell zu rechnen. (Aufwand $\approx n$ pro Schritt)
 \vspace{0.2cm}
 
-Aufwand: 1 QR-Z pro Schritt. Aufwand proportional zu $n^3$.\\
+Aufwand: 1 QR-Z pro Schritt. Aufwand proportional zu $n^3$. Bei sinnvollem Shift-Parameter kubische Konvergenz.\\
 Konvergierte Teilmatrizen werden nicht ausgenutzt und langsame Konvergenz bei nah beieinander liegenden EW.
 
-\subsection{Praktische QR-Iteration}
+%\subsection{Praktische QR-Iteration}
 
 
 \section{Approximation von Funktionen}
@@ -778,6 +779,7 @@ f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
 \begin{align*}
 \hat{x}_i = \frac{b+a}{2} + \frac{b-a}{2} \cos \left( \pi \frac{2i+1}{2m+2}\right)
 \end{align*}
+Bestm\o gliche Wahl f\u r Interpolationspunkte, sodass $\Vert \hat{\omega}\Vert_{\infty,[a,b]}$.
 
 \textsc{Stabilit\a tskonstante / Bestapproximation}\\
 \begin{align*}
@@ -798,7 +800,7 @@ Funktion $f \in C[a,b]$, zu approximieren ist das Integral
 \textsc{Quadraturformel}\\
 Seien $m \in \mathbb{N}_0$, Punkte $x_0, ..., x_m \in [a,b]$ und $w_0, ..., w_m \in \mathbb{R}$ gegeben, dann definiert 
 \begin{align*}
-\mathcal{Q}_{[a,b]}: C[a,b] \rightarrow \mathbb{R}, \quad \int_c^d f(x) dx = \sum_{i=0}^m w_if(x_i)
+\mathcal{Q}_{[a,b]}: C[a,b] \rightarrow \mathbb{R}, \quad \int_c^d f(x) dx = \sum_{i=0}^m w_i f(x_i)
 \end{align*}
 eine Quadraturformel, die jeder Funktion $f \in C[a,b]$ eine Approximation des Integrals durch Funktionswerte in den Quadraturpunkten $x_0 ,...,x_m$ und mit den Quadraturgewichten $w_0,...,w_m>0$ zuordnet.\vspace{0.2cm}
 
@@ -808,6 +810,8 @@ Gute N\a herung des Integrals, falls $f''$ und Intervall $[a,b]$ klein.
 f \mapsto \mathcal{M}_{[a,b]}(f) = (b-a)f\left(\frac{b+a}{2}\right) &= \int_a^b f\left(\frac{b+a}{2}\right) dx\\
 \mathcal{I}_{[a,b]}(f)-\mathcal{M}_{[a,b]}(f) &= \frac{(b-a)^3}{24}f''(\eta)
 \end{align*}
+Exakt f\u r lineare Polynome.
+
 \textsc{Interpolatorische Quadratur}\\
 \begin{align*}
 \mathcal{I}_{[a,b]}(f) \approx \int_a^b p(x) dx = \int_a^b \sum_{i=0}^m f(x_i)l_i(x)dx=\sum_{i=0}^m f(x_i) \underbrace{\int_a^b l_i(x)dx}_{w_i}
@@ -823,6 +827,7 @@ x_i = \frac{m-i}{m}a + \frac{i}{m}b, \, \forall i\in \{0,...,m\}, \quad \mathcal
 h&=\frac{b-a}{l} \quad y_i = a+ih \quad \forall i\in \{0,...,l\}\\
 \mathcal{I}_{[a,b]}(f)&=\int_a^b f(x)dx = \sum_{i=1}^l\int_{y_{i-1}}^{y_i} f(x)dx\\ &= \sum_{i=1}^l \mathcal{I}_{[y_{i-1},y_i]}(f) \approx \sum_{i=1}^l \mathcal{Q}_{[y_{i-1},y_i]}(f) = \mathcal{Q}_{[a,b],l}(f)
 \end{align*}
+Es kann jede beliebige Genauigkeit erreicht werden bei hinreichend gro\s em $l$.
 
 \textsc{Summierte Mittelpunktregel}\\
 Jede beliebige Genauigkeit, falls $f''$ beschr\a nkt ist. Verdoppelung der Anzahl der Teilintervalle viertelt den Fehler.
@@ -831,15 +836,14 @@ Jede beliebige Genauigkeit, falls $f''$ beschr\a nkt ist. Verdoppelung der Anzah
 \mathcal{I}_{[a,b]}(f)-\mathcal{M}_{[a,b],l}(f) &= \frac{(b-a)^3}{24l^2}f''(\eta)
 \end{align*}
 
+\textbf{Beste Qudraturformel}: Gau\s -Quadratur - exakt f\u r $n=2m+1$.Q
+
 \subsection{Fehleranalyse}
-\clearpage
+Definiere Quadraturformeln auf Referenzintervall:
+\begin{align*}
+\mathcal{I}:C[-1,1]\rightarrow \mathbb{R} \quad f\mapsto \mathcal{I}(f) = \int_{-1}^1 f(x) dx \\
+\mathcal{Q}:C[-1,1]\rightarrow \mathbb{R} \quad f \mapsto \mathcal{Q}(f)=\sum_{i=0}^mw_i f(x_i)
+\end{align*}
 
-
-
-
-
-
-
-
-
-
+Die \textbf{Quadraturformel} ist \textbf{exakt} von Grad $n$, wenn $\mathcal{Q}(p) = \mathcal{I}(p) \quad \forall p\in \Pi_n$ - falls alle Polynome bis Grad $n$ exakt integriert werden. Exaktheit ausnutzen: Approximiere den Integranden $f$ durch $p$ ($p$ wird exakt integriert) - also nur Approximationsfehler beschr\a nken \u ber Maximumsnorm $\Vert g \Vert_{\infty,[a,b]}$.\\
+Stabilit\a tskonstante $C_Q = \sum_{i=0}^m|w_i|$.
