@@ -1,0 +1,62 @@
+\begin{center}
+     \Large{\textbf{AND Cheat Sheet}} \\
+\end{center}
+
+\section{Vocabulary}
+\textsc{Hyperbolic eq.points} $\mathcal{R}\{x\} \neq 0$ \\
+\textsc{Nonhyperbolic problems} Equilibria with EV on the imaginary axis.
+
+\section{Basics on cont.-time dynamical systems}
+\begin{align*}
+\dot{x} = f(t,x,p), \quad x(t_0) = x_0 \Leftrightarrow \dx = f(x,p), \quad x(0)=x_0
+\end{align*}
+\subsection{Flow of a system}
+Solution is the flow $\phi_t(x_0)$
+\begin{align*}
+x(t;x_0,p)=\phi_t(x_0,p)
+\end{align*}
+\textsc{Flow axioms}\\
+\begin{align*}
+\phi_0(x_0,p)&=x_0\\
+\phi_{t_1}[\phi_{t_2}(x_0,p),p] &= \phi_{t_1+t_2}(x_0,p)
+\end{align*}
+\subsection{Existence and uniqueness}
+\textsc{Existence and uniqueness of local (in time) solutions}\\
+If $f$ is Lipschitz in $x$ and piecewise continuous in $t$ then the IVP has a unique solution $x(t)=\phi(t;t_0)x_0$ over a finite time interval $t\in[t_0-\tau,t_0+\tau]$.\\
+Allows for finite-escape times.
+
+\subsection{Stability}
+Def.: An equilibrium point is a state $x^*$ s.t. $f(x^*)=0$\\
+Def.: An eq.point $x^*$ is stable if for any $\epsilon>0$ there exists a constant $\delta > 0$ such that \begin{align*}
+\forall x_0: \Vert x_0 - x^* \Vert \leq \delta \Rightarrow \Vert x(t)-x^* \Vert \leq \epsilon \quad \forall t \geq 0
+\end{align*}
+
+\textsc{Attractor}\\
+$x^*$ is attractive if $\lim_{t\rightarrow \infty} \Vert x(t)-x^* \Vert = 0 \quad \forall x_0 \in \mathcal{S}$ with $\mathcal{S}$ being the domain of attraction.\\
+Eq points may be attractive without being stable (ex. Vinograd's system).
+
+\textsc{Asymptotic stability}\\
+An eq.point $x^*$ is asymptotically stable if it is stable and attractive.
+
+\textsc{Exponential stability}\\
+An eq.point $x^*$ is exponentially stable in $\mathcal{S}$ if it is stable and there are constants $a, \lambda > 0$ such that $\forall x_0 \in \mathcal{S}: \Vert x(t)-x^*\Vert \leq a\Vert x_0 - x^* \Vert e^{-\lambda t}$
+
+\section{Linear systems}
+\subsection{LTI systems}
+\subsection{LTV systems and Floquet theory}
+\section{Nonlinear flows}
+\subsection{Local Theory}
+\textsc{Hartman-Grobman}\\
+The behavior of a nonlinear systems in a vicinity of hyperbolic eq. points is the same as in the linearized system around that point.
+
+\textsc{Center manifold theorem}\\
+\begin{align*}
+\frac{dh}{dx_z}[A_zx_z+f_z(x_z, h(x_z))] = A_sh(x_z)+f_s(h(x_z),x_z) \\
+h(0)=0, \quad \frac{dh(0)}{dx_z} = 0
+\end{align*}
+
+
+\subsection{Non-local phenomena}
+\section{Bifurcations of vector fields}
+\subsection{Bifurcations of SSs}
+\subsection{Bifurcations of trajectories}
