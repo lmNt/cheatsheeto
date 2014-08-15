@@ -12,6 +12,7 @@
 \usepackage{xcolor}
 \usepackage{color}
 \usepackage{listings}
+\usepackage{tikz}
 \usepackage[makeroom]{cancel} % zum durchstreichen von gleichungen
 \renewcommand{\a}{\"{a}}
 \renewcommand{\o}{\"{o}}
@@ -26,6 +27,7 @@
 \newcommand{\R}[1]{\mathbb{R}^{#1}}
 \newcommand{\Rr}[2]{\mathbb{R}^{#1 \times #2}}
 \renewcommand{\v}[1]{\mbox{\bf #1}}
+\newcommand{\dx}{\dot{x}}
 % vector, bold face italic
 %\renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
 

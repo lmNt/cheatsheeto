@@ -22,8 +22,9 @@ x(t;x_0,p)=\phi_t(x_0,p)
 \end{align*}
 \subsection{Existence and uniqueness}
 \textsc{Existence and uniqueness of local (in time) solutions}\\
+\emph{If $f(x)$ is smooth enough, then solutions exist and are unique. No guarantee that they exist forever - only guarantees to exist in a very short time interval around $t_0$.}\\
 If $f$ is Lipschitz in $x$ and piecewise continuous in $t$ then the IVP has a unique solution $x(t)=\phi(t;t_0)x_0$ over a finite time interval $t\in[t_0-\tau,t_0+\tau]$.\\
-Allows for finite-escape times.
+Allows for finite-escape times/blow-up (reach infinity in finite time).
 
 \subsection{Stability}
 Def.: An equilibrium point is a state $x^*$ s.t. $f(x^*)=0$\\
@@ -59,4 +60,81 @@ h(0)=0, \quad \frac{dh(0)}{dx_z} = 0
 \subsection{Non-local phenomena}
 \section{Bifurcations of vector fields}
 \subsection{Bifurcations of SSs}
+\textsc{Transcritical bifurcation}\\
+\emph{Standard mechanism for change of stability for a fixed point which exists for all values of the parameter}.\\
+Ex.: $\dot{x}=rx-x^2$.\\
+Fixed point at $x^*=0 \quad \forall r$. For $r<0$ unstable fixed point at $x^*=r$ and a stable at $x^*=0$. For $r=0^-$ the fixed points unify. For $r>0$ the origin is unstable and $x^*=r$ becomes stable - \textbf{exchange of stabilities}
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [dashed](0,0.5) -- (1,0.5);
+\draw [thick](0,0.5) -- (1,1.5);
+\draw [dashed](-1,-0.5) -- (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
+
+
+\textsc{Saddle node bifurcation}\\
+\emph{Fixed points are created and destroyed. As a parameter is varied, two fixed points move toward each other, collide and mutually annihilate}.\\
+Ex: $\dot{x}=r+x^2$.\\ $r<0$: 2 FP (1 stable, 1 unstable),\\ $r=0^-$: half-stable FP, \\ $r>0$: no FP.\\ In this example the bifurcation occurred at $r=0$.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw (-1,0.5) -- (1,0.5);
+\draw [thick](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
+
+\subsubsection{Pitchfork bifurcation}
+\emph{Common in physical systems that have (left/right) symmetry.}
+\textsc{Supercritical pitchfork bifurcation}\\
+Ex: $\dot{x}=rx-x^3$. If $r<0$ the origin is the only fixed point and stable. $r=0$ the origin is still stable, but weakly, since the linearization vanishes (solutions no longer decay exponentially fast - \emph{critical slowing down}).  For $r>0$ the origin becomes unstable and two new stable fixed points appear at $x^*=\pm \sqrt{r}$.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [dashed](0,0.5) -- (1,0.5);
+\draw [thick](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
+
+\textsc{Subcritical pitchfork bifurcation}\\
+Ex: $\dot{x}=rx+x^3$. Only for $r<0$ two unstable fixed points $x^*=\pm \sqrt{-r}$ and stable origin. For $r>0$ origin is unstable (finite escape)
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [dashed](0,0.5) -- (1,0.5);
+\draw [dashed](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+
 \subsection{Bifurcations of trajectories}
+
+
+
+
+
+
+
+
+
+
+
+
+

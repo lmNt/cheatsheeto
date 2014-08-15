@@ -3,8 +3,13 @@
 \end{center}
 
 \section{Basics}
-\subsection{Sortieren}
-\subsection{FFT}
+\textsc{Sortieren}\\
+Bubblesort: $2n^2$\\
+Mergesort: Eingangsvektor zerlegen, Teilprobleme sortieren, vergleichend sortieren: $n\log_2 n$\\
+\textsc{FFT}\\
+Fourier-Transformation: $n^2$\\
+FFT: Summe zerlegen in gerade/ungerade Indizes: $n \log_2 n$
+
 
 \section{Lineare Gleichungssysteme}
 \subsection{Allgemeine Aufgabenstellung}
@@ -171,7 +176,10 @@ Mit $\v{A} \in \Rr{n}{m}$ und $\v{B} \in \R{m}{k}$ gilt:
 Der relative Fehler der L\o sung l\a sst sich absch\a tzen aus dem relativen Fehler der rechten Seite und der Konditionszahl $\kappa_2(\v{A})$: \\ $\frac{\Vert \v{x} - \widetilde{\v{x}} \Vert_2}{\Vert \v{x} \Vert_2} \leq \kappa_2(\v{A}) \frac{\Vert \v{b}-\widetilde{\v{b}}\Vert_2}{\Vert \v{b}\Vert_2}$
 
 \textsc{St\o rung der Matrix}\\
-Der relative Fehler l\a sst sich beschr\a nken. TODO: WIESO ETC
+Der relative Fehler l\a sst sich beschr\a nken. Beschr\a nkt durch das Produkt der Konditionszahl und des relativen Fehlers der Matrix.
+\begin{align*}
+\frac{\Vert \v{x} - \widetilde{\v{x}} \Vert_2}{\Vert \v{x} \Vert_2} \leq \dfrac{\kappa_2(\v{A})}{1-\kappa_2(\v{A})\frac{\Vert \v{A} - \widetilde{\v{A}} \Vert_2}{\Vert \v{A} \Vert_2} } \frac{\Vert \v{A} - \widetilde{\v{A}} \Vert_2}{\Vert \v{A} \Vert_2}
+\end{align*}
 
 \subsection{QR-Zerlegung}
 \emph{F\u r jede Matrix gibt es eine QR-Z}.\\

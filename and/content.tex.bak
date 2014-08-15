@@ -1,849 +1,140 @@
 \begin{center}
-     \Large{\textbf{Numerik Cheat Sheeto}} \\
+     \Large{\textbf{AND Cheat Sheet}} \\
 \end{center}
 
-\section{Basics}
-\subsection{Sortieren}
-\subsection{FFT}
+\section{Vocabulary}
+\textsc{Hyperbolic eq.points} $\mathcal{R}\{x\} \neq 0$ \\
+\textsc{Nonhyperbolic problems} Equilibria with EV on the imaginary axis.
 
-\section{Lineare Gleichungssysteme}
-\subsection{Allgemeine Aufgabenstellung}
-Geg.: $\v{A} \in \Rr{n}{n}$, $\v{b} \in \R{n}$ \\
-Ges.: $\v{x} \in \R{n}$ \\
-\centering $\v{Ax}=\v{b}$ \flushleft
-\subsection{Dreiecksmatrizen}
-Untere Dreiecksmatrix $\v{L} \in \Rr{n}{n}$ und obere Dreiecksmatrix $\v{R} \in \Rr{n}{n}$.\vspace{0.2cm}
-
-\textsc{Regul\a re/invertierbare/nicht-singul\a re Matrix}\\
-Matrix $\v{A}$ ist regul\a r, wenn $\det \v{A}\neq 0$. Determinante einer $\Delta$Matrix ist das Produkt ihrer Diagonalelemente. $\v{L}$ und $\v{R}$ sind regul\a r, wenn alle Diagonalelemente $\neq 0$.\vspace{0.2cm}
-
-\textsc{Vorw\a rtseinsetzen}\\
-\centering $\v{Ly}=\v{b}$ \flushleft
-Rechenaufwand: $n^2$ AO \\
-Um Speicher zu sparen  $b_i \leftarrow y_i$.\vspace{0.2cm}
-
-\verb!forward_subst!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $j=1:n$\\
-\quad $x_j \leftarrow b_j/l_{jj}$\\
-\quad for $i=j+1:n$\\
-\qquad $b_i \leftarrow b_i-l_{ij}x_j$\\
-\hrulefill\\
-}\vspace{0.2cm}
-
-\textsc{R\u ckw\a rtseinsetzen}\\
-\centering $\v{Rx}=\v{y}$ \flushleft 
-Rechenaufwand: $n^2$ AO \\
-Um Speicher zu sparen  $b_i \leftarrow x_i$.\vspace{0.2cm}
-
-\verb!backward_subst!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $j=n:1$\\
-\quad $x_j \leftarrow b_j/r_{jj}$\\
-\quad for $i=1:j-1$\\
-\qquad $b_i \leftarrow b_i-r_{ij}x_j$\\
-\hrulefill\\
-}\vspace{0.2cm}
-
-\subsection{LR-Zerlegung}
-Sei $\v{A} \in \Rr{n}{n}$ und $\v{L},\v{R} \in \Rr{n}{n}$\\
-\centering $\v{A}=\v{LR}$ \flushleft
-
-Ansatz: \\
-Matrizen $\v{A}$, $\v{L}$, $\v{R}$ in Teilmatrizen $\v{A}_{**}$, $\v{A}_{*1}$, $\v{A}_{1*}$, $\v{L}_{**}$, $\v{L}_{*1}$, $\v{R}_{**}$, $\v{R}_{1*}$ zerlegen.\\ Es folgen 4 Gleichungen aus $\v{A}=\v{LR}$:
+\section{Basics on cont.-time dynamical systems}
 \begin{align*}
-a_{11}     &= l_{11}r_{11} & & \\
-\v{A}_{*1} &= \v{L}_{*1}r_{11} &\Leftrightarrow \v{L}_{*1} &= \v{A}_{*1}/r_{11} \\ 
-\v{A}_{1*} &= l_{11}\v{R}_{1*} &\Leftrightarrow \v{R}_{1*} &= \v{A}_{1*}\\
-\v{A}_{**} &= \v{L}_{*1}\v{R}_{1*}+\v{L}_{**}\v{R}_{**} & &
+\dot{x} = f(t,x,p), \quad x(t_0) = x_0 \Leftrightarrow \dx = f(x,p), \quad x(0)=x_0
 \end{align*}
-Per Def. $l_{11}=1$ und damit $r_{11}=a_{11}$, sodass
-\begin{equation}
-\v{A}_{**} - \v{L}_{*1}\v{R}_{1*} = \v{L}_{**}\v{R}_{**}
-\end{equation}
-
-\textsc{Praktische Umsetzung}\\
-Elemente von $\v{A}$ \u berschreiben, sodass:
-\begin{equation}
-\begin{pmatrix}
-r_{11} & r_{12} & \cdots    & r_{1n} \\
-l_{21} & r_{22} & \ddots    & \vdots \\
-\vdots & \ddots & \ddots    & r_{n-1,n} \\
-l_{n1} & \cdots & l_{n,n-1} & r_{nn} 
-\end{pmatrix}
-\end{equation}
-
-\textsc{Kriterium}\\
-Sei $\v{A}$ regul\a r, $\v{A}$ besitzt eine LR-Zerlegung $\Leftrightarrow$ Alle Hauptuntermatrizen regul\a r.\vspace{0.2cm}
-
-\textsc{Modellproblem: Bandmatrix}\\
-Irgendwas bzgl Effizienz.\vspace{0.2cm}
-
-\textsc{LR-Decomp}\\
-Aufwand: \emph{kubisch} \\
-$\downarrow$ Aufwand: Nur 1x f\u r jede Matrix betreiben. Sobald LR-Decomp vorliegt nur noch \emph{quadratischer} Aufwand \\ 
-$\Downarrow$ Aufwand: Tridiagonalmatrix. Erster Schritt mit 3 AOPs. Restmatrix bleibt tridiagonal. Aufwand $3n$ + $6n$ f\u r R-und F-Einsetzen.\vspace{0.2cm}
-
-\verb!lr_decomp!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $k=1:n$\\
-\quad for $i=k+1:n$ \\ 
-\qquad $a_{ik} \leftarrow a_{ik}/a_{kk}$ \\
-\qquad for $j=k+1:n$\\
-\qquad\quad $a_{ij} \leftarrow a_{ij}-a_{ik}a_{kj}$\\
-\hrulefill\\
-}\vspace{0.2cm}
-
-\textsc{Problem der Existenz einer LR-Z}\\
-Falls $\v{A}$ oder $\v{A}_{**}$ eine 0 auf der Diagonalen hat, existiert keine LR-Zerlegung. L\o sung: Permutiere die Zeilen von $\v{A}$ so, dass das Ergebnis eine LR-Z besitzt.\vspace{0.2cm}
-
-\textsc{Permutationsmatrix}\\
-Sei $\v{P} \in \Rr{n}{n}$. Falls in jeder Zeile und Spalte von $\v{P}$ genau ein Eintrag 1 und alle anderen 0, dann ist $\v{P}$ eine Permutationsmatrix. $\v{P}$ ist orthogonal. Ein Produkt zweier Permutationsmatrizen $\v{P}\v{Q}$ ist auch eine Permutationsmatrix.\vspace{0.2cm}
-
-\textsc{Permutation}\\
-Bijektive Abbildung $\pi : \{1,\cdots,n\} \rightarrow \{1,\cdots,n\}$.\vspace{0.2cm}
-
-\textsc{LR-Z mit Pivotsuche}\\
-$\v{A}$ regul\a r. Es existiert $\v{P} \in \Rr{n}{n}$ sodass $\v{P}\v{A}=\v{L}\v{R}$ gilt. \\
-Pivotisierung: Finde betragsmaximalstes Element in der aktuellen Spalte, welches unter dem aktuellen Diagonalelement von $\v{A}$ liegt und tausche die aktuelle Zeile mit der Zeile in der das betragsmaximalste Element ist, mit Hilfe von $\v{P}$. $a_{11} \neq 0$, da betragsgr\o \ss tes Element.\vspace{0.2cm}
-
-\textsc{L\o sen eines Gleichungssystems mit Pivotsuche}\\
-$\v{A}\v{x} = \v{b} \Leftrightarrow \v{P}\v{A}\v{x} = \v{P}\v{b} \Leftrightarrow \v{L}\v{R}\v{x}=\v{P}\v{b}$.\\
-1.) $\v{Ly}=\tilde{\v{b}}$ \quad 2.) $\v{Rx} = \v{y}$
-
-\verb!lr_pivot!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $k=1:n$\\
-\quad $i_* \leftarrow k$ \qquad\qquad // Finde max. Element \\ 
-\quad for $i=k+1:n$ \\ 
-\qquad if $|a_{ik}| > |a_{i_*k}|$: $i_* \leftarrow i$ \\
-\quad $p_k \leftarrow i_*$ \\
-\quad for $j=1:n$ \qquad // Tausche Zeilen \\ 
-\qquad $\gamma \leftarrow a_{kj}$, $a_{kj} \leftarrow a_{i_*j}$, $a_{i_*j} \leftarrow \gamma$\\
-\quad for $i=k+1:n$ \\ 
-\qquad $a_{ik} \leftarrow a_{ik}/a_{kk}$ \\
-\qquad for $j=k+1:n$\\
-\qquad\quad $a_{ij} \leftarrow a_{ij}-a_{ik}a_{kj}$\\
-\hrulefill\\
-}
-$\v{p}$ protokolliert, welche Vertauschungen durchgef\u hrt wurden, um sie sp\a ter auf $\v{b}$ anwenden zu k\o nnen.\\
-Aufwand: $\frac{2}{3}n^3$.\vspace{0.2cm}
-
-%\textsc{Sonderfall: $\v{A}$ positiv definit}\\
-%TODO.
-
-\subsection{Fehlerverst\a rkung}
-\textsc{Norm des Matrix-Vektor-Produkts}\\
-\emph{Wie stark \a ndert sich die L\a nge eines Vektors wenn er mit $\v{A}$ multipliziert wird. Mapping von Einheitskreis auf Ellipse.}.
-F\u r $\v{A} \in \Rr{n}{n}$ gilt:
+\subsection{Flow of a system}
+Solution is the flow $\phi_t(x_0)$
 \begin{align*}
-\alpha_2(\v{A}) &= \min\{\Vert \v{Ay} \Vert_2 : \v{y}\in\R{n}, \Vert \v{y} \Vert_2 =1 \} \\
-\beta_2(\v{A}) &= \max\{\Vert \v{Ay} \Vert_2 : \v{y}\in\R{n}, \Vert \v{y} \Vert_2 =1 \} 
+x(t;x_0,p)=\phi_t(x_0,p)
 \end{align*}
-und
+\textsc{Flow axioms}\\
 \begin{align*}
-\alpha_2(\v{A})\Vert \v{z} \Vert_2 \leq \Vert \v{Az} \Vert_2 \leq \beta_2(\v{A})\Vert \v{z} \Vert_2
+\phi_0(x_0,p)&=x_0\\
+\phi_{t_1}[\phi_{t_2}(x_0,p),p] &= \phi_{t_1+t_2}(x_0,p)
 \end{align*}
-Eigenschaften der Norm:
-\begin{align*}
-\Vert \v{x} \Vert &= 0 \Leftrightarrow \v{x} = 0 \\
-\Vert \lambda \v{x} \Vert &= | \lambda | \Vert \v{x} \Vert \\
-\Vert \v{x} + \v{y} \Vert &\leq \Vert \v{x} \Vert+\Vert \v{y} \Vert
-Q\end{align*}
+\subsection{Existence and uniqueness}
+\textsc{Existence and uniqueness of local (in time) solutions}\\
+\emph{If $f(x)$ is smooth enough, then solutions exist and are unique. No guarantee that they exist forever - only guarantees to exist in a very short time interval around $t_0$.}\\
+If $f$ is Lipschitz in $x$ and piecewise continuous in $t$ then the IVP has a unique solution $x(t)=\phi(t;t_0)x_0$ over a finite time interval $t\in[t_0-\tau,t_0+\tau]$.\\
+Allows for finite-escape times/blow-up (reach infinity in finite time).
 
-\textsc{Konditionszahl}
-\begin{align*}
-\alpha_2(\v{A})&=\frac{1}{\Vert \v{A}^{-1} \Vert_2}, \qquad \beta_2(\v{A})=\Vert \v{A}\Vert_2 \\
-\kappa_2(\v{A}) &= \Vert \v{A} \Vert_2 \Vert \v{A}^{-1} \Vert_2 = \frac{\beta_2(\v{A})}{\alpha_2(\v{A}}
+\subsection{Stability}
+Def.: An equilibrium point is a state $x^*$ s.t. $f(x^*)=0$\\
+Def.: An eq.point $x^*$ is stable if for any $\epsilon>0$ there exists a constant $\delta > 0$ such that \begin{align*}
+\forall x_0: \Vert x_0 - x^* \Vert \leq \delta \Rightarrow \Vert x(t)-x^* \Vert \leq \epsilon \quad \forall t \geq 0
 \end{align*}
 
-\textsc{Matrixprodukt}\\
-Mit $\v{A} \in \Rr{n}{m}$ und $\v{B} \in \R{m}{k}$ gilt:
+\textsc{Attractor}\\
+$x^*$ is attractive if $\lim_{t\rightarrow \infty} \Vert x(t)-x^* \Vert = 0 \quad \forall x_0 \in \mathcal{S}$ with $\mathcal{S}$ being the domain of attraction.\\
+Eq points may be attractive without being stable (ex. Vinograd's system).
+
+\textsc{Asymptotic stability}\\
+An eq.point $x^*$ is asymptotically stable if it is stable and attractive.
+
+\textsc{Exponential stability}\\
+An eq.point $x^*$ is exponentially stable in $\mathcal{S}$ if it is stable and there are constants $a, \lambda > 0$ such that $\forall x_0 \in \mathcal{S}: \Vert x(t)-x^*\Vert \leq a\Vert x_0 - x^* \Vert e^{-\lambda t}$
+
+\section{Linear systems}
+\subsection{LTI systems}
+\subsection{LTV systems and Floquet theory}
+\section{Nonlinear flows}
+\subsection{Local Theory}
+\textsc{Hartman-Grobman}\\
+The behavior of a nonlinear systems in a vicinity of hyperbolic eq. points is the same as in the linearized system around that point.
+
+\textsc{Center manifold theorem}\\
 \begin{align*}
-\alpha_2(\v{AB}) \geq \alpha_2(\v{A})\alpha_2(\v{B}) \qquad \beta_2(\v{AB}) \geq \beta_2(\v{A})\beta_2(\v{B})
-\end{align*}
-
-\textsc{St\o rung der rechten Seite}\\
-Der relative Fehler der L\o sung l\a sst sich absch\a tzen aus dem relativen Fehler der rechten Seite und der Konditionszahl $\kappa_2(\v{A})$: \\ $\frac{\Vert \v{x} - \widetilde{\v{x}} \Vert_2}{\Vert \v{x} \Vert_2} \leq \kappa_2(\v{A}) \frac{\Vert \v{b}-\widetilde{\v{b}}\Vert_2}{\Vert \v{b}\Vert_2}$
-
-\textsc{St\o rung der Matrix}\\
-Der relative Fehler l\a sst sich beschr\a nken. TODO: WIESO ETC
-
-\subsection{QR-Zerlegung}
-\emph{F\u r jede Matrix gibt es eine QR-Z}.\\
-
-\textsc{LR-Z: Schlecht konditioniertes Problem}\\
-$\kappa_2(\v{A}) \gg 1$, $\kappa_2(\v{A}) \leq \kappa_2(\v{L})\kappa_2(\v{R})$\\
-Kritisch falls $\kappa_2(\v{L})\kappa_2(\v{R}) \gg \kappa_2(\v{A})$.\\
-
-Ziel: Suche Transformationen $\v{Q} \in \Rr{n}{n}$, die die Norm unver\a ndert lassen:
-\begin{align*}
-\Vert \v{Qy} \Vert_2 = \Vert y \Vert_2
-\end{align*}
-Mit Hinzunahme des Skalarprodukts:
-\begin{align*}
-\langle \v{y}, \v{y} \rangle_2 = \Vert \v{y} \Vert_2^2 = \Vert \v{Qy} \Vert_2^2 = \langle \v{Qy}, \v{Qy} \rangle_2 = \langle \v{y}, \v{Q}^*\v{Qy} \rangle_2
-\end{align*}
-muss $\v{Q}^*\v{Q} = \v{I}$ gelten.
-
-Gesucht: $\v{A}=\v{QR}$.\\
-Konditionszahl bzw. Fehlerverst\a rkung wird nicht verschlechtert: $\alpha_2(\v{A}) = \alpha_2(\v{R})$, $\beta_2(\v{A}) = \beta_2(\v{R})$\\
-$\kappa_2(\v{A})= \kappa_2(\v{R})$.\\
-
-\textsc{Givens-Rotation}\\
-Mit Hilfe von Givens-Rotationen k\o nnen wir beliebige $\v{A}\in \Rr{m}{n}$ auf obere $\Delta$gestalt bringen.
-\begin{align*}
-\v{Q}=\begin{pmatrix}
-c & s \\
--s & c
-\end{pmatrix}
-\text{ und }
-\v{Qy} = \begin{pmatrix}
-cy_1 + sy_2 \\ 0
-\end{pmatrix}
-\end{align*}
-Konsekutiv Givens-Rotationen $\v{Q}_{ij}$ $i$-te Zeile in $j$-te Spalte anwenden um Eintrag $a_{ij}$ zu beseitigen. Bsp. $\v{A} \in \Rr{4}{3}$:
-\begin{align*}
-\v{R} = \v{Q}_{43}\v{Q}_{32}\v{Q}_{42}\v{Q}_{21}\v{Q}_{31}\v{Q}_{41}\v{A} \\
-\underbrace{\v{Q}_{41}^*\v{Q}_{31}^*\v{Q}_{21}^*\v{Q}_{42}^*\v{Q}_{32}^*\v{Q}_{43}^*}_{\v{Q}}\v{R}=\v{A}
-\end{align*}
-
-\textsc{Kompakte Darstellung}\\
-\emph{Verwende Nulleintr\a ge von $\v{A}$ bzw. $\v{R}$ um $\v{Q}_{ij}$ zu beschreiben}.\\
-Finde Givens-Rotation:
-\begin{align*}
-\rho = 
-\begin{cases}
-s = \rho, c=\sqrt{1-s^2}  &\text{falls $|\rho|<1$} \\
-c = 1/\rho, s=\sqrt{1-c^2} &\text{falls $|\rho|>1$} \\
-c = 1, s=0 &\text{falls $\rho=1$}
-\end{cases}
-\end{align*}
-
-Speichern der QR-Z in $\v{A}$:
-\begin{equation}
-\begin{pmatrix}
-r_{11} & r_{12} & \cdots    & r_{1n} \\
-\rho_{21} & r_{22} & \ddots    & \vdots \\
-\vdots & \ddots & \ddots    & r_{n-1,n} \\
-\rho_{n1} & \cdots & \rho_{n,n-1} & r_{nn} 
-\end{pmatrix}
-\end{equation}
-
-\verb!Qr Decomp von! $\v{A} \in \Rr{m}{n}$\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $k=1:\min(m,n)$ \qquad {\scriptsize // Loop \u ber Diagonale}\\
-\quad for $i=k+1:m$ \qquad {\scriptsize // Loop \u ber Elemente unter Diagonalen}\\
-\qquad if $a_{ik}=0$\\
-\qquad\quad $\rho \leftarrow 1$, $c \leftarrow 1$, $s \leftarrow 0$ \\
-\qquad else if $|a_{kk}|\geq|a_{ik}|$ \qquad {\scriptsize // Vgl. mit Diag.element}\\
-\qquad\quad $\tau \leftarrow a_{ik}/a_{kk}$, $\rho \leftarrow \tau/\sqrt{\tau^2+1}$, $s \leftarrow \rho$, $c\leftarrow \sqrt{1-s^2}$ \\
-\qquad else \qquad\qquad\qquad\quad\qquad {\scriptsize // Vgl. mit Diag.element} \\
-\qquad\quad $\tau \leftarrow a_{kk}/a_{ik}$, $\rho \leftarrow \sqrt{\tau^2+1}/\tau$, $c \leftarrow 1/\rho$, $s\leftarrow \sqrt{1-c^2}$ \\
-\qquad {\scriptsize // Diag.element aktual., Giv.-Rot. in aktueller It. speichern}\\ 
-\qquad $a_{kk} \leftarrow ca_{kk}+sa_{ik}$, $a_{ik}\leftarrow \rho$\\
-\qquad for $j=k+1:n$ {\scriptsize // Loop \u ber Elemente in der $k$-ten Zeile}\\
-\qquad \quad {\scriptsize // Giv-Rot auf Zeile anwenden} \\
-\qquad \quad $\alpha \leftarrow a_{kj}$, $a_{kj} \leftarrow c\alpha+sa_{ij}$, $a_{ij} \leftarrow -s\alpha + ca_{ij}$ \\
-\hrulefill\\
-}
-Aufwand: $6n^2+2n^3$ (quadratische Matrix) ~3x mehr als LR-Z. \vspace{0.2cm}
-
-\textsc{L\o sen Gleichungssystem $\v{Ax}=\v{b}$}\\
-$\v{b}=\v{Ax}=\v{QRx}=\v{Qy}$ \quad $\Leftrightarrow$ \quad 1.) $\v{y}=\v{Q}^*\v{b}$ \quad 2.) $\v{y}=\v{Rx}$.
-
-1.) Qr\_transform: \U ber einzelne $G_{ij}$ (oben links angefangen) iterieren und auf $b$ multiplizieren. \\
-2.) R\u ckw\a rtseinsetzen.\vspace{0.2cm}
-
-\textsc{Effizientere QR-Z}\\
-Householder-Spiegelungen: Aufwand ~2x mehr als LR-Z.\\
-Mit Optimierungen bei Speicherzugriffen bei QR-Z \a hnlich schnell wie LR-Z.\vspace{0.2cm}
-
-\subsection{Ausgleichsprobleme}
-\emph{Wir suchen $\v{x}$ so, dass alle Gleichungen m\o glichst gleich gut erf\u llt werden - oder - von unbekannten Parametern abh\a ngige Kurve durch Messdaten in unterschiedlichen APs zu \emph{fitten}}.
-
-\textsc{Grundlagen}\\
-Wir suchen die unbekannte Funktion $y$ aus den Messwerten $b$, sodass $b_i =y(t_i) \quad \forall i\in \{1,...,m\}$. \\ Annahme: $y$ setzt sich zusammen aus Linearkombination bekannter Funktionen $y_1, ..., y_m$ mit $n<m$ mit Faktoren $x_1, ...,x_m$ sodass: $y(t) = x_1y_1(t) + ... + x_ny_n(t)$ bzw. $b_i = y(t_i) = x_1y_1(t_i) + ... + x_ny_n(t_i)$. Als Gleichungssystem schreiben - \u berbestimmt $m$ Gleichungen f\u r $n$ Unbekannte - mehr Messwerte als Unbekannte:
-\begin{align*}
-\begin{pmatrix}
-b_1 \\
-\vdots\\
-b_m
-\end{pmatrix}
-=
-\begin{pmatrix}
-y_1(t_1) & \cdots & y_n(t_1)\\
-\vdots & \ddots & \vdots \\
-y_1(t_m) & \cdots & y_n(t_m)
-\end{pmatrix}
-\begin{pmatrix}
-x_1 \\
-\vdots\\
-x_n
-\end{pmatrix}
-\end{align*}
-
-\textsc{Aufgabe}\\
-Suche $\v{x} \in \R{n}$ mit $\Vert \v{Ax}-\v{b} \Vert_2 \leq \Vert \v{Az}-\v{b} \Vert_2 \quad \forall \v{z} \in \R{n}$ - also optimale N\a herung. Falls $\v{A}$ injektiv, dann ex. genau eine L\o sung. Es gelte $\v{A}=\v{QR}$ mit $\v{Q} \in \Rr{m}{m}$ und $\v{R} \in \Rr{m}{n}$.
-\begin{align*}
-\Vert \v{Az}-\v{b} \Vert_2 &= \Vert \v{QRz}-\v{QQ}^*\v{b} \Vert_2 = \Vert \v{Q}(\v{Rz}-\v{Q}^*\v{b} \Vert_2 \\&= \Vert \v{Rz}-\v{Q}^*\v{b} \Vert_2
-\end{align*}
-F\u r $\v{R}$ gilt: $\v{R} = \begin{pmatrix}
-\widehat{\v{R}} \\
-\v{0}
-\end{pmatrix} \quad \widehat{\v{R}} \in \Rr{n}{n}$ und beide injektiv und $\widehat{\v{R}}$ regul\a r. Au\s erdem $\v{Q}^*\v{b}=\begin{pmatrix}
-\widehat{\v{b}} \\ \v{b}_0
-\end{pmatrix} \quad \widehat{\v{b}}\in \R{n}, \v{b}_0 \in \R{m-n}$. Norm ausnutzen ergibt: $\Vert \widehat{\v{R}}\v{z}-\widehat{\v{b}}\Vert_2^2 + \Vert \v{b}_0 \Vert_2^2$. Es folgt:
-\begin{align*}
-\Vert \v{Ax}-\v{b}\Vert_2^2 = \Vert \v{Rx}-\v{Q}^*\v{b}\Vert_2^2 = \underbrace{\Vert \widehat{\v{R}}\v{x}-\widehat{\v{b}}\Vert_2^2}_{\text{l\o se } \widehat{\v{R}}\v{z}=\widehat{\v{b}} \text{ oben}} + \Vert \v{b}_0 \Vert_2^2 =  \Vert \v{b}_0 \Vert_2^2 \\ 
-\leq \Vert \widehat{\v{R}}\v{z}-\widehat{\v{b}}\Vert_2^2 + \Vert \v{b}_0 \Vert_2^2 = \Vert \v{Rz}-\v{Q}^*\v{b} \Vert_2^2 = \Vert \v{Az}-\v{b} \Vert_2^2
-\end{align*}
-
-\textsc{Normalengleichung}\\
-Anstatt mit QR-Zerlegung zu l\o sen, Normalengleichung nutzen - bei Ausnutzung von $\v{A}^*\v{A}$ symmetrisch schneller als QR Ansatz:
-\begin{align*}
-\v{A}^*\v{Ax} = \v{A}^*\v{b}
-\end{align*}
-Nachteil, m\o gliche Fehlerverst\a rkung durch $\kappa_2(\v{A}^*\v{A})=\kappa_2(\v{A})^2$
-
-\section{Nichtlineare Gleichungssysteme}
-\emph{Wir untersuchen nichtlineare Gleichungssysteme der Form}
-\begin{align*}
-&\text{Gegeben eine stetige Funktion $f:\R{n} \rightarrow \R{n}$, finde $\v{x}^* \in \R{n}$ mit} \\
-&f(\v{x}^*) = \v{0}
-\end{align*}
-\emph{Transformieren in ein Nullstellenproblem}.
-\subsection{Bisektionsverfahren}
-\emph{Einfache Technik, das in jedem Schritt den Fehler mindestens halbiert. Basierend auf dem Zwischenwertsatz f\u r stetige Funktionen.}\\
-\textbf{Funkioniert nur f\u r 1D.}\vspace{0.2cm}
-
-\textsc{Zwischenwertsatz}\\
-Eine reele Funktion $f$, die in $[a,b]$ stetig ist, nimmt jeden Wert zwischen $f(a)$ und $f(b)$ an. Haben $f(a)$ und $f(b)$ verschiedene Vorzeichen, so ist eine Existenz mindestens einer Nullstelle in $[a,b]$ garantiert.\vspace{0.2cm}
-
-\textsc{Verfahren in mathematischer Notation}\\
-\begin{align*}
-(a^{(0)}, b^{(0)}) &= (a,b)\\
-x^{(m)} &= \frac{a^{(m)} + b^{(m)}}{2} \\
-(a^{(m+1)}, b^{(m+1)}) &= \begin{cases}
-(a^{(m)}, x^{(m)}) & \text{ if } f(a^{(m)})f(x^{(m)}) < 0 \\
-(x^{(m)}, b^{(m)}) & \text{ sonst.}
-\end{cases}
+\frac{dh}{dx_z}[A_zx_z+f_z(x_z, h(x_z))] = A_sh(x_z)+f_s(h(x_z),x_z) \\
+h(0)=0, \quad \frac{dh(0)}{dx_z} = 0
 \end{align*}
 
 
-\verb!Bisection!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-$f_a \leftarrow f(a)$, $f_b \leftarrow f(b)$\\
-\verb!while! $b-a>\epsilon$\\
-\quad $x \leftarrow (a+b)/2$ \\
-\quad $f_x \leftarrow f(x)$ \\
-\quad \verb!if! $f_af_x < 0$ \\ 
-\qquad $b \leftarrow x$, $f_b \leftarrow f_x$ \\
-\quad \verb!else! \\
-\qquad $a \leftarrow x$, $f_a \leftarrow f_x$ \\
-\hrulefill\\
-}
-Aufwand: $m+2$ Auswertungen von $f$ und $2m$ Rechenoperationen, mit $m=\lceil \log_2((b-a)/\epsilon)\rceil$ Schritten. Hohe Stabilit\a t und jedes konstruierte Intervall muss eine Nullstelle enthalten. Nur auf reelwertige Funktionen auf geeigneten Intervallen anwendbar.
-
-\subsection{Allgemeine Fixpunktiterationen}
-\textsc{Iteration}\\
-$U \subseteq \R{n}$ eine abgeschlossene Teilmenge und $\Phi: U \rightarrow U$ eine (Selbst-)Abbildung. Dann ist $\Phi$ eine Iteration auf $U$. Folge der Iterierten $\v{x}^{(m+1)} = \Phi(\v{x}^{(m)})$. Kontruiere Iteration so, dass $\Phi$ gegen gesuchte L\o sung $\v{x}^*$ konvergiert. Es soll $\Phi(\v{x}^*) = \v{x}^*$ gelten. \emph{Die L\o sung muss ein Fixpunkt von $\Phi$ sein.}\vspace{0.2cm}
-
-\textsc{Mittelwertsatz der Differentialrechnung}\\
-Zwischen $a$ und $b$ von $f$ gibt es mindestens einen Kurvenpunkt, f\u r den die Tangente an $\eta$ parallel zur Sekante durch $a$ und $b$ ist:
-$(b-a)f'(\eta) = f(b)-f(a)$. \vspace{0.2cm}
-
-\textsc{Fixpunktsatz von Banach}\\
-Sei $\Phi$ eine Iteration auf einer \textbf{abgeschlossenen} Menge $U \subseteq \R{n}, \quad \Phi : U \rightarrow U$ (\textbf{Selbstabbildung}: Kontraktion bleibt bei Iteration erhalten). Sei $L \in [0,1)$ so gegeben, dass: $\Vert \Phi(\v{x}) - \Phi(\v{y}) \Vert \leq L \Vert \v{x} - \v{y} \Vert$ f\u r alle $\v{x},\v{y} \in U$ (\textbf{Kontraktion}). $\Phi$ besitzt \textbf{genau} einen Fixpunkt und die Folge der Iterierten konvergiert f\u r jeden Startwert $\v{x}^{(0)} \in U$ gegen diesen Fixpunkt.\\
-Fehlerabsch\a tzung \emph{a-priori} (Vorhersagen wieviele Schritte) und \emph{a-posteriori} (Pr\u fen ob N\a herung schon genau genug):
-\begin{align*}
-\Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{L^m}{1-L} \Vert \v{x}^{(1)} - \v{x}^{(0)} \Vert \\
-\Vert \v{x}^{(m)} - \v{x}^* \Vert &\leq \frac{1}{1-L} \Vert \v{x}^{(m)} - \v{x}^{(m+1)} \Vert \quad \forall m \in \mathbb{N}_0
-\end{align*}
-Nachteil: $\Phi$ konstruieren mit Fixpunkt, wo $\v{x}$ eine Nullstelle hat.
-
-\subsection{1D-Newton-Verfahren}
-$U \subseteq \R{n}$ offene Menge und $f: U \rightarrow \R{n}$ zweimal stetig differenzierbar mit Nullstelle $\v{x}^*\in U$, so dass $f(\v{x}^*)=\v{0}$. Ziel: Konstruiere Iteration $\Phi$, die $\v{x}^*$ als Nullstelle besitzt.\vspace{0.2cm}
-
-\textsc{Taylor} \\
-\begin{equation*}
-0 = f(x^*) = f(x) + f'(x)(x^* - x) + \cancel{\frac{f''(\eta)}{2}(x^*-x)^2}
-\end{equation*}
-\textsc{Eindimensionales Newton-Verfahren}\\
-\begin{equation*}
-\Phi : U \rightarrow \mathbb{R} \qquad x \mapsto x- \frac{f(x)}{f'(x)} \quad  {\rightarrow}_{m \rightarrow \infty} x^*
-\end{equation*}
-
-\emph{Indem der dritte Term der Taylorreihe $\cancel{\text{wegf\a llt}}$, approximieren wir die Funktion $f$ durch ihre Tangente im Punkt $x$ (lineare N\a herung). Die Nullstelle der Tangente ist die n\a chste Iterierte $\Phi(x)$.}\vspace{0.2cm}
-
-\textsc{Konvergenz}\\
-Sei $r\in \mathbb{R}_{>0}$ und $U=(x^*-r, x^*+r)$ und gelte $f\in C^2(U)$, $|1/f'(x)|\leq C_1 \forall x\in U$, $|f''(x)| \leq C_2 \forall x\in U$ und $r \leq \frac{2}{C_1C_2}$, dann ist die Abbildung $\Phi$ f\u r das Newton Verfahren eine Selbstabbildung auf $U$, sodass gilt:
-\begin{align*}
-|\Phi(x) - x^* | \leq \frac{C_1C_2}{2}|x-x^*|^2 \qquad \forall x\in U
-\end{align*}
-
-Newton-Verfahren konvergiert, falls $x^{(0)}$ in $U$ liegt (lokale Konvergenz). Konvergenz ist umso schneller, je n\a her die Iterierten an der L\o sung liegen. \textbf{Quadratische Konvergenz}.
-
-\subsection{ND-Newton-Verfahren}
-Herleitung \u ber Hilfsfunktionen $\gamma(t) = \v{x}+t(\v{x}^*-\v{x})$, $g(t)=f(\gamma(t))$ in $[0,1]$ und \emph{Hauptsatz der Integral- und Differentialrechnung} $
-f(b)-f(a) = \int_a^b f'(t) dt $ um h\o here Ableitungen (wie bei Taylor) zu vermeiden. $\v{0} = f(\v{x}^*) = g(1) = g(0) + \int_0^1 g'(t) dt = g(0) + g'(0) + \int_0^1 g'(t)-g'(0)dt = f(\v{x})+Df(\v{x})(\v{x}^*-\v{x}) + \mathfrak{C} = Df(\v{x})^{-1}f(\v{x}) + \v{x}^* - \v{x} + Df(\v{x})^{-1} \mathfrak{C}$. Umstellen nach $\v{x}^*$ und mit $Df(\v{x})^{-1} \mathfrak{C}$ vernachl\a ssigen ergibt Newton-Verfahren.\vspace{0.2cm}
-
-\textsc{Newton-Verfahren}\\
-Sei $U \subseteq \R{n}$ und $Df(\v{x})$ f\u r alle $\v{x} \in U$ regul\a r (also invertierbar). Es gilt:
-\begin{align*}
-\Phi : U \rightarrow \R{d}, \qquad \v{x} \mapsto \v{x} - Df(\v{x})^{-1}f(\v{x})
-\end{align*}
-
-\textsc{Konvergenz}\\
-Sei $r\in \mathbb{R}_{>0}$ und $U= K(\v{x}^*,r)$ und gelte \\
-$f\in C^1(U,\R{b})$,\\
- $\Vert Df(\v{x})^{-1}\Vert_2 \leq C_1 \quad \forall \v{x} \in U$,\\
-$\Vert Df(\v{x}) - Df(\v{y})\Vert_2 \leq C_2 \vert \v{x} - \v{y} \Vert_2 \quad \forall \v{x}, \v{y} \in U$ (Lipschitz st\a tig)
-$r\leq \frac{2}{C_1C_2}$.\\
-Dann ist $\Phi$ eine Selbstabbildung auf der Kugel $U$ und es gilt
-\begin{align*}
-\Vert \v{x}^{(m+1)} - \v{x}^*\Vert_2 \leq \frac{C_1C_2}{2}\Vert \v{x}^{(m)} - \v{x}^* \Vert_2^2 \qquad \forall \v{x}\in U
-\end{align*}
-Quadratische Konvergenz unter schw\a cheren Voraussetzungen, denn $f'$ muss nur Lipschitz-stetig sein. Geeigneter Anfangswert $<\frac{C_1C_2}{2}$ \vspace{0.2cm}
-
-\textsc{Umsetzung}\\
-Anstatt Inverse Jacobimatrix zu berechnen, lineares Gleichungssystem nach $\v{d}$ l\o sen (erh\o hte numerische Stabilit\a t):
-\begin{align*}
-\v{x}^{(m+1)} = \v{x}^{(m)} + \v{d}^{(m)} &\qquad \v{d}^{(m)} = -Df(\v{x}^{(m)})^{-1}f(\v{x}^{(m)})\\
-Df(\v{x}^{(m)})\v{d}^{(m)} &= -f(\v{x}^{(m)})
-\end{align*}
-
-\textsc{Ged\a mpftes Newton-Verfahren}\\
-Um Divergenz zu vermeiden Newton-Richtung mit D\a mpfungsparameter $\sigma^{(m)}$ multiplizieren. Sorgt daf\u r, dass der Fehler nicht gr\o \s er als im vorangehenenden Schritt werden kann.
-\begin{align*}
-\v{x}^{(m+1)} = \v{x}^{(m)} + \sigma^{(m)}\v{d}^{(m)}
-\end{align*}
-
-\section{Eigenwertprobleme}
-\emph{Im Allgemeinen werden Eigenwertprobleme in der Form $\v{Ax}=\lambda \v{x}$, mit $\v{A}\in \Rr{n}{n}$ und $\v{x}\neq 0 \in \R{n}$ untersucht.}
-Eigenwertproblem in die Form eines linearen Gleichungssystems bringen:
-\begin{align*}
-(\v{A} - \lambda \v{I}) \v{x} = \v{0} \quad \Leftrightarrow \quad \det(\v{A}-\lambda \v{I}) = 0
-\end{align*}\\
-Finden der Nullstellen des \emph{charpoly}s ist ein schlecht konditioniertes Problem (nur geeignet f\u r kleine $n$). Deswegen andere Methode...\\
-\subsection{Vektoriteration}
-\emph{Eignet sich f\u r die Berechnung des gr\o \s ten Eigenwerts.}
-
-\textbf{Annahmen}:
-$\v{A}$ diagonalisierbar, d.h. es existiert eine Basis aus EV von $\v{A}$: $\v{v}_1, ... \v{v}_n$. Es gilt $\Vert\v{v}_i\Vert_2=1$ und es existiert ein einfacher dominanter EW $\lambda_1$. Beliebigen Startvektor $\v{x}^{(0)}=c_1\v{v}_1+...+c_n\v{v}_n$ w\a hlen mit $c_1\neq 0$(!!). Oder anders: $\v{A} = \v{C}\widehat{\v{A}}\v{C}^{-1}$ mit $\widehat{\v{A}}=\text{diag}(\lambda_1,...,\lambda_n)$. Au\s erdem gilt $\v{A}^k = (\v{C}\widehat{\v{A}}\v{C}^{-1})...(\v{C}\widehat{\v{A}}\v{C}^{-1}) = \v{C}\widehat{\v{A}}^k\v{C}^{-1}$, bzw. $\v{A}^k\v{C} = \v{C}\widehat{\v{A}}^k$. Wendet man die $k$-te Potenz von $\v{A}$ auf $\v{x}^{(0)}$ an, ergibt sich:
-\begin{align*}
-\v{A}^k\v{x}^{(0)} = \v{A}^k\v{C}\v{v}^{(0)} = \v{C}\widehat{\v{A}}^k\v{v}^{(0)} =  \sum_{j=1}^n c_j \widehat{\v{A}}^k \v{v}_j=\sum_{j=1}^n c_j \lambda_j^k \v{v}_j
-\end{align*}
-Also folgt:
-\begin{align*}
-\v{x}^{(k)} = \v{A}^k\v{x}^{(0)} = \lambda_1^k \left\{ c_1\v{v}_1 + \sum_{j=2}^n \left( \frac{\lambda_j}{\lambda_1}\right)^k c_j \v{v}_j \right\} = \lambda_1^k(c_1\v{v}_1 + \v{r}^k)
-\end{align*}
-wobei $\v{r}^k \rightarrow 0$ f\u r $k\rightarrow \infty$, da $\Vert \v{r}^k\Vert_2 = \mathcal{O}\left(\left|\frac{\lambda_2}{\lambda_1}\right|^k\right)$. Also strebt $\v{x}^{(k)} = \v{A}^k\v{x}^{(0)}$ gegen den ersten Eigenvektor $\v{v}_1$.
-
-
-%Mit Hauptachsentransformation auf Diagonalgestalt bringen, sodass eine orthogonale Matrix $\v{U} \in \Rr{n}{n}$ existiert, wo $\v{U}^{-1}\v{AU}=\v{D}$ gilt, sodass die Eigenwerte $\lambda_n$ in absteigendem Betrag auf der Diagonalen von $\v{D}$ liegen. $\v{A}$ besitzt somit nur reelle EW und $n$ LU zueinander orthogonale Eigenvektoren (Spalten von $\v{U}$).\\
-%\textbf{Motivation}: Wenn ein Vektor $\hat{\v{x}}^{(0)} \in \R{n}$ mit der $m$-ten Potenz der Matrix $\v{D}$ multipliziert wird, erh\a lt man neue Vektoren \begin{align*}
-%\hat{\v{x}}^{(m)} = \v{D}^m \hat{\v{x}}^{(0)} = \begin{pmatrix}
-%\lambda_1^m \hat{x}_1^{(0)}\\
-%\vdots \\
-%\lambda_n^m \hat{x}_n^{(0)}
-%\end{pmatrix}
-%\end{align*}
-%sodass sich f\u r gro\s e Werte von $m$ (aufgrund der absteigenden Sortierung) die ersten Komponenten gegen\u ber dem Rest durchsetzen. \vspace{0.2cm}
-%
-%\textsc{Dominanter Eigenwert}\\
-%Gilt $|\lambda_1| > |\lambda_2| \geq ... \geq |\lambda_n|$ so werden $\hat{\v{x}}^{(m)}$ gegen ein Vielfaches von $\hat{\v{e}}^{(1)} = \begin{pmatrix}
-%1 & 0 & \cdots & 0
-%\end{pmatrix}^*$
-%konvergieren. Der erste Einheitsvektor ist ein Eigenvektor zu $\lambda_1$, sodass wir Konvergenz gegen einen Eigenvektor erhalten. \vspace{0.2cm}
-
-\textsc{Konvergenz}\\
-$\v{e}_1$ ist Eigenvektor zu Eigenwert $\lambda_1$. Es gilt $\tan(\v{x}^{(0)}, \v{e}_1) < \infty$, also $\v{x}^{(0)}$ soll nicht senkrecht auf $\v{e}_1$ stehen. Dann gilt 
-\begin{align*}
-\tan(\v{x}^{(m)}, \v{e}_1) \leq \left(\frac{|\lambda_2|}{|\lambda_1|}\right)^m \tan(\v{x}^{(0)}, \v{e}_1) \qquad \forall m \in \mathbb{N}_0
-\end{align*}
-Oder Argumentation \u ber EW: $|\lambda^{(k)} - \lambda_1| = \mathcal{O}\left(\left|\frac{\lambda_2}{\lambda_1}\right|^k\right)$. \\
-Sind $|\lambda_2|$ und $|\lambda_1|$ \a hnlich gro\s  , gibt es langsame Konvergenz.\\
-Falls $\v{A}$ symmetrisch ist, sind die EV orthogonal und dann gilt $|\lambda^{(k)} - \lambda_1| = \mathcal{O}\left(\left|\frac{\lambda_2}{\lambda_1}\right|^{2k}\right)$.
-
-%\textsc{Diagonalisierbare Matrizen}\\
-%\textbf{TODO}\vspace{0.2cm}
-
-
-\textbf{Numerische Probleme}: Iterationsfolge f\u hrt zu Vektoren mit sehr gro\s en ($|\lambda_1|>1$) oder sehr kleinen Eintr\a gen ($|\lambda_1|<1$).\\
-\textbf{L\o sung}: Normalisieren mit der Norm (also nur Skalierung):
-\begin{align*}
-\v{y}^{(m)} = \v{Ax}^{(m-1)} \quad \gamma^{(m)}= \Vert \v{y}^{(m)} \Vert_2 \quad \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)} \\ \forall m\in \mathbb{N}
-\end{align*}
-
-\textsc{Rayleigh-Quotient}\\
-Rayleigh-Quotient zu $\v{A}$ ist gegeben durch
-\begin{align*}
-\Lambda_A: \R{n} \backslash \{\v{0}\} \rightarrow \mathbb{R} \qquad \v{x} \mapsto \frac{\langle \v{Ax}, \v{x} \rangle_2}{\langle \v{x}, \v{x} \rangle_2}
-\end{align*}
-Falls $\v{x}\in \R{n} \backslash \{\v{0}\}$ ein Eigenvektor von $\v{A}$ zu $\lambda \in \mathbb{R}$ ist gilt $\Lambda_A = \lambda$. Mit der Cauchy-Schwarz-Ungleichung $|\langle \v{x}, \v{y} \rangle_2| \leq \Vert\v{x} \Vert_2\Vert\v{y} \Vert_2 \qquad \forall \v{x},\v{y} \in \R{n}$ l\a sst sich die Genauigkeit der N\a herung des Eigenwerts absch\a tzen \u ber:
-\begin{align*}
-|\Lambda_A(\v{x}) - \lambda| \leq \Vert \v{A} - \lambda \v{I} \Vert_2 \sin(\v{x},\v{e}) \leq \Vert \v{A} -\lambda \v{I} \Vert_2 \tan(\v{x}, \v{e})
-\end{align*}
-mit $\v{x} \in \R{n} \backslash \{\v{0}\}$ als N\a herung des Eigenvektors $\v{e}\in \R{n}$ von $\v{A}$ zu $\lambda \in \mathbb{R}$.\\
-
-\textbf{Quadratische Konvergenz}: Falls $\v{A}=\v{A}^*$, ergibt sich die Absch\a tzung\begin{align*}
-|\Lambda_A(\v{x}) - \lambda| \leq \Vert \v{A}- \lambda \v{I} \Vert_2 \sin^2(\v{x},\v{e})
-\end{align*}
-N\a herung des Eigenwerts kann wesentlich schneller  als die des Eigenvektors konvergieren.\vspace{0.2cm}
-
-\verb!power_adaptive!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-$\gamma \leftarrow \Vert \v{x} \Vert_2$, $\v{x} \leftarrow \v{x}/\gamma$ \\
-$\v{y} \leftarrow \v{Ax}$\\
-$\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
-while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\ 
-\quad $\gamma \leftarrow \Vert \v{y} \Vert_2$, $\v{x} \leftarrow \v{y}/\gamma$ \\
-\quad $\v{y} \leftarrow \v{Ax}$\\
-\quad $\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
-\hrulefill\\
-}
-$\v{y}$ wird f\u r die Berechnung von $\Lambda_A$, die Pr\u fung auf Konvergenz und f\u r die Bestimmung der n\a chsten Iterierten genutzt.
-
-\subsection{Inverse Iteration}
-\emph{Eigenet sich f\u r die Berechnung des kleinsten Eigenwerts (geben die niedrigsten Frequenzen f\u r Resonanzeffekte an)}.
-Wenn $\v{A}$ regul\a r, gilt:
-\begin{align*}
-\v{Ax} = \lambda\v{x} \quad\Leftrightarrow\quad \v{x} = \lambda\v{A}^{-1}\v{x} \quad\Leftrightarrow\quad \frac{1}{\lambda}\v{x} = \v{A}^{-1}\v{x}
-\end{align*}
-Also ist ein Eigenvektor von $\v{A}$ zu $\lambda$ auch ein Eigenvektor von $\v{A}^{-1}$ zu $1/\lambda$. Damit ist der betragskleinste EW von $\v{A}$ der Kehrwert des betragsgr\o \s ten EWs von $\v{A}^{-1}$.\\
-\textbf{Inverse Iteration}:
-\begin{align*}
-\v{y}^{(m)} = \v{A}^{-1}\v{x}^{(m-1)} \quad \gamma^{(m)} = \Vert \v{y}^{(m)} \Vert_2 \quad \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)} \\ \forall m\in \mathbb{N}
-\end{align*}
-Inverse von $\v{A}$ umgehen mit L\o sung von $\v{Ay}^{(m)} = \v{x}^{(m-1)}$.
-
-\textsc{Mit Shift}\\
-Falls $\mu \in \mathbb{R}$ kein Eigenwert von $\v{A}$, dann ist $\v{B}=(\v{A}-\mu \v{I})$ regul\a r. Mit EW $\lambda \in \mathbb{R}$ und EV $\v{x} \in \R{n}$. Dann ist $\frac{1}{\lambda-\mu}$ ein EW von $\v{B}^{-1}$. Der betragsgr\o \s te EW von $\v{B}^{-1}$ korrespondiert mit dem EW von $\v{A}$, der $\mu$ am n\a chsten liegt.
-\textbf{Inverse Iteration mit Shift}
-\begin{align*}
-\v{y}^{(m)} = (\v{A}-\mu \v{I})^{-1}\v{x}^{(m-1)} \quad \gamma^{(m)} = \Vert \v{y}^{(m)} \Vert_2 \\ \v{x}^{(m)} = \v{y}^{(m)}/\gamma^{(m)}  \qquad \forall m\in \mathbb{N}
-\end{align*}
-
-\verb!invit_adaptive!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-Faktorisierung von $\v{B}$ berechnen. \\
-$\gamma \leftarrow \Vert \v{x} \Vert_2$, $\v{x} \leftarrow \v{x}/\gamma$ \\
-L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
-$\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
-while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\ 
-\quad $\gamma \leftarrow \Vert \v{y} \Vert_2$, $\v{x} \leftarrow \v{y}/\gamma$ \\
-\quad L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
-\quad $\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
-\hrulefill\\
-}
-QR/LR-Z muss nur einmal berechnet werden, danach relativ geringer Aufwand.
-Rayleigh-Quotient $\lambda$ wird gegen EW von $\v{B}^{-1}$ konvergieren - rekonstruieren des originalen EW von $\v{A}$ \u ber $1/\lambda +\mu$. \vspace{0.2cm}
-
-\textsc{Konvergenz}
-\begin{align*}
-\tan(\v{x}^{(m)}, \v{e}^{(1)}) \leq \left( \frac{|\lambda_1 - \mu |}{|\lambda_2 - \mu|}\right)^m \tan (\v{x}^{(0)}, \v{e}^{(1)})
-\end{align*} \vspace{0.2cm}
-
-\textsc{Rayleigh-Iteration}\\
-Je n\a her $\mu$ an $\lambda_1$, desto schnellere Konvergenz gegen den EV. Wenn $\v{x}^{(m)}$ eine gute N\a herung eines EVs ist, wird $\Lambda_A(\v{x}^{(m)}$ eine gute N\a herung des entsprechenden EWs sein (a.k.a \textbf{guter Shift-Parameter}).\\
-\textbf{Rayleigh-Iteration}:
-\begin{align*}
-\mu^{(m)} &= \Lambda_A(\v{x}^{(m-1)}) \\
-\v{y}^{(m)} &= (\v{A} - \mu^{(m)}\v{I})^{-1} \v{x}^{(m-1)}, \quad \v{x}^{(m)} = \frac{\v{y}^{(m)}}{\Vert \v{y}^{(m)} \Vert_2}, \quad \forall m\in \mathbb{N}
-\end{align*}
-
-
-\verb!invit_rayleigh!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-$\gamma \leftarrow \Vert \v{x} \Vert_2$, $\v{x} \leftarrow \v{x}/\gamma$ \\
-L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
-$\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
-$\mu \leftarrow 1/\lambda + \mu$ \\
-while $\Vert \lambda\v{x} - \v{y} \Vert_2 > \epsilon \Vert \v{y} \Vert_2$ \\ 
-\quad $\gamma \leftarrow \Vert \v{y} \Vert_2$, $\v{x} \leftarrow \v{y}/\gamma$ \\
-\quad L\o se $(\v{A}-\mu \v{I})\v{y} = \v{x}$\\
-\quad $\lambda \leftarrow \langle \v{y},\v{x} \rangle_2$\\
-\quad $\mu \leftarrow 1/\lambda + \mu$ \\
-\hrulefill\\
-}
-$\mu$ abh\a ngig von $m$, daher in jeder Schleife QR/LR-Z berechnen - wesentlich aufwendiger. Allerdings sehr schnelle (quadratische) Konvergenz bei guter N\a herung - jeder Schritt verdoppelt Anzahl korrekt berechneter Stellen.
-
-\subsection{Orthogonale Iteration}
-\emph{Ber\u cksichtigung $k$-facher Eigenwerte. Keine Probleme bei mehrfachen oder eng beieinanderliegenden Eigenwerten. Praktisch identisch zu Vektoriteration}.\\
-
-Konvergenz gegen von $\v{e}^{(1)}, ..., \v{e}^{(k)} \in \R{n}$ (zu $\lambda_1,...,\lambda_k$) aufgespannten Teilraum. Zusammenfassen von $k$ Iterierten in Matrix $\v{X}^{(m)}\in \Rr{n}{k}$
-\begin{align*}
-\v{X}^{(m)} = \v{A}^m \v{X}^{(0)} \text{ bzw. } \v{X}^{(m+1)} = \v{A} \v{X}^{(m)}  \qquad \forall m\in \mathbb{N}_0
-\end{align*}
-Spalten orthogonaler Matrix bilden orthonormale Basis und konvergieren nicht gegen denselben Raum (Einhaltung der LU). $\v{X}^{(m)}$ durch $\v{Q}^{(m)} \in \Rr{n}{k}$ und $\v{R}^{(m)} \in \Rr{k}{k}$ ersetzen: 
-\begin{align*}
-\v{X}^{(m)} = \v{Q}^m \v{R}^{(m)} \qquad \forall m\in \mathbb{N}_0
-\end{align*}
-Vermeiden der QR-Z von instabilen Matrizen $\v{X}^{(m)}$. Daher
-\begin{align*}
-\v{Y}^{(m+1)} =\v{AQ}^{(m)} \qquad \v{Y}^{(m+1)}= \v{Q}^{(m+1)}\widehat{\v{R}}^{(m+1)}
-\end{align*}
-und 
-\begin{align*}
-\v{X}^{(m+1)} = \v{Q}^{(m+1)} \v{R}^{(m+1)} \qquad \v{R}^{(m+1)} = \widehat{\v{R}}^{(m+1)}\v{R}^{(m)}
-\end{align*}
-
-Die Folge $(\v{Q}^{(m)})_{m=0}^\infty$ hei\s t orthogonale Iteration.
-
-\verb!orthoit_rayleigh!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-Berechne $\v{Q}\widehat{\v{R}} = \v{X}$ \\
-$\v{Y} \leftarrow \v{AQ}$\\
-$\v{$\Lambda$} \leftarrow \v{Q}^*\v{Y}$ \\
-while $\Vert \v{Q$\Lambda$} - \v{Y} \Vert_2 > \epsilon$ \\
-\quad Berechne $\v{Q}\widehat{\v{R}} = \v{Y}$ \\
-\quad $\v{Y} \leftarrow \v{AQ}$\\
-\quad $\v{$\Lambda$} \leftarrow \v{Q}^*\v{Y}$ \\
-$\v{X} \leftarrow \v{Q}$ \\
-\hrulefill\\
-}
-
-Verallgemeinerung der Vektoriteration. Statt einzelnem Vektor - $k$-spaltige Matrix. Statt Iterierte zu EV zu machen - Orthonormalbasen verwenden.\\
-Aufwand: $nk^2$ AO/Schritt. \vspace{0.2cm}
-
-\textsc{Verfeinerungen}\\
-Inverse Iteration, Inverse Iteration mit Shift, Rayleigh-Iteration\\
-Deflation - entferne bereits konvergierte EV.
-
-\subsection{QR-Iteration}
-\emph{Alle EW und EV einer Matrix berechnen}.
-\textbf{Vor\u berlegung}:
-Multiplikation mit orthonormaler (orthog. + $\Vert\cdot\Vert$ aller Vektoren $=1$) Matrix $\v{Q}$ hei\s t \A hnlichkeitstransformation - EW von $\v{A}$ bleiben erhalten. $\v{Ax} =\lambda \v{x} \Leftrightarrow \v{Q}^*\v{AQQ}^*\v{x}= \lambda \v{Q}^* \v{x}$.\\
-\textbf{Idee}: Durch MP mit $\v{Q}$, z.B. $\v{A}$ auf oberer $\Delta$Matrix bringen, um einfacher die EW zu berechnen.\vspace{0.2cm}
-
-\textsc{Zusammenfassung Unterraumiteration}\\
-$(\v{Q}^{(m)})^*\v{A}\v{Q}^{(m)} = \v{A}^{(m)} \rightarrow \v{R} \text{ f\u r } m \rightarrow \infty$. Diagonaleintr\a ge in $\v{A}^{(m)}$ sind Approximationen f\u r die EW von $\v{A}$. F\u r $k \rightarrow \infty$ streben die Fehler der Approximationen gegen 0. Konvergenzgeschwindigkeit durch $\left|\frac{\lambda_{l+1}}{\lambda_l}\right|, l=\{1,...,m\}$ gegeben. Die EWs stehen der Gr\o \s e nach sortiert auf der Diagonalen von $\v{R}$.\vspace{0.2cm}
-
-\textsc{QR-Iteration}\\
-$\v{A}^{(m)}$ aus Unterraumiteration rekursiv (also $\v{A}^{(m)}$ aus $\v{A}^{(m-1)}$ berechnen.\\
-Sei $\tilde{\v{A}}^{(m-1)} = \v{QR}$ und $\tilde{\v{A}}^{(m)} = \v{RQ}$, dann gilt $\tilde{\v{A}}=\v{A}^{(m)} \quad \forall m=0,1,2,...,$.\\ 
-Falls f\u r irgendein $k \in \{1,...,n-1\} \quad |\lambda_{k+1}|<|\lambda_k|$ gilt, werden die unteren $n-k$ Zeilen der ersten $k$ Spalten gegen Null konvergieren.\\
-Ziel: $\tilde{\v{A}}^{(0)}$ tridiagonal, um schnell zu rechnen. (Aufwand $\approx n$ pro Schritt)
+\subsection{Non-local phenomena}
+\section{Bifurcations of vector fields}
+\subsection{Bifurcations of SSs}
+\textsc{Transcritical bifurcation}\\
+\emph{Standard mechanism for change of stability for a fixed point which exists for all values of the parameter}.\\
+Ex.: $\dot{x}=rx-x^2$.\\
+Fixed point at $x^*=0 \quad \forall r$. For $r<0$ unstable fixed point at $x^*=r$ and a stable at $x^*=0$. For $r=0^-$ the fixed points unify. For $r>0$ the origin is unstable and $x^*=r$ becomes stable - \textbf{exchange of stabilities}
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [dashed](0,0.5) -- (1,0.5);
+\draw [thick](0,0.5) -- (1,1.5);
+\draw [dashed](-1,-0.5) -- (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
 \vspace{0.2cm}
 
-Aufwand: 1 QR-Z pro Schritt. Aufwand proportional zu $n^3$. Bei sinnvollem Shift-Parameter kubische Konvergenz.\\
-Konvergierte Teilmatrizen werden nicht ausgenutzt und langsame Konvergenz bei nah beieinander liegenden EW.
 
-%\subsection{Praktische QR-Iteration}
+\textsc{Saddle node bifurcation}\\
+\emph{Fixed points are created and destroyed. As a parameter is varied, two fixed points move toward each other, collide and mutually annihilate}.\\
+Ex: $\dot{x}=r+x^2$.\\ $r<0$: 2 FP (1 stable, 1 unstable),\\ $r=0^-$: half-stable FP, \\ $r>0$: no FP.\\ In this example the bifurcation occurred at $r=0$.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw (-1,0.5) -- (1,0.5);
+\draw [thick](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
+
+\subsubsection{Pitchfork bifurcation}
+\emph{Common in physical systems that have (left/right) symmetry.}
+\textsc{Supercritical pitchfork bifurcation}\\
+Ex: $\dot{x}=rx-x^3$. If $r<0$ the origin is the only fixed point and stable. $r=0$ the origin is still stable, but weakly, since the linearization vanishes (solutions no longer decay exponentially fast - \emph{critical slowing down}).  For $r>0$ the origin becomes unstable and two new stable fixed points appear at $x^*=\pm \sqrt{r}$.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [dashed](0,0.5) -- (1,0.5);
+\draw [thick](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
+
+\textsc{Subcritical pitchfork bifurcation}\\
+Ex: $\dot{x}=rx+x^3$. Only for $r<0$ two unstable fixed points $x^*=\pm \sqrt{-r}$ and stable origin. For $r>0$ origin is unstable (finite escape)
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [dashed](0,0.5) -- (1,0.5);
+\draw [dashed](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Bifurcations of trajectories}
 
 
-\section{Approximation von Funktionen}
-CAD, Bestimmung von Formeln zur nurmerischen Integration, numerische Differentiation, numerisches L\o sen von DGL...
 
-\subsection{Polynominterpolation}
-Polynome h\o chstens $m$-ten Grades $\Pi_m = \text{span}\{1,x,x^2,...,x^m\}$
 
-\textsc{Interpolationsaufgabe}\\
-F\u r gegebene Werte $f_0, ..., f_m$ und paarweise verschiedene St\u tzstellen $x_0, ..., x_m$ finde ein Polynom $p \in \Pi_m$, das erf\u llt:
-\begin{align*}
-p(x_i)=f_i \qquad \forall i\in \{0,...,m\}
-\end{align*}\vspace{0.2cm}
 
-\textsc{Lagrange-Polynome}\\
-F\u r jedes $i \in \{0,...,m\}$ ist $l_i : \mathbb{R} \rightarrow \mathbb{R}$
-\begin{align*}
-x \mapsto \prod_{\substack{k=0 \\ j\neq i}}^m \frac{x-x_k}{x_i - x_k}
-\end{align*}
-ein Polynom h\o chstens $m$-ten Grades. 
-\begin{align*}
-l_i(x_j) = \begin{cases}
-1 & \text{falls } i=j \\
-0 & \text{sonst}
-\end{cases}
-\qquad 
-l_i(x_i) = \prod_{\substack{k=0 \\ k\neq i}}^m \frac{x_i-x_k}{x_i - x_k} = 1
-\end{align*}
-F\u r beliebige $f_0, ..., f_m$ l\o st $p=\sum_{k=0}^m f_kl_k$ das Interpolationsproblem - eindeutig l\o sbar. Dieser Ansatz ist jedoch ineffizient. 
-Stattdessen... N-A-Verf.
 
-\subsection{Neville-Aitken-Verfahren}
-Idee: \emph{Von konstanten Polynomen ausgehend Polynome h\o heren Grades zu konstruieren. Gut geeignet f\u r Bestimmung an wenigen Stellen.}\\
-F\u r alle $i,j \in \{0,...m\}$ mit $i\leq j$ existiert genau ein Polynom $p_{i,j} \in \Pi_{j-i}$, das $p_{i,j}(x_k) = f_k \quad \forall k \in \{i,...,j\}$ erf\u llt .\\
-\textbf{Idee}: Interpolation h\o heren Grades l\a sst sich durch Konvexkombination von Polynomen niedrigeren Grades schreiben.\vspace{0.2cm}
 
-\textsc{Aitken-Rekurrenz}\\
-Sei $i,j \in \{0,...m\}$ mit $i < j$:
-\begin{align*}
-p_{i,j}(x) &= \frac{x-x_i}{x_j-x_i} p_{i+1,j}(x) + \frac{x_j-x}{x_j-x_i}p_{i,j-1}(x) \\
-&= p_{i+1,j}(x) + \frac{x_j-x}{x_j-x_i} (p_{i,j-1} - p_{i+1,j}(x))
-\end{align*}
-\begin{enumerate}
-\item Konstante Polynome $p_{i,i} = f_i$ bestimmen
-\item Mit Aitken-Rekurrenz lineare, quadratische, etc., Polynome konstruieren
-\item Bei Grad $m$ ergibt sich $p_{0,m}(x) = p(x)$.
-\end{enumerate}
 
-\begin{align*}
-\begin{array}{cccc}
-f_0 = p_{0,0}(x) &             &            &  \\
-f_1 = p_{1,1}(x) &  p_{0,1}(x) &            &  \\
-f_2 = p_{2,2}(x) &  p_{1,2}(x) & p_{0,2}(x) &  \\
-f_3 = p_{3,3}(x) &  p_{2,3}(x) & p_{1,3}(x) &  p_{0,3}(x) = p(x)
-\end{array}
-\end{align*}
 
-Algorithmus effizient: Spaltenweise von unten nach oben in-place.
 
-\verb!neville!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $n=1:m$ \qquad {\scriptsize // Loope \u ber Grad der Polynome} \\
-\quad for $j=m:n$ \quad {\scriptsize // von unten nach oben in einer Spalte} \\
-\qquad $i \leftarrow j-n$ \quad {\scriptsize // "Obere Ecke" des $\Delta$} \\
-\qquad $f_j \leftarrow ((x-x_i)f_j + (x_j-x)f_{j-1})/(x_j-x_i)$\\
-return $f_m$ \\
-\hrulefill\\
-}
-Aufwand: $\frac{7}{2}m (m+1)$ AO (quadratisch)
 
-\subsection{Newtons dividierte Differenzen}
-\emph{Auswertung in einigen Punkten ok bei quadratischem Aufwand. Bei Rendering bspw. jedoch zu aufwendig. Reduzierung des Aufwands durch Berechnung von Hilfsgr\o \s en im Voraus.}\\
 
-\textbf{Idee}: Hat man $p_{i,j-1}$ bereits bestimmt, so sucht man nach einem Korrekturterm, durch dessen Erg\a nzung man $p_{i,j}$ erh\a lt - Newton-Darstellung:
-\begin{align*}
-p_{i,j}(x) = p_{i,j-1}(x) + d_{i,j}(x- x_i)...(x-x_{j-1})
-\end{align*}
-$d_{i,j}$ ist abh\a ngig von den St\u tzstellen $x_i$.\\
 
-Per Induktion folgt als Netwonsche Interpolationsformel:
-\begin{align*}
-p_{i,j}(x) = \sum_{k=i}^j d_{i,k}n_{i,k}(x) \text{ mit }  n_{i,j}(x)=\begin{cases} 1 & i=j \\ \prod_{k=1}^{j-1}(x-x_k)&\end{cases}
-\end{align*}
-
-\textsc{Effiziente Gestaltung}\\
-\begin{enumerate}
-\item $s_m(x)=d_{0,m}$ bestimmen
-\item $s_{m-1}(x)$ berechnen mit $s_i(x)=d_{0,i}+(x-x_i)s_{i+1}(x)$
-\item Stoppe, wenn $s_0(x)=p(x)$ berechnet
-\end{enumerate}
-
-\verb!eval_newton!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-$s \leftarrow d_m$ \\
-for $i=m-1:0$ \\
-\quad $s \leftarrow d_i+(x-x_i)s$ \\
-return $s$ \qquad {\scriptsize // returns $s_0(x)$} \\
-\hrulefill\\
-}
-mit $\v{d}=(d_{0,0},...,d_{0,m})$.\\
-Aufwand: $3m$ AO. \vspace{0.2cm}
-
-\textsc{Newtons dividierte Differenzen}\\
-Newtonsche Interpolationsformel in Aitken-Rekurrenz einsetzen ergibt mit Koeffizientenvergleich der f\u hrenden Koeffizienten:
-\begin{align*}
-d_{i,j}=\frac{d_{i+1,j}-d_{i,j-1}}{x_j-x_i} \left(=f_j = \frac{f_j-f_{j-1}}{x_j-x_i}\right)
-\end{align*}
-
-\verb!newton_diff!\\
-{\addtolength{\leftskip}{0mm}
-\hrulefill\\
-for $n=1:m$ \\
-\quad for $j=m:n$ {\scriptsize // von unten nach oben in der Spalte} \\
-\qquad $i \leftarrow j-n$\\
-\qquad $f_j \leftarrow (f_j-f_{j-1})/(x_j-x_i)$\\
-\hrulefill\\
-}
-\U berschreibt $f_0,...,f_m$ mit $d_{0,0},...,d_{0,m}$.\\
-Aufwand: $\frac{3}{2}m(m+1)$ - also quadratisch. Allerdings nur \emph{einmalige} Ausf\u hrung.
-
-\subsection{Approximation von Funktionen}
-\textsc{Interpolationsfehler}\\
-Sei $f\in C^{m+1}[a,b]$, sei $p$ die L\o sung der Interpolationsaufgabe und sei $x\in [a,b]$. Dann ex. $\eta \in [a,b]$ mit
-\begin{align*}
-f(x)-p(x) = (x-x_0)...(x-x_m)\frac{f^{(m+1)}(\eta)}{(m+1)!}
-\end{align*}
-
-\textsc{Unabh\a ngige Fehlerschranke}\\
-\begin{align*}
-\Vert f-p \Vert_{\infty,[a,b]} \leq \Vert \underbrace{(x - x_0 )...(x - x_m )}_{\omega(x)} \Vert_{\infty,[a,b]} \frac{\Vert f^{(m+1)} \Vert_{\infty,[a,b]}}{(m+1)!}
-\end{align*}
-
-\textsc{Tschebyscheff-Interpolation}\\
-\begin{align*}
-\hat{x}_i = \frac{b+a}{2} + \frac{b-a}{2} \cos \left( \pi \frac{2i+1}{2m+2}\right)
-\end{align*}
-Bestm\o gliche Wahl f\u r Interpolationspunkte, sodass $\Vert \hat{\omega}\Vert_{\infty,[a,b]}$.
-
-\textsc{Stabilit\a tskonstante / Bestapproximation}\\
-\begin{align*}
-\Vert f-p \Vert_{\infty,[a,b]} \leq (\Lambda_m + 1) \Vert f-q \Vert_{\infty,[a,b]} 
-\end{align*}
-
-\section{Numerische Integration}
-\emph{Anwendung in Berechnung von Integralen von Funktionen (Normalverteilung).}\\
-
-\textbf{Aufgabe}:
-Gegeben sind ein nicht-leeres Intervall $[a,b]$ und eine stetige
-Funktion $f \in C[a,b]$, zu approximieren ist das Integral
-\begin{align*}
-\int_a^b f(x) dx
-\end{align*}
-
-\subsection{Quadraturformeln}
-\textsc{Quadraturformel}\\
-Seien $m \in \mathbb{N}_0$, Punkte $x_0, ..., x_m \in [a,b]$ und $w_0, ..., w_m \in \mathbb{R}$ gegeben, dann definiert 
-\begin{align*}
-\mathcal{Q}_{[a,b]}: C[a,b] \rightarrow \mathbb{R}, \quad \int_c^d f(x) dx = \sum_{i=0}^m w_i f(x_i)
-\end{align*}
-eine Quadraturformel, die jeder Funktion $f \in C[a,b]$ eine Approximation des Integrals durch Funktionswerte in den Quadraturpunkten $x_0 ,...,x_m$ und mit den Quadraturgewichten $w_0,...,w_m>0$ zuordnet.\vspace{0.2cm}
-
-\textsc{Mittelpunktregel}\\
-Gute N\a herung des Integrals, falls $f''$ und Intervall $[a,b]$ klein.
-\begin{align*}
-f \mapsto \mathcal{M}_{[a,b]}(f) = (b-a)f\left(\frac{b+a}{2}\right) &= \int_a^b f\left(\frac{b+a}{2}\right) dx\\
-\mathcal{I}_{[a,b]}(f)-\mathcal{M}_{[a,b]}(f) &= \frac{(b-a)^3}{24}f''(\eta)
-\end{align*}
-Exakt f\u r lineare Polynome.
-
-\textsc{Interpolatorische Quadratur}\\
-\begin{align*}
-\mathcal{I}_{[a,b]}(f) \approx \int_a^b p(x) dx = \int_a^b \sum_{i=0}^m f(x_i)l_i(x)dx=\sum_{i=0}^m f(x_i) \underbrace{\int_a^b l_i(x)dx}_{w_i}
-\end{align*}\vspace{0.2cm}
-
-\textsc{Newton-Cotes-Quadratur / Trapezregel}\\
-\begin{align*}
-x_i = \frac{m-i}{m}a + \frac{i}{m}b, \, \forall i\in \{0,...,m\}, \quad \mathcal{Q}_{[a,b]}(f)=\frac{b-a}{2}(f(a)+f(b))
-\end{align*}
-
-\textsc{Summierte Quadraturformel}\\
-\begin{align*}
-h&=\frac{b-a}{l} \quad y_i = a+ih \quad \forall i\in \{0,...,l\}\\
-\mathcal{I}_{[a,b]}(f)&=\int_a^b f(x)dx = \sum_{i=1}^l\int_{y_{i-1}}^{y_i} f(x)dx\\ &= \sum_{i=1}^l \mathcal{I}_{[y_{i-1},y_i]}(f) \approx \sum_{i=1}^l \mathcal{Q}_{[y_{i-1},y_i]}(f) = \mathcal{Q}_{[a,b],l}(f)
-\end{align*}
-Es kann jede beliebige Genauigkeit erreicht werden bei hinreichend gro\s em $l$.
-
-\textsc{Summierte Mittelpunktregel}\\
-Jede beliebige Genauigkeit, falls $f''$ beschr\a nkt ist. Verdoppelung der Anzahl der Teilintervalle viertelt den Fehler.
-\begin{align*}
-\mathcal{M}_{[a,b],l}(f) = \sum_{i=1}^l \mathcal{M}_{[y_{i-1},y_i]}(f) &= h \sum_{i=1}^l f \left(\frac{y_i+y_{i-1}}{2}\right)\\
-\mathcal{I}_{[a,b]}(f)-\mathcal{M}_{[a,b],l}(f) &= \frac{(b-a)^3}{24l^2}f''(\eta)
-\end{align*}
-
-\textbf{Beste Qudraturformel}: Gau\s -Quadratur - exakt f\u r $n=2m+1$.Q
-
-\subsection{Fehleranalyse}
-Definiere Quadraturformeln auf Referenzintervall:
-\begin{align*}
-\mathcal{I}:C[-1,1]\rightarrow \mathbb{R} \quad f\mapsto \mathcal{I}(f) = \int_{-1}^1 f(x) dx \\
-\mathcal{Q}:C[-1,1]\rightarrow \mathbb{R} \quad f \mapsto \mathcal{Q}(f)=\sum_{i=0}^mw_i f(x_i)
-\end{align*}
-
-Die \textbf{Quadraturformel} ist \textbf{exakt} von Grad $n$, wenn $\mathcal{Q}(p) = \mathcal{I}(p) \quad \forall p\in \Pi_n$ - falls alle Polynome bis Grad $n$ exakt integriert werden. Exaktheit ausnutzen: Approximiere den Integranden $f$ durch $p$ ($p$ wird exakt integriert) - also nur Approximationsfehler beschr\a nken \u ber Maximumsnorm $\Vert g \Vert_{\infty,[a,b]}$.\\
-Stabilit\a tskonstante $C_Q = \sum_{i=0}^m|w_i|$.
