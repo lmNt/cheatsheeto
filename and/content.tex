@@ -152,14 +152,15 @@ For $0<p<\omega$ there is a non uniform oscillation, because the velocity depend
 For $p\lesssim\omega$ there exists a saddle-note ghost. Time to pass through the bottleneck via local rescaling around the bottleneck: $\dot{x}=r+x^2$ where $0<r = \frac{2(\omega-a)}{a}\ll 1$ is proportional to the distance of the bif. $T\approx
 \int_{-\infty}^{\infty} \frac{dx}{r+x^2} = \frac{\pi}{\sqrt{r}}$
 
+\begin{center}
 \begin{tikzpicture}[domain=-3.2:3.2]
 \draw[-latex] (-3.2,0) -- (3.2,0) node[right] {$\Theta$};
 \draw[-latex] (0,-1.2) -- (0,2) node[above] {$\dot{\Theta}$};
 \draw[color=blue] plot (\x,{0.9-0.8*sin(\x r)}) node[right] {$a<\omega$};
-\draw[color=orange] plot (\x,{1.5-1.5*sin(\x r)}) node[left] {$a<\omega$};
-\draw[color=green] plot (\x,{1.5-2*sin(\x r)}) node[right] {$a<\omega$};
+\draw[color=orange] plot (\x,{1.5-1.5*sin(\x r)}) node[left] {$a=\omega$};
+\draw[color=green] plot (\x,{1.5-2*sin(\x r)}) node[right] {$a>\omega$};
 \end{tikzpicture}   
-
+\end{center}
 
 \subsubsection{Andronov-Hopf bifurcation (2D)}
 \emph{No SSs appear/disappear. Rather the behaviour changes qualitatively for small variations, e.g. decaying oscillation vs. increasing oscillation with limiting amplitude after the bifurcation.}\\
@@ -172,12 +173,81 @@ Example:
 \dot{r}=pr-r^3\\
 \dot{\Theta}=\omega+br^2
 \end{align*}
-with control parameter $p$, $\omega$ frequency and $b$ as dependence of frequency on amplitude. Stable spiral for $p<0$ in origin $r=0$ and sense of rotation depends on $\omega$. For $p=0$ the origin is very weakly stable. For $p>0$ there is an unstable spiral at the origin and a stable limit cycle at $r=\sqrt{p}$.
+with control parameter $p$, $\omega$ frequency and $b$ as dependence of frequency on amplitude. Stable spiral for $p<0$ in origin $r=0$ and sense of rotation depends on $\omega$. For $p=0$ the origin is very weakly stable. For $p>0$ there is an unstable spiral at the origin and a stable limit cycle at $r=\sqrt{p}$.\\
+EV analysis via cartesian coordinates $x_1=r\cos \Theta$, $\;x_2=r\sin \Theta$ yields $\dot{x}_1 = px_1-\omega x_2$, $\quad\dot{x}_2 = \omega x_1+p x_2$ with the Jacobian $J=\begin{bmatrix}
+p & -\omega \\ \omega & p
+\end{bmatrix}$ and $\lambda_{1,2} = p \pm i\omega$. EVs cross the imaginary axis from left to right as $p$ increases from - to +. \\
+\textbf{Rules of thumb:} Size of limit cycle grows from 0 proportionally to $\sqrt{p-p_c}$. Frequency of limit cycle $\omega \approx \Im \{\lambda\}$ evaluated at $p=p_c$.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [thick,dashed](0,0.5) -- (1,0.5);
+\draw [line width=2, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] (1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$p$};
+\node at (0.2,1.5) {$r$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
 
+\textsc{Subcritical Hopf bifurcation (More Dangerous)}\\
+\emph{Stable origin surrounded by unstable limit cycle which collapses at $p=0$ leading to a repulsive spiral with no saving limit cycle around.}\\
+Example:
+\begin{align*}
+\dot{r}=pr+r^3\\
+\dot{\Theta}=\omega+br^2
+\end{align*}
+Cubic term is destabilizing yielding a stable origin and a unstable unstable limit cycle at $r=-\sqrt{-p}$ only existing for $p<0$. Unstable for $p\geq 0$ (weakly at $p=0$).
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [thick,dashed](0,0.5) -- (1,0.5);
+\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\draw [color=white,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$p$};
+\node at (0.2,1.5) {$r$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
 
+\textsc{Degenerate Hopf bifurcation}\\
+\emph{Conj. complex EV pass through the imaginary axis, but do not isolated periodic orbits (limit cycle).}\\
+Linear system example:
+\begin{align*}
+\dot{x}_1=px_1-x_2\\
+\dot{x}_2=x_1+px_2\\
+\end{align*}
+Nonlinear example, inverted pendulum with Coulomb friction $\ddot{\Theta}+\rho \dot{\Theta} + k\sin \Theta = 0$. For $p<0$ stable spiral, a center (\emph{no limit cycles}) for $p=0$ (band of closed orbits) and unstable spiral for $p>0$.
 
+\subsubsection{Bifurcation of limit cycles}
+\textsc{Infinite period bifurcation}\\
+Example:
+\begin{align*}
+\dot{r}=r-r^2\\
+\dot{\Theta}=p-\Theta^2
+\end{align*}
+Two radial equilibrium solutions $r=0$ and $r=1$ (attractive). For $p<0$ no angular eq.point exists so that the limit cycle $r=1$ is a unique attractor, attracting trajectories from unstable origin. For $p=0$ a SS at $(r,\Theta)=(1,0)$ appears similar to a saddle point with radial attraction ($x_1$-direction) and angular saddle behaviour - the time through the bottleneck of $p<0$ becomes infinite for $p=0$. For $p>0$ there are two SSs at $(1,\sqrt{p})$ (attractor) and $(1,-\sqrt{p})$ (repulsor) - looks like pacman.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick,dashed](-1,0.5) -- (0,0.5);
+\draw [thick,dashed](0,0.5) -- (1,0.5);
+\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1) -- (0,1);
+\draw [color=white,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1) -- (0,1);
+\draw [thick](0,1) -- (1,1);
+\node at (1,0.3) {$p$};
+\node at (0.2,1.5) {$r$};
+\end{tikzpicture}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw (-1,0.5) -- (0,0.5);
+\draw (0,0.5) -- (1,0.5);
+\draw [dashed](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\node at (1,0.3) {$p$};
+\node at (0.2,1.5) {$\Theta$};
+\end{tikzpicture}
+\end{center}
 
-
-
-
-
+\textsc{Saddle-node bifurcation of cycles}\\

@@ -4,6 +4,8 @@
 \usepackage{graphics, multirow}
 \usepackage{xcolor}
 \usepackage{color}
+\usepackage{xfrac}
+\usepackage{tikz}
 \usepackage[makeroom]{cancel} % zum durchstreichen von gleichungen
 \topmargin0.0cm
 \headheight0.0cm
@@ -35,6 +37,7 @@
 \newcommand{\R}[1]{\mathbb{R}^{#1}}
 \newcommand{\Rr}[2]{\mathbb{R}^{#1 \times #2}}
 \renewcommand{\v}[1]{\mbox{\bf #1}}
+\newcommand{\dx}{\dot{x}}
 % vector, bold face italic
 %\renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
 
