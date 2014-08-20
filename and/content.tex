@@ -43,9 +43,61 @@ An eq.point $x^*$ is asymptotically stable if it is stable and attractive.
 An eq.point $x^*$ is exponentially stable in $\mathcal{S}$ if it is stable and there are constants $a, \lambda > 0$ such that $\forall x_0 \in \mathcal{S}: \Vert x(t)-x^*\Vert \leq a\Vert x_0 - x^* \Vert e^{-\lambda t}$
 
 \section{Linear systems}
-\subsection{LTI systems}
-\subsection{LTV systems and Floquet theory}
-\section{Nonlinear flows}
+\subsection{LTI Systems}
+\[ \dot{x} = f(x,u) \rightarrow \dot{x} = Ax \]
+mit $A \in \mathbb{R}^{n \times n}$ linear map/transformation
+
+Theorem:
+The origin of the linear system is stable if all EV $\lambda_i$ have non positive real part. If all EV have negative Real part, the origin is exponentially stable.
+
+\[ \lambda^2+tr(A)\lambda+det(A) = 0 \]
+\[ tr(A) = a_{11} + a_{22} \]
+\[ det(A) = a_{11}a_{22} - a_{12}a_{21} \]
+
+\[ \lambda_{1,2} = \frac{1}{2} (tr(A) \pm \sqrt{tr(A)^2-4det(A)} \]
+
+daraus folgt
+$tr(A) < 0 \rightarrow$ stable\\
+$tr(A) > 0 \rightarrow$ unstable\\
+$tr(A)^2 \geq 4det(A)$ node\\
+$tr(A)^2 < 4det(A)$ spiral\\
+
+Spezialfall:
+$tr(A)^2 = 4det(A)$ $\rightarrow$ stable if $tr(A) < 0$ and if $det(A) < 0 \rightarrow$ saddle
+
+
+%\begin{pspicture}(6,5)
+%    \psline{->}(0,2)(5,2) \rput*(5.5,2){det}
+%    \psline{->}(2,0)(2,4) \rput*(2,4.2){tr}
+%    \rput(3.2,4){unstable node}
+%    \rput(3.5,2.5){unstable spiral}
+%    \rput(3.5,1.5){stable spiral}
+%    \rput(3,0.5){stable node}
+%    \rput(0.5,2.5){saddles}
+%    \rput(0.5,1.5){saddles}
+%    \pscurve(4.5,3.5)(2,2)(4.5,0.5)
+%\end{pspicture}
+
+\subsection{LTV Systems and Floquet theory}
+
+\subsubsection{Local Nonlinear Flows}
+\textsc{Hartman-Grobman Theorem}\\
+The local phase portrait of the linearization (stability) of the fixed point is captured by the linearization. (for hyperbolic fixed points)
+\emph{Hyperbolic}: $EV of J(x^*,p) \neq 0$
+
+\subsubsection{Center Manifold theorem}
+\[ \frac{dh}{dx_z} [A_z x_z + f_z(x_z,h(x_z))] = A_s h(x_z) + f_s(h(x_z),x_y) \]
+\[ h(0) = 0, \frac{dh(0)}{dx_z} = 0 \]
+
+\subsubsection{Index theory}
+Fuer mehr globale information\\
+stable, unstable node $I_C = -1$\\
+s/u spiral $I_C = 1$\\
+s/u limit cycle $I_C = 1 \rightarrow$ wegen EP im Kern
+\subsubsection{Limit Cycles}
+Isolated (no other closed trajectory, spiral towards or away from LC) closed trajectories
+
+\textsc{Poincare Bendixson}\\
 \subsection{Local Theory}
 \textsc{Hartman-Grobman}\\
 The behavior of a nonlinear systems in a vicinity of hyperbolic eq. points is the same as in the linearized system around that point.
