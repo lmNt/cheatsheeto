@@ -118,11 +118,12 @@ Ex.: $\dot{x}=rx-x^2$.\\
 Fixed point at $x^*=0 \quad \forall r$. For $r<0$ unstable fixed point at $x^*=r$ and a stable at $x^*=0$. For $r=0^-$ the fixed points unify. For $r>0$ the origin is unstable and $x^*=r$ becomes stable - \textbf{exchange of stabilities}
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [dashed](0,0.5) -- (1,0.5);
-\draw [thick](0,0.5) -- (1,1.5);
-\draw [dashed](-1,-0.5) -- (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,dashed,thick](0,0.5) -- (1,0.5);
+\draw [color=blue,thick](0,0.5) -- (1,1.5);
+\draw [color=blue,dashed,thick](-1,-0.5) -- (0,0.5);
 \node at (1,0.3) {$r$};
 \node at (0.2,1.5) {$x$};
 \end{tikzpicture}
@@ -135,10 +136,10 @@ Fixed point at $x^*=0 \quad \forall r$. For $r<0$ unstable fixed point at $x^*=r
 Ex: $\dot{x}=r+x^2$.\\ $r<0$: 2 FP (1 stable, 1 unstable),\\ $r=0^-$: half-stable FP, \\ $r>0$: no FP.\\ In this example the bifurcation occurred at $r=0$.
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw (-1,0.5) -- (1,0.5);
-\draw [thick](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
-\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [color=blue,dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$r$};
 \node at (0.2,1.5) {$x$};
 \end{tikzpicture}
@@ -151,11 +152,12 @@ Ex: $\dot{x}=r+x^2$.\\ $r<0$: 2 FP (1 stable, 1 unstable),\\ $r=0^-$: half-stabl
 Ex: $\dot{x}=rx-x^3$. If $r<0$ the origin is the only fixed point and stable. $r=0$ the origin is still stable, but weakly, since the linearization vanishes (solutions no longer decay exponentially fast - \emph{critical slowing down}).  For $r>0$ the origin becomes unstable and two new stable fixed points appear at $x^*=\pm \sqrt{r}$.
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [dashed](0,0.5) -- (1,0.5);
-\draw [thick](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
-\draw [thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,dashed,thick](0,0.5) -- (1,0.5);
+\draw [color=blue,thick](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [color=blue,thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$r$};
 \node at (0.2,1.5) {$x$};
 \end{tikzpicture}
@@ -166,11 +168,12 @@ Ex: $\dot{x}=rx-x^3$. If $r<0$ the origin is the only fixed point and stable. $r
 Ex: $\dot{x}=rx+x^3$. Only for $r<0$ two unstable fixed points $x^*=\pm \sqrt{-r}$ and stable origin. For $r>0$ origin is unstable (finite escape)
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [dashed](0,0.5) -- (1,0.5);
-\draw [dashed](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
-\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue, thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,dashed](0,0.5) -- (1,0.5);
+\draw [color=blue,dashed](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [color=blue,dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$r$};
 \node at (0.2,1.5) {$x$};
 \end{tikzpicture}
@@ -206,8 +209,8 @@ For $p\lesssim\omega$ there exists a saddle-note ghost. Time to pass through the
 
 \begin{center}
 \begin{tikzpicture}[domain=-3.2:3.2]
-\draw[-latex] (-3.2,0) -- (3.2,0) node[right] {$\Theta$};
-\draw[-latex] (0,-1.2) -- (0,2) node[above] {$\dot{\Theta}$};
+\draw[ultra thin,-latex] (-3.2,0) -- (3.2,0) node[right] {$\Theta$};
+\draw[ultra thin,-latex] (0,-1.2) -- (0,2) node[above] {$\dot{\Theta}$};
 \draw[color=blue] plot (\x,{0.9-0.8*sin(\x r)}) node[right] {$a<\omega$};
 \draw[color=orange] plot (\x,{1.5-1.5*sin(\x r)}) node[left] {$a=\omega$};
 \draw[color=green] plot (\x,{1.5-2*sin(\x r)}) node[right] {$a>\omega$};
@@ -232,10 +235,11 @@ p & -\omega \\ \omega & p
 \textbf{Rules of thumb:} Size of limit cycle grows from 0 proportionally to $\sqrt{p-p_c}$. Frequency of limit cycle $\omega \approx \Im \{\lambda\}$ evaluated at $p=p_c$.
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [thick,dashed](0,0.5) -- (1,0.5);
-\draw [line width=2, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] (1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,thick,dashed](0,0.5) -- (1,0.5);
+\draw [color=blue,line width=2, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] (1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$p$};
 \node at (0.2,1.5) {$r$};
 \end{tikzpicture}
@@ -252,10 +256,11 @@ Example:
 Cubic term is destabilizing yielding a stable origin and a unstable unstable limit cycle at $r=-\sqrt{-p}$ only existing for $p<0$. Unstable for $p\geq 0$ (weakly at $p=0$).
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [thick,dashed](0,0.5) -- (1,0.5);
-\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,thick,dashed](0,0.5) -- (1,0.5);
+\draw [color=blue,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
 \draw [color=white,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$p$};
 \node at (0.2,1.5) {$r$};
@@ -282,21 +287,21 @@ Example:
 Two radial equilibrium solutions $r=0$ and $r=1$ (attractive). For $p<0$ no angular eq.point exists so that the limit cycle $r=1$ is a unique attractor, attracting trajectories from unstable origin. For $p=0$ a SS at $(r,\Theta)=(1,0)$ appears similar to a saddle point with radial attraction ($x_1$-direction) and angular saddle behaviour - the time through the bottleneck of $p<0$ becomes infinite for $p=0$. For $p>0$ there are two SSs at $(1,\sqrt{p})$ (attractor) and $(1,-\sqrt{p})$ (repulsor) - looks like pacman.
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick,dashed](-1,0.5) -- (0,0.5);
-\draw [thick,dashed](0,0.5) -- (1,0.5);
-\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1) -- (0,1);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick,dashed](-1,0.5) -- (0,0.5);
+\draw [color=blue,thick,dashed](0,0.5) -- (1,0.5);
+\draw [color=blue,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1) -- (0,1);
 \draw [color=white,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1) -- (0,1);
-\draw [thick](0,1) -- (1,1);
+\draw [color=blue,thick](0,1) -- (1,1);
 \node at (1,0.3) {$p$};
 \node at (0.2,1.5) {$r$};
 \end{tikzpicture}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw (-1,0.5) -- (0,0.5);
-\draw (0,0.5) -- (1,0.5);
-\draw [dashed](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
-\draw [thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue, dashed](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [color=blue, thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$p$};
 \node at (0.2,1.5) {$\Theta$};
 \end{tikzpicture}
@@ -312,13 +317,14 @@ Example
 Radial dynamics can be seen as a 1D system with saddle-node bifurcation of SS at $p_c=-\sfrac{1}{4}$. In the 2D system they correspond to limit cycles. At $p_c$ a half-stable cycle is born. For $0>p>p_c$ it splits into a pair of limit cycles, the inner unstable and the outer stable. The other way around two limit cycles collide and disappear as $p$ decreases through $p_c$. The origin remains a stable spiral throughout.
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [thick,dashed](0,0.5) node (v1) {} -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,thick,dashed](0,0.5) node (v1) {} -- (1,0.5);
 \node at (1,0.3) {$p$};
 \node at (0.2,1.5) {$r$};
-\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(1,1.4) (-0.2,1.35) (-0.45,1.05)};
-\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(-0.45,1.05) (-0.35,0.85) (-0.1,0.7) (v1)};
+\draw [color=blue,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(1,1.4) (-0.2,1.35) (-0.45,1.05)};
+\draw [color=blue,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(-0.45,1.05) (-0.35,0.85) (-0.1,0.7) (v1)};
 \draw [color=white,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(-0.45,1.05) (-0.35,0.85) (-0.1,0.7) (v1)};
 \end{tikzpicture}
 \end{center}
