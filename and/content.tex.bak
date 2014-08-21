@@ -303,3 +303,52 @@ Two radial equilibrium solutions $r=0$ and $r=1$ (attractive). For $p<0$ no angu
 \end{center}
 
 \textsc{Saddle-node bifurcation of cycles}\\
+\emph{A bifurcation in which two limit cycles unite and annihilate}.\\
+Example
+\begin{align*}
+\dot{r}&=pr+r^3-r^5 \\
+\dot{\Theta}&=\omega+br^2
+\end{align*}
+Radial dynamics can be seen as a 1D system with saddle-node bifurcation of SS at $p_c=-\sfrac{1}{4}$. In the 2D system they correspond to limit cycles. At $p_c$ a half-stable cycle is born. For $0>p>p_c$ it splits into a pair of limit cycles, the inner unstable and the outer stable. The other way around two limit cycles collide and disappear as $p$ decreases through $p_c$. The origin remains a stable spiral throughout.
+\begin{center}
+\begin{tikzpicture}
+\draw (0,1.5) -- (0,-0.5);
+\draw [thick](-1,0.5) -- (0,0.5);
+\draw [thick,dashed](0,0.5) node (v1) {} -- (1,0.5);
+\node at (1,0.3) {$p$};
+\node at (0.2,1.5) {$r$};
+\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(1,1.4) (-0.2,1.35) (-0.45,1.05)};
+\draw [line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(-0.45,1.05) (-0.35,0.85) (-0.1,0.7) (v1)};
+\draw [color=white,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] plot[smooth, tension=.7] coordinates {(-0.45,1.05) (-0.35,0.85) (-0.1,0.7) (v1)};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\textsc{Homoclinic bifurcation}\\
+\emph{Part of a LC moves closer to a saddle point. At the bif the LC touches the saddle and becomes a homoclinic orbit - another kind of infinite-period bif}.\\
+Example:
+\begin{align*}
+\dot{x}_1&=x_2\\
+\dot{x}_2&=x_1 + px_2 - x_1^2 + x_1x_2
+\end{align*}
+$p_c=-0.86$. For $p < -1$ there is a stable spiral and a saddle node. For $p=-1$ a Hopf bifurcation. For $-1<p<p_c$ a stable LC passes close to a saddle at the origin. As $p=p_c$ the LC hits the saddle, creating a homoclinic orbit (connecting the saddle with itself). For $p>p_c$ the saddle connection breaks and the loop is destroyed. Branch of the manifold leaving the saddle either hit the origin after looping or spiral out to one side or the other.
+
+
+\section{Basics on discrete-time systems}
+\subsection{Maps, orbits, cobwebs and fixed points}
+Maps: $x_{t_{n+1}}=f[x(t_n),p], \quad x(t_0)=x_0$, with state $x$ and map $f$ defining how the new state evolves from the current one. Sequence of states $x(t_0), x(t_1), ..., x(t_n)$ is called \textbf{orbit}. Orbit of a DTS is like the trajectory of a CTS only at discrete points. Visualization of the orbit via \textbf{Cobwebs}, where the subsequent state $x(t_{n+1})$ is plotted against the current $x(t_n)$.\vspace{0.1cm}
+
+Difference between CTS and DTS ist that DTS can have oscillations and very complex/chaotic behaviour already in 1D. Example $x(t_{n+1})=-x(t_n), x(t_0)=x_0$ jumps between $x_0$ and $-x_0$ for all times with period $N=2$. A \textbf{fixed point} of the system is $f(x_*)=x_* \; \Leftrightarrow \; x(t_{n+1}) = x(t_n) = x_*$. FP in DTSs are what EQPs or FPs are for CTSs. In DTSs a FP are period-1 solutions. There may be higher-period solutions - period-2 solutions are $f^2 = f(f) = f \circ f, \quad x(t_{n+2})=f^2(x(t_n))$.
+
+\subsection{Stability}
+Stability notions are the same as for CTSs.
+A set $\mathcal{M}$ is said to be attractive in $\mathcal{D}$ if $\forall x_0 \in \mathcal{D}: \quad x(t_n) \rightarrow \mathcal{M}$ for $n\rightarrow \infty$. For a 1D linear DTS: $x(t_{n+1})=\lambda x(t_n), \quad x(t_0)=x_0$ the analytic solution is $x(t_n)=\lambda^n x_0$. For stability $|\lambda|\leq 1$ - for asymptotic stability $|\lambda|<1$. This yields the characteristic step number $n_c=\left|\frac{1}{\ln(|\lambda|)}\right|$ and settling step number $n_s=4n_c$.\\
+A fixed point is exponentially stable if there exist $a>0$ and $\lambda<1$ so that $\Vert x(t_n)-x_*\Vert \leq a\lambda^n\Vert x_0 - x_* \Vert$.\\
+A fixed point is practically stable BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.\\
+
+\subsection{Linear systems}
+$x(t_{n+1})=Ax(t_n), \quad x(t_0)=x_0$ with solution $x(t_n)=A^nx_0$. \textbf{Convergence in finite time} achieved by e.g. $A=0$ - not possible in linear CTSs. Similar behaviour if $A$ has zero EVs. Matrix-state product $x(t_n)=\sum_{i=1}^n \lambda_i^n \langle x_0, v_i \rangle v_i$. The origin $x=0$ of the linear DTS is stable iff all EVs are contained in the unit circle, i.e. $|\lambda_i| \leq 1$. Asymptotically and exponentially iff $|\lambda_i|<1$.
+
+
+\section{Nonlinear discrete-time systems}
