@@ -358,3 +358,49 @@ $x(t_{n+1})=Ax(t_n), \quad x(t_0)=x_0$ with solution $x(t_n)=A^nx_0$. \textbf{Co
 
 
 \section{Nonlinear discrete-time systems}
+\subsection{Hartman Grobman theorem for maps}
+\subsection{Center manifold theorem for maps}
+
+\section{Bifurcations in DTS}
+\subsection{Transcritical bifurcation}
+$x(t_{n+1})= rx(t_n)-x(t_n)^2, \quad x(t_0)=x_0$ with solutions $x_1=0, \quad x_2=r-1$. With Hartman Grobman for maps $x_1=0$ is locally asymptotically stable for $r<1$ and unstable for $r>1$. $x=r-1$ is unstable for $r<$ and locally asymptotically stable for $r>1$. Bifurcation at $r=1$ where both FP coincide in a saddle and the slope of $f(x(t_n),r)$ is equal to one. FPs run along $x(t_{n+1})=x(t_n)$ - \textbf{exchange of stabilites} at $r=1$ (\emph{parameter shift by 1 in comparison to CTSs})
+\subsection{Saddle-node bifurcation}
+$x(t_{n+1})=r-x^2(t_n), \quad x(t_0)=x_0$ with FP $x=\pm \sqrt{r-1}$. No FP for $r<1$. Bifurcation at $r=1$ with slope of $f(x,r)$ equal to one. For $r>1$ 2 FPs, one stable, one unstable.
+\subsection{(Supercritical) Pitchfork bifurcation}
+$x(t_{n+1})=rx(t_n)-x^3(t_n), \quad x(t_0)=x_0$ with solution $x_1=0,\; x_{2,3}=\pm \sqrt{r-1}$. For $r<1$ the origin is asymptotically stable and unstable for $r>1$. For $r>1$ two symmetric asymptotically stable solutions $x_{2,3}$ exist.
+\subsection{Period doubling bifurcation}
+If the slope of $f(x,r)$ is -1 the oscillation behaviour of the orbits changes.\\
+$x(t_{n+1})=-rx(t_n)+x^3(t_n), \quad x(t_0)=x_0$ with solutions $x_1=0, \; x_{2,3}=\pm\sqrt{r+1}$. $x_{2,3}$ only exist for $r>-1$. Pitchfork bif occurs at $r=-1$. For $r<-1$ and $r>1$ unstable origin, for $-1<r<1$ asymptotically stable origin. For $r>-1$ both brances are unstable. So for $r>1$ there are 3 unstable FPs $\Rightarrow$ orbits jump between FPs. No attractive period-1 solutions (or equivalently FPs) for $r>1$ exist.\\
+Period-2 solution using the map $f^2(x(t_n),r)$
+\begin{align*}
+x(t_{n+2})=x(t_n)(r^2-1)- x^3(t_n)r(1+r^2) + \mathcal{O}^4(x(t_n))
+\end{align*}
+with solutions $x_{2,1}=0, \; x_{2,(2,3)} = \pm \sqrt{\frac{r^2-1}{r(1+r^2)}}$ which only exist for $r>1$. At $r=1$ a pitchfork bif takes place making the origin unstable and creating 2 attractive period-2 branches.
+
+\begin{center}
+\begin{tikzpicture}
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (2,0.5);
+\draw [color=blue, thick](-0.5,0.5) -- (0.5,0.5);
+\draw [color=blue, dashed, thick](-0.5,0.5) -- (-1.,0.5);
+\draw [color=blue, dashed, thick](1.9,0.5) -- (0.5,0.5);
+\draw [color=blue](2,0) .. controls (1,0.05) and (0.5,0.3) .. (0.5,0.5);
+\draw [color=blue](2,1) .. controls (1,0.95) and (0.5,0.7) .. (0.5,0.5) node (v1) {};
+\draw [color=blue, dashed](2,-0.35) .. controls (0,-0.15) and (-0.5,0.2) .. (-0.5,0.5);
+\draw [color=blue, dashed](2,1.35) .. controls (0,1.15) and (-0.5,0.8) .. (-0.5,0.5) node (v1) {};
+\node at (2.05,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\node at (0,0.6) {{\tiny period 1}};
+\node at (-1,0.6) {{\tiny period 1}};
+\node at (1.5,-0.5) {{\tiny period 1}};
+\node at (1.5,1.5) {{\tiny period 1}};
+\node at (1.5,0.6) {{\tiny period 1}};
+\node at (1.5,1.075) {{\tiny period 2}};
+\node at (1.5,-0.1) {{\tiny period 2}};
+\end{tikzpicture}
+\end{center}
+
+\subsection{(Supercritical) Neimark-Sacker bifurcation}
+\emph{A bifurcation when the FP changes stability via a pair of complex eigenvalues}
+Discrete-time counterpart to the Hopf bifurcation.\\
+$z(t_{n+1}) = (1+\beta)e^{i\Theta(\beta)}z(t_n)+c(\beta)z(t_n)|z(t_n)|^2 + \mathcal{O}(|z(t_n)|^4)$. For $\beta<0$ the origin is a asymptotically stable FP (weakly stable at $\beta=0$) and unstable for $\beta>0$. Unique stable LC for $\beta>$ with radius $\sqrt{b}$.

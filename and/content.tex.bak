@@ -118,11 +118,12 @@ Ex.: $\dot{x}=rx-x^2$.\\
 Fixed point at $x^*=0 \quad \forall r$. For $r<0$ unstable fixed point at $x^*=r$ and a stable at $x^*=0$. For $r=0^-$ the fixed points unify. For $r>0$ the origin is unstable and $x^*=r$ becomes stable - \textbf{exchange of stabilities}
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw [thick](-1,0.5) -- (0,0.5);
-\draw [dashed](0,0.5) -- (1,0.5);
-\draw [thick](0,0.5) -- (1,1.5);
-\draw [dashed](-1,-0.5) -- (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,0.5) -- (0,0.5);
+\draw [color=blue,dashed,thick](0,0.5) -- (1,0.5);
+\draw [color=blue,thick](0,0.5) -- (1,1.5);
+\draw [color=blue,dashed,thick](-1,-0.5) -- (0,0.5);
 \node at (1,0.3) {$r$};
 \node at (0.2,1.5) {$x$};
 \end{tikzpicture}
@@ -135,10 +136,10 @@ Fixed point at $x^*=0 \quad \forall r$. For $r<0$ unstable fixed point at $x^*=r
 Ex: $\dot{x}=r+x^2$.\\ $r<0$: 2 FP (1 stable, 1 unstable),\\ $r=0^-$: half-stable FP, \\ $r>0$: no FP.\\ In this example the bifurcation occurred at $r=0$.
 \begin{center}
 \begin{tikzpicture}
-\draw (0,1.5) -- (0,-0.5);
-\draw (-1,0.5) -- (1,0.5);
-\draw [thick](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
-\draw [dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
+\draw [color=blue,thick](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
+\draw [color=blue,dashed](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$r$};
 \node at (0.2,1.5) {$x$};
 \end{tikzpicture}
@@ -151,8 +152,8 @@ Ex: $\dot{x}=r+x^2$.\\ $r<0$: 2 FP (1 stable, 1 unstable),\\ $r=0^-$: half-stabl
 Ex: $\dot{x}=rx-x^3$. If $r<0$ the origin is the only fixed point and stable. $r=0$ the origin is still stable, but weakly, since the linearization vanishes (solutions no longer decay exponentially fast - \emph{critical slowing down}).  For $r>0$ the origin becomes unstable and two new stable fixed points appear at $x^*=\pm \sqrt{r}$.
 \begin{center}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue,thick](-1,0.5) -- (0,0.5);
 \draw [color=blue,dashed,thick](0,0.5) -- (1,0.5);
 \draw [color=blue,thick](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
@@ -167,8 +168,8 @@ Ex: $\dot{x}=rx-x^3$. If $r<0$ the origin is the only fixed point and stable. $r
 Ex: $\dot{x}=rx+x^3$. Only for $r<0$ two unstable fixed points $x^*=\pm \sqrt{-r}$ and stable origin. For $r>0$ origin is unstable (finite escape)
 \begin{center}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue, thick](-1,0.5) -- (0,0.5);
 \draw [color=blue,dashed](0,0.5) -- (1,0.5);
 \draw [color=blue,dashed](-1,-0.25) .. controls (-0.5,-0.1) and (0,0) .. (0,0.5);
@@ -208,8 +209,8 @@ For $p\lesssim\omega$ there exists a saddle-note ghost. Time to pass through the
 
 \begin{center}
 \begin{tikzpicture}[domain=-3.2:3.2]
-\draw[-latex] (-3.2,0) -- (3.2,0) node[right] {$\Theta$};
-\draw[-latex] (0,-1.2) -- (0,2) node[above] {$\dot{\Theta}$};
+\draw[ultra thin,-latex] (-3.2,0) -- (3.2,0) node[right] {$\Theta$};
+\draw[ultra thin,-latex] (0,-1.2) -- (0,2) node[above] {$\dot{\Theta}$};
 \draw[color=blue] plot (\x,{0.9-0.8*sin(\x r)}) node[right] {$a<\omega$};
 \draw[color=orange] plot (\x,{1.5-1.5*sin(\x r)}) node[left] {$a=\omega$};
 \draw[color=green] plot (\x,{1.5-2*sin(\x r)}) node[right] {$a>\omega$};
@@ -234,8 +235,8 @@ p & -\omega \\ \omega & p
 \textbf{Rules of thumb:} Size of limit cycle grows from 0 proportionally to $\sqrt{p-p_c}$. Frequency of limit cycle $\omega \approx \Im \{\lambda\}$ evaluated at $p=p_c$.
 \begin{center}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue,thick](-1,0.5) -- (0,0.5);
 \draw [color=blue,thick,dashed](0,0.5) -- (1,0.5);
 \draw [color=blue,line width=2, line cap=round, dash pattern=on 0pt off 2\pgflinewidth] (1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
@@ -255,8 +256,8 @@ Example:
 Cubic term is destabilizing yielding a stable origin and a unstable unstable limit cycle at $r=-\sqrt{-p}$ only existing for $p<0$. Unstable for $p\geq 0$ (weakly at $p=0$).
 \begin{center}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue,thick](-1,0.5) -- (0,0.5);
 \draw [color=blue,thick,dashed](0,0.5) -- (1,0.5);
 \draw [color=blue,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1.25) .. controls (-0.5,1.1) and (0,1) .. (0,0.5);
@@ -286,8 +287,8 @@ Example:
 Two radial equilibrium solutions $r=0$ and $r=1$ (attractive). For $p<0$ no angular eq.point exists so that the limit cycle $r=1$ is a unique attractor, attracting trajectories from unstable origin. For $p=0$ a SS at $(r,\Theta)=(1,0)$ appears similar to a saddle point with radial attraction ($x_1$-direction) and angular saddle behaviour - the time through the bottleneck of $p<0$ becomes infinite for $p=0$. For $p>0$ there are two SSs at $(1,\sqrt{p})$ (attractor) and $(1,-\sqrt{p})$ (repulsor) - looks like pacman.
 \begin{center}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue,thick,dashed](-1,0.5) -- (0,0.5);
 \draw [color=blue,thick,dashed](0,0.5) -- (1,0.5);
 \draw [color=blue,line width=2.1, line cap=round, dash pattern=on 0pt off 2\pgflinewidth](-1,1) -- (0,1);
@@ -297,8 +298,8 @@ Two radial equilibrium solutions $r=0$ and $r=1$ (attractive). For $p<0$ no angu
 \node at (0.2,1.5) {$r$};
 \end{tikzpicture}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue, dashed](1,-0.25) .. controls (0.5,-0.1) and (0,0) .. (0,0.5);
 \draw [color=blue, thick](1,1.25) .. controls (0.5,1.1) and (0,1) .. (0,0.5);
 \node at (1,0.3) {$p$};
@@ -316,8 +317,8 @@ Example
 Radial dynamics can be seen as a 1D system with saddle-node bifurcation of SS at $p_c=-\sfrac{1}{4}$. In the 2D system they correspond to limit cycles. At $p_c$ a half-stable cycle is born. For $0>p>p_c$ it splits into a pair of limit cycles, the inner unstable and the outer stable. The other way around two limit cycles collide and disappear as $p$ decreases through $p_c$. The origin remains a stable spiral throughout.
 \begin{center}
 \begin{tikzpicture}
-\draw [latex-](0,1.5) -- (0,-0.5);
-\draw [-latex](-1,0.5) -- (1,0.5);
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (1,0.5);
 \draw [color=blue,thick](-1,0.5) -- (0,0.5);
 \draw [color=blue,thick,dashed](0,0.5) node (v1) {} -- (1,0.5);
 \node at (1,0.3) {$p$};
@@ -357,3 +358,49 @@ $x(t_{n+1})=Ax(t_n), \quad x(t_0)=x_0$ with solution $x(t_n)=A^nx_0$. \textbf{Co
 
 
 \section{Nonlinear discrete-time systems}
+\subsection{Hartman Grobman theorem for maps}
+\subsection{Center manifold theorem for maps}
+
+\section{Bifurcations in DTS}
+\subsection{Transcritical bifurcation}
+$x(t_{n+1})= rx(t_n)-x(t_n)^2, \quad x(t_0)=x_0$ with solutions $x_1=0, \quad x_2=r-1$. With Hartman Grobman for maps $x_1=0$ is locally asymptotically stable for $r<1$ and unstable for $r>1$. $x=r-1$ is unstable for $r<$ and locally asymptotically stable for $r>1$. Bifurcation at $r=1$ where both FP coincide in a saddle and the slope of $f(x(t_n),r)$ is equal to one. FPs run along $x(t_{n+1})=x(t_n)$ - \textbf{exchange of stabilites} at $r=1$ (\emph{parameter shift by 1 in comparison to CTSs})
+\subsection{Saddle-node bifurcation}
+$x(t_{n+1})=r-x^2(t_n), \quad x(t_0)=x_0$ with FP $x=\pm \sqrt{r-1}$. No FP for $r<1$. Bifurcation at $r=1$ with slope of $f(x,r)$ equal to one. For $r>1$ 2 FPs, one stable, one unstable.
+\subsection{(Supercritical) Pitchfork bifurcation}
+$x(t_{n+1})=rx(t_n)-x^3(t_n), \quad x(t_0)=x_0$ with solution $x_1=0,\; x_{2,3}=\pm \sqrt{r-1}$. For $r<1$ the origin is asymptotically stable and unstable for $r>1$. For $r>1$ two symmetric asymptotically stable solutions $x_{2,3}$ exist.
+\subsection{Period doubling bifurcation}
+If the slope of $f(x,r)$ is -1 the oscillation behaviour of the orbits changes.\\
+$x(t_{n+1})=-rx(t_n)+x^3(t_n), \quad x(t_0)=x_0$ with solutions $x_1=0, \; x_{2,3}=\pm\sqrt{r+1}$. $x_{2,3}$ only exist for $r>-1$. Pitchfork bif occurs at $r=-1$. For $r<-1$ and $r>1$ unstable origin, for $-1<r<1$ asymptotically stable origin. For $r>-1$ both brances are unstable. So for $r>1$ there are 3 unstable FPs $\Rightarrow$ orbits jump between FPs. No attractive period-1 solutions (or equivalently FPs) for $r>1$ exist.\\
+Period-2 solution using the map $f^2(x(t_n),r)$
+\begin{align*}
+x(t_{n+2})=x(t_n)(r^2-1)- x^3(t_n)r(1+r^2) + \mathcal{O}^4(x(t_n))
+\end{align*}
+with solutions $x_{2,1}=0, \; x_{2,(2,3)} = \pm \sqrt{\frac{r^2-1}{r(1+r^2)}}$ which only exist for $r>1$. At $r=1$ a pitchfork bif takes place making the origin unstable and creating 2 attractive period-2 branches.
+
+\begin{center}
+\begin{tikzpicture}
+\draw [ultra thin,latex-](0,1.5) -- (0,-0.5);
+\draw [ultra thin,-latex](-1,0.5) -- (2,0.5);
+\draw [color=blue, thick](-0.5,0.5) -- (0.5,0.5);
+\draw [color=blue, dashed, thick](-0.5,0.5) -- (-1.,0.5);
+\draw [color=blue, dashed, thick](1.9,0.5) -- (0.5,0.5);
+\draw [color=blue](2,0) .. controls (1,0.05) and (0.5,0.3) .. (0.5,0.5);
+\draw [color=blue](2,1) .. controls (1,0.95) and (0.5,0.7) .. (0.5,0.5) node (v1) {};
+\draw [color=blue, dashed](2,-0.35) .. controls (0,-0.15) and (-0.5,0.2) .. (-0.5,0.5);
+\draw [color=blue, dashed](2,1.35) .. controls (0,1.15) and (-0.5,0.8) .. (-0.5,0.5) node (v1) {};
+\node at (2.05,0.3) {$r$};
+\node at (0.2,1.5) {$x$};
+\node at (0,0.6) {{\tiny period 1}};
+\node at (-1,0.6) {{\tiny period 1}};
+\node at (1.5,-0.5) {{\tiny period 1}};
+\node at (1.5,1.5) {{\tiny period 1}};
+\node at (1.5,0.6) {{\tiny period 1}};
+\node at (1.5,1.075) {{\tiny period 2}};
+\node at (1.5,-0.1) {{\tiny period 2}};
+\end{tikzpicture}
+\end{center}
+
+\subsection{(Supercritical) Neimark-Sacker bifurcation}
+\emph{A bifurcation when the FP changes stability via a pair of complex eigenvalues}
+Discrete-time counterpart to the Hopf bifurcation.\\
+$z(t_{n+1}) = (1+\beta)e^{i\Theta(\beta)}z(t_n)+c(\beta)z(t_n)|z(t_n)|^2 + \mathcal{O}(|z(t_n)|^4)$. For $\beta<0$ the origin is a asymptotically stable FP (weakly stable at $\beta=0$) and unstable for $\beta>0$. Unique stable limit cycle for $\beta>$ with radius $\sqrt{b}$.
