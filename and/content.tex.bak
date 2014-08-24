@@ -54,16 +54,17 @@ The origin of the linear system is stable if all EV $\lambda_i$ have non positiv
 \[ tr(A) = a_{11} + a_{22} \]
 \[ det(A) = a_{11}a_{22} - a_{12}a_{21} \]
 
-\[ \lambda_{1,2} = \frac{1}{2} (tr(A) \pm \sqrt{tr(A)^2-4det(A)} \]
+\[ \lambda_{1,2} = \frac{1}{2} \left( tr(A) \pm \sqrt{tr(A)^2-4det(A)}\right) \]
 
 daraus folgt
 $tr(A) < 0 \rightarrow$ stable\\
 $tr(A) > 0 \rightarrow$ unstable\\
 $tr(A)^2 \geq 4det(A)$ node\\
 $tr(A)^2 < 4det(A)$ spiral\\
+$det(A) < 0 \rightarrow$ saddle
 
 Spezialfall:
-$tr(A)^2 = 4det(A)$ $\rightarrow$ stable if $tr(A) < 0$ and if $det(A) < 0 \rightarrow$ saddle
+$tr(A)^2 = 4det(A)$ $\rightarrow$ stable if $tr(A) < 0$\\
 
 
 %\begin{pspicture}(6,5)
@@ -79,33 +80,62 @@ $tr(A)^2 = 4det(A)$ $\rightarrow$ stable if $tr(A) < 0$ and if $det(A) < 0 \righ
 %\end{pspicture}
 
 \subsection{LTV Systems and Floquet theory}
-TODO
+Periodic matrix $A(t)$, such that $A(t+T)=A(t), \; \forall t \geq 0$. The fundamental matrix $P(t)$ satisfies $P(t+T)=P(t)M, \quad M=P^{-1}(t_0)P(T)$, with $M=e^{TB}$ for some matrix $B$. The EVs of $M$ are called Floquet multipliers and the EVs of $B$ are called Floquet exponents.\\
+\textbf{Calculate Floquet MPs}\\
+Solve $\dot{P}(t)=A(t)P(t), \; P(t_0)\neq 0$ with initial condition $P(0)=I$\\
+Floquet MPs are the EVs of $M=P(T)$ and Floquet Exps are the EVs of $B=\frac{1}{T}\ln M$
 
 \section{Nonlinear Flows}
 \subsection{Local Theory}
 \textsc{Hartman-Grobman}\\
 The behavior of a nonlinear systems in a vicinity of hyperbolic eq. points is the same as in the linearized system around that point.
 \emph{Hyperbolic}: $EV of J(x^*,p) \neq 0$
+\vspace{0.2cm}
 
 \textsc{Center manifold theorem}\\
+
+\begin{enumerate}
+\item Write the system in diagonal form:
 \begin{align*}
-\frac{dh}{dx_z}[A_zx_z+f_z(x_z, h(x_z))] = A_sh(x_z)+f_s(h(x_z),x_z) \\
-h(0)=0, \quad \frac{dh(0)}{dx_z} = 0
+\dot{x}=Cx+F(x,y)\\
+\dot{y}=Py+G(x,y)
 \end{align*}
+\item Determine $h(x)=ax^2+bx^3+...$
+\item Has to satisfy
+\begin{align*}
+Dh(x)[Cx+F(x,h(x))]=Ph(x)+G(x,h(x))
+\end{align*}
+\item Collect terms $\mathcal{O}^i$ and determine constants $a,b,...$ to set them to zero
+\item Insert constants into $h(x)$
+\item Calculate $\dot{x}=Cx+F(x,h(x))$
+\end{enumerate}
 
 
 \subsection{Non-local phenomena}
 \subsubsection{Index theory}
-Fuer mehr globale information\\
+\emph{Linearization gives only microscopic view around a fixed point - it fails especially at higher order terms. Use index theory for global information about phase portrait.}\\
+Index $I_C$ of a closed curve $C$ describes the number of counterclockwise revolutions made by the vector field as $x$ moves once counterclockwise around $C$.\\
+Properties:\\
+$I_C=0$ if $C$ doesn't enclose any EQPs\\
+Time reversal does not change the index\\
+If $C$ is a trajectory (e.g. closed orbit), then $I_C=+1$.\vspace{0.1cm}
+Properties of indexes of points:\\
+$I_C=\sum_{i=1}^k I[x_{i*}]$\\
 stable, unstable node $I_C = -1$\\
 s/u spiral $I_C = 1$\\
 s/u limit cycle $I_C = 1 \rightarrow$ wegen EP im Kern
 \subsubsection{Limit Cycles}
 Isolated (no other closed trajectory, spiral towards or away from LC) closed trajectories
 
+\textsc{Lineard}\\
+$\ddot{x}+f(x) \dot{x} + g(x)=0$ has a unique stable LC surrounding the origin if:\\
+\textbf{(1)} $f(x)$ and $g(x)$ are cont.diff. $\forall x$, \textbf{(2)} $g(x)$ odd, \textbf{(3)} $g(x)>0$ for $x>0$, \textbf{(4)} $f(x)$ even and \textbf{(5)} $F(x)=\int_0^x f(u)du$ has exactly one zero at $x=a$ is $<0$ for $0<x<a$ and $>0$ and nondecreasing for $x>a$ and $F(x)\rightarrow\infty$ as $x\rightarrow \infty$.\vspace{0.2cm}
 
 \textsc{Poincare Bendixson}\\
+Let $x(t)$ be a trajectory of a dynamic system, which evolves within a compact set $M$. Then $x(t)$ converges either to an equilibrium point, or to a closed orbit.\vspace{0.2cm}
 
+\textsc{Dulac's criterion}\\
+Let $D$ be a subset. If there exists a $C^1$ function $\phi(x)$ such that $\nabla(\phi\dot{x})$ does not change sign over $D$, then there are no closed traj. in $D$. Choose $\phi$ as $1, 1/x^ay^b,\, e^{ax},\,e^{ay}$.
 
 \section{Bifurcations of vector fields}
 \subsection{Bifurcations of SSs}
