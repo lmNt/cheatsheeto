@@ -1,10 +1,10 @@
-\begin{center}
-     \Large{\textbf{AND Cheat Sheet}} \\
-\end{center}
+%\begin{center}
+%     \Large{\textbf{AND Cheat Sheet}} \\
+%\end{center}
 
-\section{Vocabulary}
-\textsc{Hyperbolic eq.points} $\Re\{\lambda\} \neq 0$ \\
-\textsc{Nonhyperbolic problems} Equilibria with EV on the imaginary axis.
+%\section{Vocabulary}
+%\textsc{Hyperbolic eq.points} $\Re\{\lambda\} \neq 0$ \\
+%\textsc{Nonhyperbolic problems} Equilibria with EV on the imaginary axis.\\
 
 \section{Basics on cont.-time dynamical systems}
 \begin{align*}
@@ -51,8 +51,8 @@ Theorem:
 The origin of the linear system is stable if all EV $\lambda_i$ have non positive real part. If all EV have negative Real part, the origin is exponentially stable.
 
 \[ \lambda^2+tr(A)\lambda+det(A) = 0 \]
-\[ tr(A) = a_{11} + a_{22} \]
-\[ det(A) = a_{11}a_{22} - a_{12}a_{21} \]
+%\[ tr(A) = a_{11} + a_{22} \]
+%\[ det(A) = a_{11}a_{22} - a_{12}a_{21} \]
 
 \[ \lambda_{1,2} = \frac{1}{2} \left( tr(A) \pm \sqrt{tr(A)^2-4det(A)}\right) \]
 
@@ -115,26 +115,26 @@ Dh(x)[Cx+F(x,h(x))]=Ph(x)+G(x,h(x))
 \subsubsection{Index theory}
 \emph{Linearization gives only microscopic view around a fixed point - it fails especially at higher order terms. Use index theory for global information about phase portrait.}\\
 Index $I_C$ of a closed curve $C$ describes the number of counterclockwise revolutions made by the vector field as $x$ moves once counterclockwise around $C$.\\
-Properties:\\
+\textbf{Properties:}\\
 $I_C=0$ if $C$ doesn't enclose any EQPs\\
 Time reversal does not change the index\\
 If $C$ is a trajectory (e.g. closed orbit), then $I_C=+1$.\vspace{0.1cm}
-Properties of indexes of points:\\
+\textbf{Properties of indexes of points:}\\
 $I_C=\sum_{i=1}^k I[x_{i*}]$\\
 stable, unstable node $I_C = -1$\\
 s/u spiral $I_C = 1$\\
-s/u limit cycle $I_C = 1 \rightarrow$ wegen EP im Kern
+s/u limit cycle $I_C = 1 \rightarrow$ wegen EQP im Kern
 \subsubsection{Limit Cycles}
-Isolated (no other closed trajectory, spiral towards or away from LC) closed trajectories
+Nonlinear, non-local phenomenon. Limit cycle is isolated. A linear center is surrounded by a continuum family of periodic orbits. A limit cycle necessarily encloses at least one EQP.
 
 \textsc{Lineard}\\
 $\ddot{x}+f(x) \dot{x} + g(x)=0$ has a unique stable LC surrounding the origin if:\\
 \textbf{(1)} $f(x)$ and $g(x)$ are cont.diff. $\forall x$, \textbf{(2)} $g(x)$ odd, \textbf{(3)} $g(x)>0$ for $x>0$, \textbf{(4)} $f(x)$ even and \textbf{(5)} $F(x)=\int_0^x f(u)du$ has exactly one zero at $x=a$ is $<0$ for $0<x<a$ and $>0$ and nondecreasing for $x>a$ and $F(x)\rightarrow\infty$ as $x\rightarrow \infty$.\vspace{0.2cm}
 
 \textsc{Poincare Bendixson}\\
-Let $x(t)$ be a trajectory of a dynamic system, which evolves within a compact set $M$. Then $x(t)$ converges either to an equilibrium point, or to a closed orbit.\vspace{0.2cm}
+Let $x(t)$ be a trajectory of a dynamic system, which evolves within a compact set $M$ (trapping region). Then $x(t)$ converges either to an equilibrium point, or to a closed orbit.\vspace{0.2cm}
 
-\textsc{Poincare-Dulac's criterion}\\
+\textsc{Bendixon-Dulac's criterion}\\
 Let $D$ be a subset. If there exists a $C^1$ function $\phi(x)$ such that $\nabla(\phi\dot{x})$ does not change sign over $D$, then there are no closed traj. in $D$. Choose $\phi$ as e.g. $1, 1/x^ay^b,\, e^{ax},\,e^{ay}$.
 
 \textsc{Lyapunov functions}\\
@@ -209,19 +209,19 @@ Ex: $\dot{x}=rx+x^3$. Only for $r<0$ two unstable fixed points $x^*=\pm \sqrt{-r
 \end{tikzpicture}
 \end{center}
 
-\subsubsection{Bifurcations of SSs in dim $n>1$}
-\begin{align*}
-\text{transcritical bif: }& \dot{x}_1=rx_1-x_1^2 \quad &\dot{x}_2 = \pm x_2 \\
-\text{saddle-node bif: }& \dot{x}_1 = r-x_1^2, \quad &\dot{x}_2 = \pm x_2\\
-\text{pitchfork bif: }& \dot{x}_1=rx_1-x_1^3, \quad &\dot{x}_2 = \pm x_2
-\end{align*}
+%\subsubsection{Bifurcations of SSs in dim $n>1$}
+%\begin{align*}
+%\text{transcritical bif: }& \dot{x}_1=rx_1-x_1^2 \quad &\dot{x}_2 = \pm x_2 \\
+%\text{saddle-node bif: }& \dot{x}_1 = r-x_1^2, \quad &\dot{x}_2 = \pm x_2\\
+%\text{pitchfork bif: }& \dot{x}_1=rx_1-x_1^3, \quad &\dot{x}_2 = \pm x_2
+%\end{align*}
 
 \subsection{Bifurcations of trajectories}
 \textsc{Flows on the circle}\\
 Vector field on the circle $\dot{\Theta}=f(\Theta)$, with $\Theta$ being a point on the circle. Particle can return to starting place - most basic model of oscillating systems.\\
 
 \textsc{Non-uniform oscillator}\\
-$\dot{\Theta} = \omega - a\sin \Theta$ with mean $\omega$ and amplitude $a$.\\
+$\dot{\Theta} = \omega - p\sin \Theta$ with mean $\omega$ and amplitude $a$.\\
 \textbf{Uniform oscillator $p=0$}: $\dot{\Theta} = \omega$ and $\omega=\text{const.}$ with solution $\Theta(t)=\omega t + \Theta_0$. \emph{Phase $\Theta$ changes uniformly}.\\
 %\begin{center}
 %\begin{tikzpicture}
@@ -234,16 +234,16 @@ $\dot{\Theta} = \omega - a\sin \Theta$ with mean $\omega$ and amplitude $a$.\\
 %\end{center}
 
 For $0<p<\omega$ there is a non uniform oscillation, because the velocity depends on the angle. For $p=\omega$ a SS appears at $\Theta=\sfrac{\pi}{2}$ attracting the flow from one side and repelling the other side. For $p>\omega$ there are two SSs (1 repulsor, 1 attractor).\\
-For $p\lesssim\omega$ there exists a saddle-note ghost. Time to pass through the bottleneck via local rescaling around the bottleneck: $\dot{x}=r+x^2$ where $0<r = \frac{2(\omega-a)}{a}\ll 1$ is proportional to the distance of the bif. $T\approx
+For $p\lesssim\omega$ there exists a saddle-note ghost. Time to pass through the bottleneck via local rescaling around the bottleneck: $\dot{x}=r+x^2$ where $0<r = \frac{2(\omega-p)}{p}\ll 1$ is proportional to the distance of the bif. $T\approx
 \int_{-\infty}^{\infty} \frac{dx}{r+x^2} = \frac{\pi}{\sqrt{r}}$
 
 \begin{center}
 \begin{tikzpicture}[domain=-3.2:3.2]
 \draw[ultra thin,-latex] (-3.2,0) -- (3.2,0) node[right] {$\Theta$};
 \draw[ultra thin,-latex] (0,-1.2) -- (0,2) node[above] {$\dot{\Theta}$};
-\draw[color=blue] plot (\x,{0.9-0.8*sin(\x r)}) node[right] {$a<\omega$};
-\draw[color=orange] plot (\x,{1.5-1.5*sin(\x r)}) node[left] {$a=\omega$};
-\draw[color=green] plot (\x,{1.5-2*sin(\x r)}) node[right] {$a>\omega$};
+\draw[color=blue] plot (\x,{0.9-0.8*sin(\x r)}) node[right] {$p<\omega$};
+\draw[color=orange] plot (\x,{1.5-1.5*sin(\x r)}) node[left] {$p=\omega$};
+\draw[color=green] plot (\x,{1.5-2*sin(\x r)}) node[right] {$p>\omega$};
 \end{tikzpicture}   
 \end{center}
 
@@ -375,13 +375,15 @@ $p_c=-0.86$. For $p < -1$ there is a stable spiral and a saddle node. For $p=-1$
 \subsection{Maps, orbits, cobwebs and fixed points}
 Maps: $x_{t_{n+1}}=f[x(t_n),p], \quad x(t_0)=x_0$, with state $x$ and map $f$ defining how the new state evolves from the current one. Sequence of states $x(t_0), x(t_1), ..., x(t_n)$ is called \textbf{orbit}. Orbit of a DTS is like the trajectory of a CTS only at discrete points. Visualization of the orbit via \textbf{Cobwebs}, where the subsequent state $x(t_{n+1})$ is plotted against the current $x(t_n)$.\vspace{0.1cm}
 
-Difference between CTS and DTS ist that DTS can have oscillations and very complex/chaotic behaviour already in 1D. Example $x(t_{n+1})=-x(t_n), x(t_0)=x_0$ jumps between $x_0$ and $-x_0$ for all times with period $N=2$. A \textbf{fixed point} of the system is $f(x_*)=x_* \; \Leftrightarrow \; x(t_{n+1}) = x(t_n) = x_*$. FP in DTSs are what EQPs or FPs are for CTSs. In DTSs a FP are period-1 solutions. There may be higher-period solutions - period-2 solutions are $f^2 = f(f) = f \circ f, \quad x(t_{n+2})=f^2(x(t_n))$.
+Difference between CTS and DTS ist that DTS can have oscillations and very complex/chaotic behaviour already in 1D. Example $x(t_{n+1})=-x(t_n), x(t_0)=x_0$ jumps between $x_0$ and $-x_0$ for all times with period $N=2$. A \textbf{fixed point} of the system is $f(x_*)=x_* \; \Leftrightarrow \; x(t_{n+1}) = x(t_n) = x_*$. FP in DTSs are what EQPs or FPs are for CTSs. In DTSs a FP are period-1 solutions. There may be higher-period solutions - period-2 solutions are $f^2 = f(f) = f \circ f, \quad x(t_{n+2})=f^2(x(t_n))$.\vspace{0.1cm}
+
+\textsc{Poincare map} $P$ maps a $n-1$-dim hyperplane $S$ to itself following trajectory intersections. If $x^*$ is a FP of $P$ then trajectories staring at $x^*$ return to $x^*$ and is therefore a closed orbit of the original system. By looking at $P$ near $x^*$ we can determine the stability.
 
 \subsection{Stability}
 Stability notions are the same as for CTSs.
 A set $\mathcal{M}$ is said to be attractive in $\mathcal{D}$ if $\forall x_0 \in \mathcal{D}: \quad x(t_n) \rightarrow \mathcal{M}$ for $n\rightarrow \infty$. For a 1D linear DTS: $x(t_{n+1})=\lambda x(t_n), \quad x(t_0)=x_0$ the analytic solution is $x(t_n)=\lambda^n x_0$. For stability $|\lambda|\leq 1$ - for asymptotic stability $|\lambda|<1$. This yields the characteristic step number $n_c=\left|\frac{1}{\ln(|\lambda|)}\right|$ and settling step number $n_s=4n_c$.\\
 A fixed point is exponentially stable if there exist $a>0$ and $\lambda<1$ so that $\Vert x(t_n)-x_*\Vert \leq a\lambda^n\Vert x_0 - x_* \Vert$.\\
-A fixed point is practically stable BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.\\
+%A fixed point is practically stable BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.\\
 
 \subsection{Linear systems}
 $x(t_{n+1})=Ax(t_n), \quad x(t_0)=x_0$ with solution $x(t_n)=A^nx_0$. \textbf{Convergence in finite time} achieved by e.g. $A=0$ - not possible in linear CTSs. Similar behaviour if $A$ has zero EVs. Matrix-state product $x(t_n)=\sum_{i=1}^n \lambda_i^n \langle x_0, v_i \rangle v_i$. The origin $x=0$ of the linear DTS is stable iff all EVs are contained in the unit circle, i.e. $|\lambda_i| \leq 1$. Asymptotically and exponentially iff $|\lambda_i|<1$.
@@ -389,7 +391,9 @@ $x(t_{n+1})=Ax(t_n), \quad x(t_0)=x_0$ with solution $x(t_n)=A^nx_0$. \textbf{Co
 
 \section{Nonlinear discrete-time systems}
 \subsection{Hartman Grobman theorem for maps}
+ Let $x^*= 0$ be a hyperbolic FP (EVs of the Jacobian inside UC) of the map $f$. Then the orbits of the map $f$ and its Taylor linearization $\tilde{x}(t_{n+1})=J[x^*,p]\tilde{x}(t_n)$ are locally topologically equivalent
 \subsection{Center manifold theorem for maps}
+Use if EVs on UC. Compute Jacobian. Bring onto $x_s=A_sx_s+f_s(x_s,x_c)$ and $x_c=A_cx_c+f_c(x_s,x_c)$. Build $h(x)=ax^2$. Calculate $h(A_cx_c+f_c(h(x_c),x_c)$ and $A_sh(x_c)+f_s(h(x_c),x_c)$ and eliminate terms of equal order. Then $z=A_cz+f_c(h(z),z)$.
 
 \section{Bifurcations in DTS}
 \subsection{Transcritical bifurcation}
