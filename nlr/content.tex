@@ -1,3 +1,68 @@
 \begin{center}
      \Large{\textbf{NLR Cheat Cheetos (yumyum)}} \\
 \end{center}
+
+\section{LTV Systeme}
+\begin{align*}
+\vdiff{x}=A(t)\v{x}+B(t)\v{u}\\
+\v{y}=C(t)\v{x}+D(t)\v{u}
+\end{align*}
+
+\subsection{Transitionsmatrix und L\o sung der Zustandsdifferenzialgleichung}
+L\o sung f\u r $\vdiff{x}=A(t)\v{x}$ in der Form $\v{x}(t)=\Phi(t,t_0)\v{x}_0$ mit Transitionsmatrix $\Phi(t,t_0)$ aus der Peano-Baker-Reihe. \\
+\textsc{Eigenschaften der Transitionsmatrix:}\\
+Anfangswert: $\Phi(t_0,t_0)=E$, Produkteigenschaft: $\Phi(t_2,t_0)=\Phi(t_2,t_1)\Phi(t_1,t_0)$, Invertierbarkeit: $\Phi^{-1}(t,t_0)=\Phi(t_0,t)$, Differenzierbarkeit: $\frac{d}{dt}\Phi(t,t_0)=A(t)\Phi(t,t_0)$, Determinante: $\det\Phi(t,t_0)=\exp\left(\int_{t_0}^{t}\tr A(\tau)\text{d}\tau\right)$.\\
+Eigenwerte von $A(t)$ geben keine Aussage \u ber Stabilit\a t.
+
+
+\subsubsection{Spezialf\a lle geschlossener L\o sungen}
+$\dot{x}=a(t)x$ mit L\o sung $x=\exp\left(\int_{t_0}^t a(\tau)\text{d}\tau \right) x_0$. Bei $\dim\v{x}>1$ und $A(t)A(\tau)=A(\tau)A(t)$ dann gilt $\Phi(t,\tau)=\exp\left(\int_{\tau}^t A(s)\text{d}s \right)$
+
+\subsubsection{Periodische Matrizen}
+F\u r $\vdiff{x}=A(t)\v{x}$ mit $A(t)=A(t+\omega)$ dann gilt $\Phi(t,\tau)=P(t,\tau)e^{R(t-\tau)}$ mit $P(t,\tau)=P(t+\omega,\tau)$ und $R=\const$
+
+\subsubsection{L\o sung der nicht-autonomen Zustandsdifferenzialgleichung}
+L\o sung von
+\begin{align*}
+\vdiff{x}=A(t)\v{x}+B(t)\v{u}\\
+\v{y}=C(t)\v{x}+D(t)\v{u}
+\end{align*}
+lautet
+\begin{align*}
+\v{x}&=\Phi(t,t_0)\v{x}_0 + \int_{t_0}^t \Phi(t,\tau)B(\tau)\v{u}(\tau)\text{d}\tau \\
+\v{y}&=C(t)\Phi(t,t_0)\v{x}_0+\int_{t_0}^t C(t)\Phi(t,\tau)B(\tau)\v{u}(\tau)\text{d}\tau + D(t)\v{u}
+\end{align*}
+
+\subsection{Zustandstransformationen und \a quivalente Systemdarstellungen}
+\subsection{Stabilit\a t}
+\subsection{Steuerbarkeit und Beobachtbarkeit}
+\subsection{Entwurf von Zustandsreglern}
+\subsubsection{Eingr\o \ss ensysteme}
+\subsubsection{Mehrgr\o \ss ensysteme}
+\subsection{Entwurf von Zustandsbeobachtern}
+\subsubsection{Eingr\o \ss ensysteme}
+\subsubsection{Mehrgr\o \ss ensysteme}
+
+
+\section{Analyse nichtlinearer Systeme}
+\subsection{Fluss einer DGL}
+\subsection{Existenz und Eindeutigkeit der L\o sung NLDGLSysteme}
+\subsection{Zustandsraum nichtlinearer Systeme}
+\subsubsection{Mannigfaltigkeiten}
+\subsubsection{Tangentialraum und Vektorfeld}
+\subsubsection{Zusammenhang zwischen Vektorfeld und Differenzialgleichung}
+\subsection{Zustandstransformationen und Diffeomorphismen}
+\subsection{Lie-Ableitung und Lie-Klammern}
+\subsubsection{Lie-Ableitung}
+\subsubsection{Lie-Klammer}
+\subsection{Distributionen und Involutivit\a t}
+\subsection{Steuerbarkeit und Erreichbarkeit nichtlinearer Systeme}
+\subsubsection{Nichtlineare Systeme ohne Driftterm}
+\subsubsection{Nichtlineare Systeme mit Driftterm}
+
+\section{Exakte Linearisierung und Flachheit}
+\subsection{Exakte Eingangs-/Ausgangslinearisierung f\u r Eingr\o \ss ensysteme}
+\subsubsection{Relativer Grad}
+\subsubsection{Byrnes-Isidori-Normalform}
+\subsubsection{Nulldynamik}
+\subsection{Exakte Eingangs-/Zustandslinearisierung f\u r Eingr\o \ss ensysteme}

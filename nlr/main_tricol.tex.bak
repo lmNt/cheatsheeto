@@ -25,10 +25,13 @@
 % vector, bold face non italic
 \newcommand{\R}[1]{\mathbb{R}^{#1}}
 \newcommand{\Rr}[2]{\mathbb{R}^{#1 \times #2}}
-\renewcommand{\v}[1]{\mbox{\bf #1}}
+%\renewcommand{\v}[1]{\mbox{\bf #1}}
 % vector, bold face italic
-%\renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
-
+\renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
+\newcommand{\vdiff}[1]{\dot{\mbb{#1}}}
+\newcommand{\vddiff}[1]{\ddot{\mbb{#1}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\const}{\text{const.}}
 
 % python code style for listings
 \lstset{
