@@ -34,12 +34,85 @@ lautet
 \end{align*}
 
 \subsection{Zustandstransformationen und \a quivalente Systemdarstellungen}
-Zustandstransformation $\v{z}=V(t)\v{x}$ mit Transformationsmatrix $V(t)$ regul\a 
+Zustandstransformation $\v{z}=V(t)\v{x}$ mit Transformationsmatrix $V(t)$ regul\a r im betrachteten Zeitintervall und $\dot{V}(t)$ existiert und ist stetig im Intervall.
+\begin{align*}
+\vdiff{z}&=[\dot{V}(t)+V(t)A(t)]V^{-1}(t)\v{z}+V(t)B(t)\v{u} \\
+\v{y}&=C(t)V^{-1}(t)\v{z}(t)+D(t)\v{u}
+\end{align*}
+$\v{z}=V(t)\v{x}$ ist eine Lyapunov-Transformation, falls $V(t)$ und $V^{-1}(t)$ $\forall t$ beschr\a nkt sind. Dann folgt aus der exponentiellen Stabilit\a t des einen Systems, die exponentielle Stabilit\a t des jeweils anderen Systems.
+
 \subsection{Stabilit\a t}
+$\vdiff{x}=A(t)\v{x}$ ist stabil wenn $\Vert \Phi(t,t_0)\Vert \leq M$ mit $M=\const \geq 0$. Das System ist asymptotisch stabil falls $\lim_{t\rightarrow \infty} \Phi(t,t_0)\v{x}_0 \rightarrow 0 \;\; \forall x_0$. Exponentiell stabil falls $\Vert \Phi(t,t_0)\Vert \leq Me^{-\omega(t-t_0)}$
+
 \subsection{Steuerbarkeit und Beobachtbarkeit}
+Steuerbar falls $\text{rang}S(A(t),B(t))=n$, mit
+\begin{align*}
+S(A(t),B(t))=
+\begin{bmatrix}
+N_A^0B(t) & N_A^1B(t) & \cdots & N_A^{n-1}B(t)
+\end{bmatrix}
+\end{align*} 
+wobei $N_A^kB(t)=N_A(N_A^{k-1}B(t))$ $N_A^1B(t)=-\dot{B}(t)+A(t)B(t), \quad N_A^0B(t)=B(t)$, also $A(t)$ und $B(t)$ m\u ssen entsprechend $(n-2)$ bzw. $(n-1)$-fach stetig diff.bar sein.\\
+Beobachtbar falls $\text{rang}O(C(t),A(t))=n$ mit
+\begin{align*}
+O(C(t),A(t))=\begin{bmatrix}
+M_A^0 C(t) & M_A^1C(t) & \cdots & M_A^{n-1}C(t)
+\end{bmatrix}^T
+\end{align*}
+wobei $M_A^kC(t)=M_A(M_A^{k-1}C(t))$ und $M_A^1C(t)=\dot{C}(t)+C(t)A(t)$.
+
 \subsection{Entwurf von Zustandsreglern}
 \subsubsection{Eingr\o \ss ensysteme}
+In SISO-RNF bringen \u ber $V(t)$ mit Ansatz $z_1=\v{w}^T(t)\v{x}$ und sukzessive Differentiation nach $t$. Eingangsgr\o \ss e $\v{u}$ trifft erst in $z_n(t)$ auf.
+\begin{align*}
+\v{z}=\begin{bmatrix}
+M_A^0\v{w}^T(t) \\
+\vdots \\
+M_A^{n-1}\v{w}^T(t)
+\end{bmatrix}
+\v{x}=V(t)\v{x}\\
+V(t)\v{b}(t)=\begin{bmatrix}
+0 \\
+\vdots\\
+\tilde{b}_{n-1}(t)
+\end{bmatrix}
+\end{align*}
+Lemma 2.2 besagt f\u r $k\geq 0$: $(M_A^0\v{w}^T(t))\v{v}(t)=0, \cdots, (M_A^k\v{w}^T(t))\v{v}(t)=0$ bzw. $\v{w}^T(t)(N_A^0\v{v}(t)) = 0, \cdots, \v{w}^T(t)(N_A^k\v{v}(t))=0$ und somit gilt:
+\begin{align*}
+\v{w}^T(t)=\begin{bmatrix}
+0 \cdots \tilde{b}_{n-1}(t)
+\end{bmatrix}
+S^{-1}(A(t),\v{b}(t))
+\end{align*}
+mit Freiheitsgrad $\tilde{b}_{n-1}(t)$. \\
+
+\textsc{Eigenwertvorgabe mit Ackermann-Formel}\\
+Mit $\tilde{\v{a}}=-(M_A^n\v{w}^T(t))V^{-1}(t)$ w\a hle $u=\frac{1}{\tilde{b}_{n-1}(t)}(\tilde{\v{a}}(t)\v{z}+v)$ mit neuem Eingang $v(t)$ als Integratorkette $\dot{z}_1=z_2, \; \cdots, \; \dot{z}_n=v$ (Brunovsky-Normalform). Mit $p^*(\lambda)=\prod_{j=1}^n(\lambda-\lambda_j^*)$ als gew\u nschtes CharPoly w\a hle: $v=-p_0z_1-\cdots-p_{n-1}z_n$ ergibt $u=-\tilde{v{k}}^T(t)\v{z}$. Es folgt f\u r 
+\begin{align*}
+\vdiff{z}=(\tilde{A}(t)-\tilde{\v{b}}(t)\tilde{\v{k}}^T(t))\v{z}=\begin{bmatrix}
+0 & 1 & 0 &\cdots & 0\\
+0 & 0 & 1 &\cdots & 0\\
+\vdots &  & &  & \vdots \\
+0 & 0 & 0 &\cdots & 1\\
+-p_0 & -p_1 & -p_2 &\cdots & -p_{n-1}\\
+\end{bmatrix} \v{z}
+\end{align*}
+
 \subsubsection{Mehrgr\o \ss ensysteme}
+Steuerbarkeitsindizes $\rho_j$ einf\u hren. Es gilt
+\begin{align*}
+S(A(t),B(t))=\\
+\begin{bmatrix}
+\v{b}_1(t) \cdots \v{b}_m(t) \; \vline \; N_A^1\v{b}_1(t) \cdots N_A^1\v{b}_m(t) \; \vline \; N_A^{n-1}\v{b}_1(t) \cdots  N_A^{n-1}\v{b}_m(t)
+\end{bmatrix}
+\end{align*}
+Reduzierte Steuerbarkeitsmatrix:
+\begin{align*}
+\bar{S}(A(t),B(t))=
+\begin{bmatrix}
+\v{b}_1(t) \cdots N_A^{\rho_1-1}\v{b}_1(t)  \; \vline \; \cdots \; \vline \; \v{b}_m(t) \cdots N_A^{\rho_m-1}\v{b}_m(t)
+\end{bmatrix}
+\end{align*}
 \subsection{Entwurf von Zustandsbeobachtern}
 \subsubsection{Eingr\o \ss ensysteme}
 \subsubsection{Mehrgr\o \ss ensysteme}
