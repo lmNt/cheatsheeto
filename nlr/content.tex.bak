@@ -87,7 +87,7 @@ S^{-1}(A(t),\v{b}(t))
 mit Freiheitsgrad $\tilde{b}_{n-1}(t)$. \\
 
 \textsc{Eigenwertvorgabe mit Ackermann-Formel}\\
-Mit $\tilde{\v{a}}=-(M_A^n\v{w}^T(t))V^{-1}(t)$ w\a hle $u=\frac{1}{\tilde{b}_{n-1}(t)}(\tilde{\v{a}}(t)\v{z}+v)$ mit neuem Eingang $v(t)$ als Integratorkette $\dot{z}_1=z_2, \; \cdots, \; \dot{z}_n=v$ (Brunovsky-Normalform). Mit $p^*(\lambda)=\prod_{j=1}^n(\lambda-\lambda_j^*)$ als gew\u nschtes CharPoly w\a hle: $v=-p_0z_1-\cdots-p_{n-1}z_n$ ergibt $u=-\tilde{v{k}}^T(t)\v{z}$. Es folgt f\u r 
+Mit $\tilde{\v{a}}=-(M_A^n\v{w}^T(t))V^{-1}(t)$ w\a hle $u=\frac{1}{\tilde{b}_{n-1}(t)}(\tilde{\v{a}}(t)\v{z}+v)$ mit neuem Eingang $v(t)$ als Integratorkette $\dot{z}_1=z_2, \; \cdots, \; \dot{z}_n=v$ (Brunovsky-Normalform). Mit $p^*(\lambda)=\prod_{j=1}^n(\lambda-\lambda_j^*)$ als gew\u nschtes CharPoly w\a hle: $v=-p_0z_1-\cdots-p_{n-1}z_n$ ergibt $u=-\tilde{\v{k}}^T(t)\v{z}$. Es folgt f\u r 
 \begin{align*}
 \vdiff{z}=(\tilde{A}(t)-\tilde{\v{b}}(t)\tilde{\v{k}}^T(t))\v{z}=\begin{bmatrix}
 0 & 1 & 0 &\cdots & 0\\
@@ -97,6 +97,11 @@ Mit $\tilde{\v{a}}=-(M_A^n\v{w}^T(t))V^{-1}(t)$ w\a hle $u=\frac{1}{\tilde{b}_{n
 -p_0 & -p_1 & -p_2 &\cdots & -p_{n-1}\\
 \end{bmatrix} \v{z}
 \end{align*}
+Im Originalzustand $\vdiff{x}(t)$ folgt die exp. Stabilit\a t, falls $V(t)$ eine Lyapunov Transformation ist:
+\begin{align*}
+\vdiff{x}=(A(t)-\v{b}(t)\v{k}^T(t))\v{x}
+\end{align*}
+mit $\tilde{\v{k}}^T(t)=\v{k}^T(t)V^{-1}(t)$.
 
 \subsubsection{Mehrgr\o \ss ensysteme}
 Steuerbarkeitsindizes $\rho_j$ einf\u hren. Es gilt
@@ -113,30 +118,382 @@ Reduzierte Steuerbarkeitsmatrix:
 \v{b}_1(t) \cdots N_A^{\rho_1-1}\v{b}_1(t)  \; \vline \; \cdots \; \vline \; \v{b}_m(t) \cdots N_A^{\rho_m-1}\v{b}_m(t)
 \end{bmatrix}
 \end{align*}
+Anleitung:
+\begin{itemize}
+\item Beginne mit $\v{b}_1(t)$. Berechne $N_A\v{b}_1(t),\cdots,N_A^{\rho_1-1}\v{b}_1(t)$. Abbruch, wenn $N_A^{\rho_1}\v{b}_1(t)$ linear abh\a ngig von den vorherigen Vektoren der Sequenz.
+\item Falls $\rho_1\neq n$ nutze $\v{b}_2(t)$ mit der Sequenz $N_A\v{b}_2(t),\cdots,N_A^{\rho_2}\v{b}_2(t)$ bis linear abh\a ngig von den vorherigen Sequenzen.
+\item Es muss gelten: $\sum_{j=1}^m \rho_j=n$
+\end{itemize}
+Die MIMO-RNF kann mit $\v{z}(t)=V(t)\v{x}(t)$ erreicht werden wenn $\bar{S}(A(t),B(t))$ regul\a r ist, mit 
+\begin{align*}
+V(t)=\begin{bmatrix}
+M_A^0\v{w}_1^T(t)\\
+\vdots\\
+M_A^{\rho_1-1}\v{w}_1^T(t)\\
+\hline\\
+\cdots\\
+\hline\\
+M_A^0\v{w}_m^T(t)\\
+\vdots\\
+M_A^{\rho_m-1}\v{w}_m^T(t)\\
+\end{bmatrix}
+\end{align*} 
+und 
+\begin{align*}
+&\begin{bmatrix}
+\v{w}_1^T(t) \\
+\vdots\\
+\v{w}_m^T(t)
+\end{bmatrix}
+=\\
+&\begin{bmatrix}
+0      \cdots  \tilde{b}_{1,\rho_1-1}(t) & \vline & \cdots & \vline & 0      \cdots  \tilde{b}_{1,\rho_m-1}(t) \\
+\vdots                                   & \vline &        & \vline & \vdots          \\
+0      \cdots  \tilde{b}_{m,\rho_1-1}(t) & \vline & \cdots & \vline & 0      \cdots  \tilde{b}_{m,\rho_m-1}(t)\\
+\end{bmatrix} \bar{S}^{-1}(\cdot)
+\end{align*}
+mit $\tilde{b}_{j,\rho_j-1}(t)$ als Freiheitsgrade. Kompakte Darstellung \u ber $\zeta=\v{w}_j^T(t)\v{x}$ und Ausnutzung der kanonischen Form ergibt
+\begin{align*}
+&\begin{bmatrix}
+\frac{d^{\rho_1}}{dt^{\rho_1}}\zeta_1\\
+\vdots\\
+\frac{d^{\rho_m}}{dt^{\rho_m}}\zeta_m
+\end{bmatrix}
+=
+\underbrace{\begin{bmatrix}
+M_A^{\rho_1}\v{w}_1^T(t) \\
+\vdots \\
+M_A^{\rho_m}\v{w}_m^T(t) 
+\end{bmatrix}}_{\mathcal{A}(t) \in \Rr{m}{n}}
+\v{x}\\ &+
+\underbrace{
+\begin{bmatrix}
+(M_A^{\rho_1-1}\v{w}_1^T(t))\v{b}_1(t) \cdots  (M_A^{\rho_1-1}\v{w}_1^T(t))\v{b}_m(t) \\
+\vdots   \\
+(M_A^{\rho_m-1}\v{w}_m^T(t))\v{b}_1(t)  \cdots  (M_A^{\rho_m-1}\v{w}_m^T(t))\v{b}_m(t) 
+\end{bmatrix}}_{\text{Kopplungsmatrix } \mathcal{K}(t) \in \Rr{m}{m}}
+\v{u}
+\end{align*}
+\begin{align*}
+K(t)&=\mathcal{K}^{-1}(t)
+\begin{bmatrix}
+(p_{1,0}M_A^0+\cdots+p_{1,\rho_1-1}M_A^{\rho_1-1}+M_A^{\rho_1})\circ \v{w}_1^T(t) \\
+\vdots\\
+(p_{m,0}M_A^0+\cdots+p_{m,\rho_m-1}M_A^{\rho_m-1}+M_A^{\rho_m})\circ \v{w}_m^T(t) \\
+\end{bmatrix}
+\\&=
+\begin{bmatrix}
+\tilde{\v{k}}_1^T(t)\\
+\vdots\\
+\tilde{\v{k}}_m^T(t)\\
+\end{bmatrix}
+V(t)
+\end{align*}
+Zustandsr\u ckf\u hrung:
+\begin{align*}
+\v{u}=-K(t)\v{x} = \mathcal{K}^{-1}(t)(-\mathcal{A}(t)\v{x}+\v{v})
+\end{align*}
+und $m$ entkoppelte Integratorketten der L\a nge $\rho_j$ in den Koordinaten $\zeta_j(t)$ erhalten.\\
+Originalkoordinaten
+\begin{align*}
+\vdiff{x}=(A(t)-B(t)K(t))\v{x}
+\end{align*}
+
 \subsection{Entwurf von Zustandsbeobachtern}
+Entwurf eines (vollst\a ndigen) Luenberger-Beobachters:
+\begin{align*}
+\vhatdiff{x} = \underbrace{A(t)\hat{\v{x}}+B(t)\v{u}}_{\text{Simulator}}+\underbrace{L(t)(\v{y}-\hat{\v{y}})}_{\text{Korrektur}}\\
+\hat{\v{y}}=C(t)\hat{\v{x}}+D(t)\v{u}
+\end{align*}
+mit Beobachterfehlerdynamik $\tilde{\v{x}}(t)=\v{x}(t)-\hat{v{x}}(t)$ ergibt sich 
+\begin{align*}
+\vtildediff{x}=\underbrace{(A(t)-L(t)C(t))}_{=A_b(t)}\tilde{\v{x}}
+\end{align*}
 \subsubsection{Eingr\o \ss ensysteme}
+\textsc{Ackermann-Formel}\\
+In SISO-BNF \u berf\u hren mit Transformation $\v{z}=V(t)\v{x}(t)$, wenn $O(\cdot)$ regul\a r:
+\begin{align*}
+V^{-1}(t)=
+\begin{bmatrix}
+N_A^0\v{v}(t) & \cdots & N_A^{n-1}\v{v}(t)
+\end{bmatrix}\\
+\v{v}(t)=O^{-1}(\v{c}^T(t),A(t))\begin{bmatrix}
+0\\
+\vdots\\
+\tilde{c}_{n-1}(t)
+\end{bmatrix}
+\end{align*}
+mit Freiheitsgrad $\tilde{c}_{n-1}(t)$.
+Zeitvariante Beobachterkorrektur
+\begin{align*}
+\v{l}(t)=\frac{1}{\tilde{c}_{n-1}(t)} \left[ p_0N_A^0 + \cdots + p_{n-1}N_A^{n-1}+N_A^n \right] \circ \v{v}(t)
+\end{align*}
+f\u hrt auf zeitinvariante Dynamikmatrix $\tilde{A}_b = \tilde{A}(t) -\tilde{\v{l}}(t)\tilde{\v{c}}^T(t)$ mit $\tilde{\v{l}}(t)=V(t)\v{l}(t)$
+Wenn die Transformation $\v{z}(t)$ eine Lyapunov-Transformation ist, dann folgt die exp. Stabilit\a t von
+\begin{align*}
+\vtildediff{x}=(A(t)-\v{l}(t)\v{c}^T(t))\tilde{\v{x}}
+\end{align*}
+
+
 \subsubsection{Mehrgr\o \ss ensysteme}
+Reduzierte Beobachtbarkeitsmatrix zusammengesetzt aus den $n$ lin.unabh. Zeilenvektoren von $O(\cdot)$:
+\begin{align*}
+\bar{O}(C(t),A(t))=\begin{bmatrix}
+\v{c}_1^T(t) \\
+\vdots \\
+M_A^{\rho_1-1}\v{c}_1^T(t) \\
+\hline \\
+\vdots\\
+\hline\\
+\v{c}_p^T(t) \\
+\vdots\\
+M_A^{\rho_p-1}\v{c}_p^T(t)
+\end{bmatrix},
+\quad \sum_{j=1}^p\rho_j=n
+\end{align*}
+
+\textsc{Trafo in MIMO-BNF}\\
+Durch 
+\begin{align*}
+V^{-1}(t)=\begin{bmatrix}
+N_A^0\v{v}_1(t) \cdots N_A^{\rho-1}\v{v}_1(t) \vline \cdots \vline N_A^0\v{v}_p(t) \cdots N_A^{\rho_p-1}\v{v}_p(t)
+\end{bmatrix}
+\end{align*}
+und
+\begin{align*}
+\begin{bmatrix}
+\v{v}_1(t) \cdots \v{v}_p(t)
+\end{bmatrix}
+=\bar{O}^{-1}(\cdot)\bar{C}^T(t)
+\end{align*}
+mit 
+\begin{align*}
+\bar{C}^T(t)=
+\begin{bmatrix}
+0 & \cdots & 0 \\
+\vdots & & \vdots \\
+0 & \cdots & 0 \\
+\tilde{c}_{1,\rho_1-1}(t) & \cdots & \tilde{c}_{p,\rho_1-1}(t) \\
+\hline  \\
+\cdots & & \cdots \\
+\hline \\
+0 & \cdots & 0 \\
+\vdots & & \vdots \\
+0 & \cdots & 0 \\
+\tilde{c}_{1,\rho_p-1}(t) & \cdots & \tilde{c}_{p,\rho_p-1}(t) \\
+\end{bmatrix}
+\end{align*}
 
 
 \section{Analyse nichtlinearer Systeme}
+\begin{align*}
+\vdiff{x}=\v{f}(\v{x},t) \quad \text{bzw.} \quad \vdiff{x}=\v{f}(\v{x})
+\end{align*}
 \subsection{Fluss einer DGL}
-\subsection{Existenz und Eindeutigkeit der L\o sung NLDGLSysteme}
+\begin{align*}
+\v{x}=\Phi_t(\v{x}_0)
+\end{align*}
+mit $\v{x}(0)=\Phi_0(\v{x})$ folgt dass $\Phi_0(\cdot)=E$. Axiome: $\v{x}(t+\tau)=\Phi_\tau(\v{x}(t))$, $\v{x}(t+\tau)=\Phi_{t+\tau}(\v{x}_0)=\Phi_\tau(\Phi_t(\v{x}_0))$. Transitionseigenschaft:\\
+\begin{align*}
+\Phi_\tau \circ \Phi_t =\Phi_{t+\tau} \quad\quad \text{(Komposition)}
+\end{align*}
+
+\subsection{Existenz und Eindeutigkeit der L\o sung (NL) DGLSysteme}
+\textsc{Lokale Existenz und Eindeutigkeit}\\
+Sei $\v{f}(\v{x},t)$ st\u ckweise stetig und erf\u lle die Lipschitz Bedingung $\forall t \in [t_0,t_0+\tau]$. Dann existiert ein $\delta>0$, so dass das System genau eine L\o sung f\u r $t\in [t_0,t_0+\delta]$ besitzt (Lokal Lipschitz). Gilt die Lipschitz-Bedingung f\u r alle $\v{x}_1,\v{x}_2$ dann ist $\v{f}(\cdot)$ global Lipschitz.\vspace{0.1cm}
+
+\textsc{Stetigkeit und Lipschitz-Bed.}\\
+Sind $\v{f}(\cdot)$ und $\frac{\partial}{\partial\v{x}}\v{f}(\cdot)$ auf der Menge $\mathcal{B} \times [t_0,t_0+\delta]$ stetig, dann ist die L-B erf\u llt.
+
+\textsc{Globale Existenz und Eindeutigkeit}\\
+Sei $\v{f}$ st\u ckweise stetig in $t$ und global Lipschitz in $[t_0,t_0+\delta]$, dann besitzt die DGL eine eindeutige L\o sung auf dem Intervall. Sind $\v{f}$ und $\frac{\partial}{\partial\v{x}}\v{f}$ in dem Intervall stetig, dann ist $\v{f}$ genau dann global Lipschitz, wenn $\frac{\partial}{\partial\v{x}}\v{f}$ im Intervall gleichm\a \ss ig beschr\a nkt (induz. Matrixnorm) ist.
+
+\textsc{Satz 3.4}\\
+
+
 \subsection{Zustandsraum nichtlinearer Systeme}
+NKR
 \subsubsection{Mannigfaltigkeiten}
+NKR
 \subsubsection{Tangentialraum und Vektorfeld}
+NKR
 \subsubsection{Zusammenhang zwischen Vektorfeld und Differenzialgleichung}
+NKR
+
 \subsection{Zustandstransformationen und Diffeomorphismen}
+TODO
 \subsection{Lie-Ableitung und Lie-Klammern}
 \subsubsection{Lie-Ableitung}
+Lie-Ableitung $L_{\v{f}}h$ bezeichnet die Richtungsableitung einer glatten Funktion $h$ in Richtung eines Vektorfeldes $\v{f}$ am Punkt $\v{p}$:
+\begin{align*}
+(L_{\v{f}}h)(\v{p})=(\v{f}(\v{p}))(h)=\frac{d}{dt}h(\v{p}+t\v{f})\vert_{t=0} = \frac{d}{dt}h(\v{\sigma}(t))\vert_{t=0}
+\end{align*}
+In Originalkoordinaten: 
+\begin{align*}
+(L_{\v{f}}h)(\v{x})=\frac{\partial h}{\partial \v{x}}\v{f}(\v{x})
+\end{align*}
+Au\ss erdem:
+\begin{align*}
+L_{\v{g}}L_{\v{f}}h= \frac{\partial L_{\v{f}}h}{\partial\v{x}}\v{g}
+\end{align*}
 \subsubsection{Lie-Klammer}
+\begin{align*}
+\text{ad}_{\v{f}}\v{g}= [\v{f},\v{g}]=\frac{\partial \v{g}}{\partial \v{x}}(\v{x})\v{f}(\v{x})-\frac{\partial \v{f}}{\partial \v{x}}(\v{x})\v{g}(\v{x})
+\end{align*}
+mit Eigenschaften:
+\begin{align*}
+\begin{array}{cc}
+[\v{f},\v{g}]=-[\v{g},\v{f}] & \text{(Schiefsymmetrie)} \\
+\text{todo}
+\end{array}
+\end{align*}
 \subsection{Distributionen und Involutivit\a t}
+\textsc{Distribution}\\
+Eine Vorschrift, die jedem Punkt $\v{p}$ einen linearen Unterraum $\Delta_p$ des Tangentialraumes $\mathcal{T}_p\mathcal{M}$ in der Form $\Delta_p=\text{span}\{\v{v}_{1,\v{p}}, /cdots, \v{v}_{d,\v{p}}\}$ zuordnet wird als (glatte) Distribution bezeichnet. Sie ist regul\a r in einer Umgebung $V$, wenn f\u r alle $\v{q}\in V$ gilt: $\dim(\Delta_{\v{q}})=d$.\vspace{0.2cm}
+
+\textsc{Involutivit\a t}\\
+Eine regul\a re Distribution ist dann involutiv auf $V$, wenn f\u r alle $\v{q}\in V$ gilt: $[\v{v}_{j,\v{q}},\v{v}_{k,\v{q}}]\in \Delta_{\v{q}} \quad \forall j,k=1,...,d$. Die Lie-Klammer jeder Kombination von Vektorfeldern muss wieder als Linearkombination dieser Vektorfelder darstellen lassen.
+
 \subsection{Steuerbarkeit und Erreichbarkeit nichtlinearer Systeme}
+\textsc{Lokal steuerbar}\\
+Lokal steuerbar am Punkt $\v{x}_1\in \mathcal{M}$ wenn eine offene Umgebung $V$ um $\v{x}_1$ existiert, sodass f\u r alle $\v{x}_2\in V$ eine Zeit $\tau$ und ein $\v{u}$ so existieren, dass $\v{x}(\tau)=\Phi_{\tau}(\v{x}_1)$. \\
+\textsc{Global steuerbar}\\
+Wie lokal, nur f\u r $\v{x}_2 \in \mathcal{M}$.\\
+Einerseits: Steuerbarkeit um eine Ruhelage bzw. AP linearisierte System impliziert die lokale Steuerbarkeit des NL Systems.\\
+Andererseits: Linearisierung eines NL Systems kann zum Verlust der Steuerbarkeit f\u hren (z.B. kin. Fahrzeugmodell)
+
 \subsubsection{Nichtlineare Systeme ohne Driftterm}
+\begin{align*}
+\vdiff{x}=\sum_{j=1}^m \v{g}_j(\v{x})u_j
+\end{align*}
+Genau dann lokal steuerbar um $\v{x}_0$, wenn die Steuerbarkeitsdistribution 
+\begin{align*}
+\Delta_S(\v{x})=\text{span}\{\v{g}_1, \cdots, \v{g}_m, [\v{g}_i,\v{g}_j], [\v{g}_i,[\v{g}_j,\v{g}_k]],\cdots\}
+\end{align*}
+mit $i,j,k,...=1,...,m$ die Bedingung $\dim(\Delta_S(\v{x}))=n$ erf\u llt.
+
 \subsubsection{Nichtlineare Systeme mit Driftterm}
+\begin{align*}
+\vdiff{x}=\v{f}(\v{x})+\sum_{j=1}^m \v{g}_j(\v{x})u_j
+\end{align*}
+
+\textsc{Lokale Erreichbarkeit}\\
+Das System ist lokal erreichbar am Punkt $\v{x}_1$, wenn eine Umgebung $V$ um $\v{x}_1$, so dass f\u r alle $\v{x}_2 \in V$ eine Zeit $\tau$ und ein $\v{u}$ existieren, dass gilt $\v{x}(\tau)=\Phi_{\tau}(\v{x}_1)=\v{x}_2$.
+Genau dann lokal erreichbar um $\v{x}_0$, wenn die Erreichbarkeitsdistribution 
+\begin{align*}
+\Delta_E(\v{x})=\text{span}\{\v{g}_1, \cdots, \v{g}_m, [\v{g}_i,\v{g}_j], [\v{g}_i,[\v{g}_j,\v{g}_k]],\cdots\}
+\end{align*}
+mit $i,j,k...=0,...,m$ und $\v{g}_0(\v{x})=\v{f}(\v{x})$ die Bedingung $\dim(\Delta_E(\v{x}))=n$.\vspace{0.2cm}
+
+\textbf{Lokale Erreichbarkeit schw\a chere Eigenschaft als die lokale Steuerbarkeit.}
+
 
 \section{Exakte Linearisierung und Flachheit}
+\begin{align*}
+\vdiff{x}=\v{f}(\v{x})+\sum_{j=1}^m \v{g}_j(\v{x})u_j \\
+y_j = h_j(\v{x})
+\end{align*}
+mit glatten Vektorfeldern $\v{f}, \v{g}_i \in \mathcal{TM}$ und glatten Funktionen $h_i(\v{x})$.
+
 \subsection{Exakte Eingangs-/Ausgangslinearisierung f\u r Eingr\o \ss ensysteme}
+\begin{align*}
+\vdiff{x}=\v{f}(\v{x})+\v{g}(\v{x})u\\
+y=h(\v{x})
+\end{align*}
+
 \subsubsection{Relativer Grad}
+Zeitliche \A nderung des Ausgangs als lineares System mit neuem Eingang $\dot{y}=v$ mit der Zustandsr\u ckf\u hrung:
+\begin{align*}
+u=\frac{-L_{\v{f}}h(\v{x})+v}{L_{\v{g}}h(\v{x})}
+\end{align*}
+
+\textsc{Definition}\\
+Das System hat den relativen Grad $r$ an der Stelle $\bar{\v{x}}$ wenn \textbf{(i)} $L_{\v{g}}L_{\v{f}}^kh(\v{x})=0$ f\u r $k=0,...,r-2$ und \textbf{(ii)} $L_{\v{g}}L_{\v{f}}^{r-1}h(\bar{\v{x}})\neq 0$. Existieren Punkte $\v{x}$ sodass $L_{\v{g}}L_{\v{f}}^{r-1}h(\v{x}) = 0$, so ist der RG nicht wohl definiert.\\
+\emph{Differenziere den Ausgang so oft, bis der Eingang erstmalig explizit auftritt.}
+
+Relativer Grad eines LTI Eingr\o \ss ensystems entspricht dem Differenzgrad von Z\a hler- und Nennerpolynom der entsprechenden \U bertragungsfunktion (Laurent-Reihe).
+
 \subsubsection{Byrnes-Isidori-Normalform}
+Kette von Differentiationen aus RG Def. $\xi_1=y,...,\xi_r=y^{(r-1)}$ f\u hrt auf 
+\begin{align*}
+y^{(r)}&=L_{\v{f}}^rh(\v{x})+L_{\v{g}}L_{\v{f}}^{r-1}h(\v{x})u \\
+\Leftrightarrow u&= \frac{-L_{\v{f}}^rh(\v{x})+v}{L_{\v{g}}L_{\v{f}}^{r-1}h(\v{x})} \quad \text{ mit $y^{(r)}=v$ }
+\end{align*}
+lineares E/A Verhalten in Form einer Integratorkette der L\a nge $r$.
+
+\textsc{Zustandstransformation auf Byrnes-Isidori-Normalform}\\
+\begin{align*}
+\v{z}=\begin{bmatrix}
+\v{\xi}\\
+\v{\eta}
+\end{bmatrix}=
+\begin{bmatrix}
+\xi_1 \\
+\vdots \\
+\xi_r \\ \hline
+\eta_1 \\
+\vdots \\
+\eta_{n-r}
+\end{bmatrix}
+=\v{\Phi}(\v{x})=
+\begin{bmatrix}
+h(\v{x})\\
+L_{\v{f}}h(\v{x})\\
+\vdots\\
+L_{\v{f}}^{r-1}h(\v{x})\\ \hline
+\Phi_{r+1}(\v{x})\\
+\vdots\\
+\Phi_n(\v{x})
+\end{bmatrix}
+\end{align*}
+Es kann $\Phi_{r+1},...,\Phi_n$ so gew\a hlt werden, dass $L_{\v{g}}\Phi_k(\v{x})=0=q_k(\v{\xi},\v{\eta}), \quad k=r+1,...,n$.\\
+Diffeomorphismus: $\Phi^{-1}(\v{z})=\v{x}$ (zumindest lokal)%
+
+\begin{align*}
+&\Sigma_1: 
+\begin{cases}
+\dot{\xi}_1=\xi_2 \\
+\dot{\xi}_2=\xi_3 \\
+\vdots\\
+\dot{\xi}_r=a(\v{\xi},\v{\eta})+b(\v{\xi},\v{\eta})u \\
+\end{cases}\\
+&\Sigma_2: 
+\begin{cases}
+\dot{\eta}_1=p_1(\v{\xi},\v{\eta})+q_1(\v{\xi},\v{\eta})u \\
+\dot{\eta}_2=p_2(\v{\xi},\v{\eta})+q_2(\v{\xi},\v{\eta})u \\
+\vdots\\
+\dot{\eta}_{n-r}=p_{n-r}(\v{\xi},\v{\eta})+q_{n-r}(\v{\xi},\v{\eta})u \\
+\end{cases}\\
+&y=\xi_1
+\end{align*}
+mit
+\begin{align*}
+a(\v{\xi},\v{\eta})&=L_{\v{f}}^rh\circ \v{\Phi}^{-1}(\v{z})\\
+b(\v{\xi},\v{\eta})&=L_{\v{g}}L_{\v{f}}^{r-1}h\circ \v{\Phi}^{-1}(\v{z})\\
+p_k(\v{\xi},\v{\eta})&=L_{\v{f}}\Phi_{r+k}\circ \v{\Phi}^{-1}(\v{z})\\
+q_k(\v{\xi},\v{\eta})&=L_{\v{g}}\Phi_{r+k}\circ \v{\Phi}^{-1}(\v{z}) \quad\qquad k=1,...,n-r
+\end{align*}
+
+\textsc{Exakte E/A-Linearisierung}\\
+\begin{align*}
+u=\frac{-\v{a}(\v{\xi},\v{\eta})+v}{\v{b}(\v{\xi},\v{\eta})}\\
+v=y^{*(r)}-\sum_{j=0}^{r-1}p_j\left(y^{(j)}-y^{*(j)}\right)
+\end{align*}
 \subsubsection{Nulldynamik}
+\emph{Wie muss $\v{x}_0$ und $u(t)$ gew\a hlt werden, damit der Ausgang $y(t)$ $\forall t$ identisch Null ist.}\\
+Damit $\dot{\xi}_r=0$, muss $0=a(\v{0},\v{\eta})+b(\v{0},\v{\eta})u$ bzw. $u=-\frac{a(\v{0},\v{\eta})}{b(\v{0},\v{\eta})}$ gelten und es ergibt sich die \textbf{Nulldynamik}:
+\begin{align*}
+\vdiff{\eta}=\v{p}(\v{0},\v{\eta})
+\end{align*}
+
+\textsc{Stabilit\a t der Nulldynamik}\\
+Stabilit\a t der Nulldynamik ist entscheidend f\u r die Anwendung der Exakten E/A-Linearisierung.
+
+\textsc{Stbilisierung mit der Exakten E/A-Lin.}\\
+Ist die Nulldynamik des Systems lokal asymptotisch (expon.) stabil, dann stabiliert das nl Regelgesetz:
+\begin{align*}
+u=\frac{1}{L_{\v{g}}L_{\v{f}}^{r-1}h(\v{x})}\left(-L_{\v{f}}^rh(\v{x})-\sum_{j=0}^{r-1}p_jL_{\v{f}}^jh(\v{x})\right)
+\end{align*}
+mit $p_j$ den Koeffizienten eines Hurwitz-Polynoms das System lokal asymptotisch (expon.).
+
 \subsection{Exakte Eingangs-/Zustandslinearisierung f\u r Eingr\o \ss ensysteme}

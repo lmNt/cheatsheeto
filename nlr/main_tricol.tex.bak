@@ -30,6 +30,8 @@
 \renewcommand{\v}[1]{\mbb{#1}} % vector, ie bold face
 \newcommand{\vdiff}[1]{\dot{\mbb{#1}}}
 \newcommand{\vddiff}[1]{\ddot{\mbb{#1}}}
+\newcommand{\vhatdiff}[1]{\dot{\hat{\mbb{#1}}}}
+\newcommand{\vtildediff}[1]{\dot{\tilde{\mbb{#1}}}}
 \newcommand{\tr}{\text{tr}}
 \newcommand{\const}{\text{const.}}
 
