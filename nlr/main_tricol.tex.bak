@@ -12,6 +12,7 @@
 \usepackage{xcolor}
 \usepackage{color}
 \usepackage{listings}
+\usepackage{titlesec}
 \usepackage[makeroom]{cancel} % zum durchstreichen von gleichungen
 \renewcommand{\a}{\"{a}}
 \renewcommand{\o}{\"{o}}
@@ -34,7 +35,6 @@
 \newcommand{\vtildediff}[1]{\dot{\tilde{\mbb{#1}}}}
 \newcommand{\tr}{\text{tr}}
 \newcommand{\const}{\text{const.}}
-
 % python code style for listings
 \lstset{
 language=Python,
@@ -110,7 +110,11 @@ showstringspaces=false
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 % Don't print section numbers
-\setcounter{secnumdepth}{3}
+%\setcounter{secnumdepth}{3}
+\setcounter{secnumdepth}{5}
+\titleformat*{\subsection}{\small\bfseries}
+\titleformat*{\subsubsection}{\footnotesize\bfseries}
+\titleformat*{\paragraph}{\scriptsize\bfseries}
 
 
 \setlength{\parindent}{0pt}

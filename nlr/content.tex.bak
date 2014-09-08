@@ -492,8 +492,220 @@ Stabilit\a t der Nulldynamik ist entscheidend f\u r die Anwendung der Exakten E/
 \textsc{Stbilisierung mit der Exakten E/A-Lin.}\\
 Ist die Nulldynamik des Systems lokal asymptotisch (expon.) stabil, dann stabiliert das nl Regelgesetz:
 \begin{align*}
-u=\frac{1}{L_{\v{g}}L_{\v{f}}^{r-1}h(\v{x})}\left(-L_{\v{f}}^rh(\v{x})-\sum_{j=0}^{r-1}p_jL_{\v{f}}^jh(\v{x})\right)
+u=\frac{1}{L_{\v{g}}L_{\v{f}}^{r-1}h(\v{x})}\left(-L_{\v{f}}^rh(\v{x})+\textcolor{red}{y^{*(r)}}-\sum_{j=0}^{r-1}p_j \left[ L_{\v{f}}^jh(\v{x})\textcolor{red}{-y^{*(j)}}\right]\right)
 \end{align*}
 mit $p_j$ den Koeffizienten eines Hurwitz-Polynoms das System lokal asymptotisch (expon.).
 
 \subsection{Exakte Eingangs-/Zustandslinearisierung f\u r Eingr\o \ss ensysteme}
+Wenn $r=n$ Exakte E/A-Linearisierung $\Rightarrow$ Exakte E/Z-Linearisierung.\\
+
+\textsc{Brunovsky-Normalform}
+Bezeichne $y=\lambda(\v{x})$ als fiktive Ausgangsgr\o \ss e mit relativem Grad $r=n$. Dann reduziert sich die Zustandstransformation zu
+\begin{align*}
+\v{z}=\begin{bmatrix}
+z_1 \\
+\vdots \\
+z_n
+\end{bmatrix}=\v{\Phi}(\v{x})=
+\begin{bmatrix}
+\lambda(\v{x})\\
+L_{\v{f}}\lambda(\v{x})\\
+\vdots\\
+L_{\v{f}}^{n-1}\lambda(\v{x})
+\end{bmatrix}
+=
+\begin{bmatrix}
+y\\
+\dot{y}\\
+\vdots\\
+y^{(n-1)}
+\end{bmatrix}
+\end{align*}
+mit \textbf{(i)} $L_{\v{g}}L_{\v{f}}^k \lambda(\v{x})=0$ f\u r $k=0,...,n-2$ und \textbf{(ii)} $L_{\v{g}}L_{\v{f}}^{n-1} \lambda(\v{x})\neq 0$ ergibt vereinfachte Byrnes-Isidori-Normalform:
+\begin{align*}
+\dot{z}_1&=z_2 \\
+\dot{z}_2&=z_3\\
+\vdots\\
+\dot{z}_n&=a(\v{z})+b(\v{z})u \\
+y&=z_1
+\end{align*}
+mit 
+\begin{align*}
+a(\v{z})=L_{\v{f}}^n\lambda(\v{x})  (\circ \v{\Phi}^{-1}(\v{z})) &\quad b(\v{z})=L_{\v{g}}L_{\v{f}}^{n-1}\lambda(\v{x})  (\circ \v{\Phi}^{-1}(\v{z}))\\
+u&=\frac{-a(\v{z})+v}{b(\v{z})}
+\end{align*}
+
+$L_{\v{g}}L_{\v{f}}\lambda(\v{x})$ in ein System von partiellen DGL 1. Ordnung vom Frobenius Typ \u berf\u hren:
+\begin{align*}
+L_{\v{g}}\lambda(\v{x})=0\\ L_{\text{ad}_{\v{f}}\v{g}}\lambda(\v{x})=0\\ \vdots\\ L_{\text{ad}^{n-2}_{\v{f}}\v{g}}\lambda(\v{x})=0\\ L_{\text{ad}^{n-1}_{\v{f}}\v{g}}\lambda(\v{x})\neq 0 \\
+\frac{\partial \lambda(\v{x})}{\partial \v{x}}
+[\v{g} \; \text{ad}_{\v{f}}\v{g} \; \cdots \; \text{ad}^{n-2}_{\v{f}}\v{g} \; \text{ad}^{n-1}_{\v{f}}\v{g}] &= [0 \; \cdots \; 0 \; \beta(\v{x})]
+\end{align*}
+
+\textsc{Existenz eines Ausgangs mit relativem Grad $r=n$}\\
+Es existiert genau eine L\o sung $\lambda(\v{x})$ des Systems von PDGL 1. Ordnung wenn \textbf{(i)} $P_E(\v{x})=[\v{g}(\v{x}),\text{ad}_{\v{f}}\v{g}(\v{x}),...,\text{ad}_{\v{f}}^{n-1}\v{g}(\v{x})]$ Rang $n$ besitzt und \textbf{(ii)} die Distribution $\Delta_E(\v{x})=\text{span}\{\v{g}(\v{x}),\text{ad}_{\v{f}}\v{g}(\v{x}),...,\text{ad}_{\v{f}}^{n-2}\v{g}(\v{x})\}$ involutiv ist in einer Umgebung von $\bar{\v{x}}$.
+
+\subsubsection{Theorem von Frobenius}
+Eine regul\a re Distribution ist genau dann vollst\a ndig integrabel, wenn sie involutiv ist.
+
+\subsubsection{Stabilisierung mit Zustandsr\u ckf\u hrung}
+Regelgesetz w\a hlen als:
+\begin{align*}
+u=\frac{1}{b(\v{z})}\left(-a(\v{z})\underbrace{-\sum_{j=0}^{n-1}p_jz_{j+1}}_{v}\right)
+\end{align*}
+ergibt Matrix mit $p$ und unterster zeile blabla..
+
+
+\subsection{Erweiterung auf Mehrgr\o \ss ensysteme}
+\begin{align*}
+\vdiff{x}=\v{f}(\v{x})+\sum_{j=1}^m\v{g}_j(\v{x})u_j\\
+y_i=h_i(\v{x}) \quad i=1,...,p
+\end{align*}
+Annahme: $\dim \v{y}=p=m=\dim \v{u}$
+
+\subsubsection{Exakte E/A-Linearisierung}
+\textsc{Vektorieller relativer Grad}\\
+Das System hat den vektoriellen relativen Grad $\{r_1,...,r_m\}$ an der Stelle $\bar{x}$, wenn
+\textbf{(i)} $L_{\v{g}_j}L_{\v{f}}^kh_i(\v{x})=0, \quad i,j=1,...,m$ f\u r $k=0,1,...,r_i-2$ und 
+\textbf{(ii)} die $(m\times m)$-Entkopplungsmatrix $B(x)=\begin{bmatrix}
+L_{\v{g}_1}L_{\v{f}}^{r_1-1}h_1(\v{x}) & \cdots & L_{\v{g}_m}L_{\v{f}}^{r_1-1}h_1(\v{x})\\
+\vdots & & \vdots \\
+L_{\v{g}_1}L_{\v{f}}^{r_m-1}h_m(\v{x}) & \cdots &  L_{\v{g}_m}L_{\v{f}}^{r_m-1}h_m(\v{x})
+\end{bmatrix}
+$ \\
+am Punkt $\v{x}=\bar{\v{x}}$ regul\a r ist.
+
+\textsc{Byrnes-Isidori-NF und Nulldynamik}\\
+Sei $r\leq n$ die Summe der einzelnen relativen Grade. Ist $r<n$ dann existieren $(n-r)$ Funktionen $\Phi(\v{x})$ so dass mit
+\begin{align*}
+\v{z}=\begin{bmatrix}
+\xi_{1,1}\\
+\vdots\\
+\xi_{1,r_1}\\\hline
+\vdots\\\hline
+\xi_{m,1}\\
+\vdots\\
+\xi_{m,r_m}\\\hline
+\eta_1\\
+\vdots\\
+\eta_{n-r}
+\end{bmatrix}=\v{\Phi}(\v{x})=
+\begin{bmatrix}
+h_1(\v{x})\\
+\vdots\\
+L_{\v{f}}^{r_1-1}h_1(\v{x})\\\hline
+\vdots\\\hline
+h_m(\v{x})\\
+\vdots\\
+L_{\v{f}}^{r_m-1}h_m(\v{x})\\\hline
+\Phi_{r+1}(\v{x})\\
+\vdots\\
+\Phi_n(\v{x})
+\end{bmatrix}
+\end{align*}
+ein lokaler Diffeomorphismus gegeben ist.
+Die Funktionen $\Phi_{r+1}(\v{x}),...,\Phi_n(\v{x})$ k\o nnen \textbf{nicht} wie im Eingr\o \ss enfall zu $L_{\v{g}_j}\Phi_k(\v{x})=0$ gew\a hlt werden, \textbf{au\ss er} wenn $\Delta_0=\text{span}\{\v{g}_1,...\v{g}_m\}$ um $\bar{\v{x}}$ involutiv ist.
+BI-NF
+\begin{align*}
+&\Sigma_1:\begin{cases}
+\dot{\xi}_{m,1}=\xi_{m,2}\\
+\dot{\xi}_{m,2}=\xi_{m,3}\\
+\vdots \\
+\dot{\xi}_{m,r_m}=a_m(\v{\xi},\v{\eta})+ \v{b}_m^T(\v{\xi},\v{\eta})\v{u}
+\end{cases}\\
+&\Sigma_2: \begin{cases}
+\dot{\eta}_{1}=p_{1}(\v{\xi},\v{\eta})+ \v{q}_{1}^T(\v{\xi},\v{\eta})\v{u}\\
+\dot{\eta}_{2}=p_{2}(\v{\xi},\v{\eta})+ \v{q}_{2}^T(\v{\xi},\v{\eta})\v{u}\\
+\vdots \\
+\dot{\eta}_{n-r}=p_{n-r}(\v{\xi},\v{\eta})+ \v{q}_{n-r}^T(\v{\xi},\v{\eta})\v{u}
+\end{cases}\\
+&\v{y}=[\xi_{1,1} \; \xi_{2,1} \; \cdots \; \xi_{m,1}]^T
+\end{align*}
+mit
+\begin{align*}
+B(\v{\xi},\v{\eta})=\begin{bmatrix}
+\v{b}^T_1(\v{\xi},\v{\eta})\\
+\vdots\\
+\v{b}_m^T(\v{\xi},\v{\eta})
+\end{bmatrix}=B(\v{x})\circ\v{\Phi}^{-1}(\v{z})
+\end{align*}
+\begin{align*}
+\v{u}=B^{-1}(\v{\xi},\v{\eta})(-\v{a}(\v{\xi},\v{\eta})+\v{v})
+\end{align*}
+\emph{Stabilit\a t des Gesamtsystems bleibt von der Stabilit\a t der entsprechenden Nulldynamik abh\a ngig}.
+
+\textsc{Stabilisierung und Ausgangsregelung}\\
+\begin{align*}
+\v{u}=B^{-1}(\v{x})
+\begin{bmatrix}
+-L_{\v{f}}^{r_1}h_1(\v{x})\textcolor{red}{+y_1^{*(r_1)}}-\sum_{l=0}^{r_1-1}p_{1,l} \left[L_{\v{f}}^lh_1(\v{x}) \textcolor{red}{-y_1^{*(l)}} \right]\\
+\vdots \\
+-L_{\v{f}}^{r_m}h_m(\v{x})\textcolor{red}{+y_m^{*(r_m)}}-\sum_{l=0}^{r_m-1}p_{m,l} \left[L_{\v{f}}^lh_m(\v{x}) \textcolor{red}{-y_m^{*(l)}} \right]
+\end{bmatrix}
+\end{align*}
+
+
+
+\subsubsection{Exakte E/Z-Linearisierung}
+BLABLA
+
+
+\subsection{Differenzielle Flachheit}
+\emph{S\a mtliche Zustands und Eingangsgr. werden durch einen flachen Ausgang und dessen Zeitableitungen parametriert.}
+
+
+\subsubsection{Flache Systeme}
+\textsc{Flacher Ausgang}\\
+Fiktiver Ausgang $\v{z}(t)$ muss folgende Bedingungen erf\u llen, um ein flacher Ausgang (flaches System) zu sein:
+\begin{itemize}
+\item[(i)] $z_i$ mit $i=1,...,m$ lassen sich als Funktionen von $\v{x}, \;\v{u}$ und einer endlichen Anzahl von Zeitableitungen $u_j^{(k)}(t)$ ausdr\u cken: $\v{z}=\v{\Phi}(\v{x},\v{u},\vdiff{u},...,\v{u}^{(\alpha)})$
+\item[(ii)] $\v{x}$ und $\v{u}$ lassen sich als Funktion von $z_i(t)$ und einer endlichen Anzahl von Zeitableitungen $z_i^{(k)}(t)$ darstellen: $\v{x}^*=\v{\theta}_{\v{x}}(\v{z}^*,\vdiff{z}^*, ..., \v{z}^{*(\beta-1)})$, $\v{u}^*=\v{\theta}_{\v{x}}(\v{z}^*,\vdiff{z}^*, ..., \v{z}^{*(\beta)})$ mit Vorgabe $\v{z}^*(t)$.
+\item[(iii)] Die Komponenten von $z$ sind differenziell unabh\a ngig, d.h. es ex. keine DGL: $\v{\psi}(\v{z}^*,\vdiff{z}^*, ..., \v{z}^{*(\delta)})=\v{0}$. \A quivalent zu $\dim \v{z}=\dim \v{u}$.
+\end{itemize}
+Ausgang darstellbar \u ber $\v{y}=\v{\theta}_{\v{y}}(\v{z}^*,\vdiff{z}^*, ..., \v{z}^{*(\gamma)})$.\\
+Der flache Ausgang ist nicht eindeutig. Freie Systeme $\vdiff{x}=\v{f}(\v{x})$ sind nicht flach, da (iii) nicht erf\u llt. Triviale F\a lle, wie $\v{z}=[\v{x}^T, \v{u}^T]^T$, sind ausgeschlossen durch (iii). LTI und LTV Systeme sind genau dann steuerbar, wenn sie flach sind.\\
+
+\paragraph{Flache Eingr\o \ss ensysteme}
+Mit $\dim\v{u}=1$ reduzieren sich die Bedingungen auf $z=\phi(\v{x})$, was auf $\v{x}=\v{\theta}_{\v{x}}(z,...,z^{(n-1)}), u=\theta_u(z,...,z^{(n)}), y=\theta_y(z,...,z^{(n-r)})$ f\u hrt, mit relativem Grad $r$.
+
+\paragraph{Zusammenhang zwischen Flachheit und Exakter EZ-Lin}
+Fiktive Ausgangsgr\o \ss bei Exakter E/Z-Lin stellt einen flachen Ausgang dar. Flachheit umfasst E/Z-Lin.
+
+
+\subsubsection{Flachheitsbasierte Trajektorienplanung und Steuerung}
+Ausgangsgr\o \ss e folgt einer vorgegebenen Referenztrajektorie. Besonders einfach f\u r flache Systeme.
+\paragraph{Realisierung von \U berg\a ngen zwischen AP}
+AP ist die L\o sung von $\v{0}=\v{f}(\v{x}_R,\v{u}_R)$. AP entsprechen der Form aus \textbf{(i)}. F\u r flache Systme kann die Vorgabe der AP entweder durch Vorgabe von $\v{u}_R^i$ oder von $\v{z}_R^i$, $i=0,\tau$ erfolgen. $\v{z}^*$ als hinreichend of stet.diff.bar mit Stationarit\a tsbed. bei $0$ und $\tau$ f\u r $\v{z}(\cdot)$ und deren $\beta_i$-fachen Ableitungen. F\u hrt auf (ii).
+
+\paragraph{Konstruktion polynomialer Solltraj.}
+Um $\v{z}$ zu bestimmen w\a hle Polynom vom Grad $2\beta +1$ resultiert in einem algebraischen Gleichungssystem f\u r die Koeffizienten $p_i$ des Polynoms.
+
+\paragraph{2-FHG-Regeleung mit flachheitsbasierter Steuerung}
+Praxiseinsatz. Flachheitsbasierte Parametrierung + Referenzgenerator und eine R\u ckf\u hrung mit Beobachter zur Stabilisierung des Trajektorienfolgefehlers. Bei kleinen Abweichungen zwischen $\v{x}_0$ und $\v{x}_0^*$ kann eine Linearisierung aus der flachheitsbasierten Parametrierung folgen, was auf ein LTI System f\u hrt.
+
+\subsubsection{Flachheitsbasierte Trajektorienfolgeregelung}
+Trajektorienfolgeregelung f\u r flachen Ausgang $\v{z}$. Zwei F\a lle \textbf{(i)} $\sum_{i=1}^m \beta_i=n$ und \textbf{(ii)} $\sum_{i=1}^m \beta_i>n$.
+
+\paragraph{(i) Statische Zustandsr\u ckf\u rhung}
+System besitzt vektoriellen relativen Grad $r=\{r_1,...,r_m\}=\{\beta_1,...,\beta_m\}$ und ist damit exakt E/Z-lin.bar. Mit Diffeomorphismus $\v{\xi}=\v{z}=\v{\Phi}(\v{x})$ in nichtlineare RNF transformieren. Mit neuem Eingang $\v{v}(t)$ gem\a \ss\ $\xi_i^{(\beta_i)}=v_i$ (Brunovsky-NF) kann eine exakte Linearisierung und Entkopplung erzielt werden mit $\v{u}=\v{a}^{-1}(\v{\xi},\v{v})$. Vorgabe der Eigenwerte f\u r die Integratorketten.\\
+Flachheitsbasierte Trajektorienfolgeregelung ergibt sich aus Eingangsparametrierung $\v{u}=\v{\Theta}_{\v{u}}(z_1,...,z_1^{(\beta_1 -1)}, v_1, ..., z_m,...,z_m^{(\beta_m -1)}, v_m)$. Statisch da nur $v$ ohne Ableitung vorkommt.
+\paragraph{(ii.a) Quasi-Statische Zustandsr\u ckf\u rhung}
+Suche Diffeomorphismus der in verallgemeinerte RNF transfomiert. Definiere $\kappa$ so, dass $\sum_{i=1}^m \beta_i=n+\sum_{i=1}^m \kappa_i$. 
+Neue Zust\a nde $\v{\xi}$ mit $\beta_i-\kappa_i$ beschreiben. Neue Eing\a nge als $m$ lineare Integratorketten der L\a nge $\beta_i-\kappa_i$. 
+In der quasi-statischen Zustandsr\u ckf\u hrung treten nun Ableitungen $v_i^{(j)}, \; j=1,...,\kappa_i$ auf. Systemordnung $n$ bleibt erhalten in den transformierten Koordinaten $\v{\xi}$. Bei Trajektorienfolgeregelung: $z_i^*(t) \in C^{\beta_i}$.
+
+\paragraph{(ii.b) Dynamische Zustandsr\u ckf\u rhung}
+Geeignete dynamische Erweiterung, um dann wie eine statische ZuRuFu aus (i) zu entwerfen. Ansatz:
+\begin{align*}
+&\vdiff{x}_d=\v{f}_d(\v{x},\v{x}_d, \v{u}_d) \quad \v{u}=\v{b}(\v{x},\v{x}_d, \v{u}_d) \quad \dim\v{x}=\kappa\\
+&\Rightarrow \quad \vdiff{x}=\v{f}(\v{x},\v{b}(\v{x},\v{x}_d, \v{u}_d)) \quad \vdiff{x}_d=\v{f}_d(\v{x},\v{x}_d, \v{u}_d)
+\end{align*}
+sodass $\dim[\v{x},\v{x}_d]=n+\kappa=\sum_{i=1}^m \beta_i$
+
+\subsubsection{Nichtlinearer Folgebeobachter mit zeitvarianter Beobachterverst\a rkung}
+Nichtlinearer Zustandsbeobachter als Ansatz: $\vhatdiff{x}=\v{f}(\hat{\v{x}}, \v{u})+L(t)(\v{y}-\v{h}(\hat{\v{x}}))$ mit Beobachterkorrektur $L(t)$. Dimensionierung von $L(t)$ aus der Beobachterfehlerdynamik $\vtildediff{x}$ im Zustand $\tilde{\v{x}}(t)=\v{x}(t)-\hat{\v{x}}(t)$. Aus der Beobachterfehlerdynamik folgt: $\vhatdiff{x}=(A(t)-L(t)C(t))\tilde{\v{x}}$ mit $A(t)=\frac{\partial \v{f}}{\partial \v{x}}\vert_{\v{x}^*,\v{u}^*}$ und $C(t)=\frac{\partial \v{h}}{\partial \v{x}}\vert_{\v{x}^*,\v{u}^*}$. Dimensionierung bspw aus Ackermann-Formel f\u r LTV-Systeme.
+
+\subsubsection{Trajektorienfolgeregelung f\u r einen nicht-flachen Ausgang}
+
+
+\section{Nichtlinearer Beobachter}
