@@ -706,6 +706,44 @@ sodass $\dim[\v{x},\v{x}_d]=n+\kappa=\sum_{i=1}^m \beta_i$
 Nichtlinearer Zustandsbeobachter als Ansatz: $\vhatdiff{x}=\v{f}(\hat{\v{x}}, \v{u})+L(t)(\v{y}-\v{h}(\hat{\v{x}}))$ mit Beobachterkorrektur $L(t)$. Dimensionierung von $L(t)$ aus der Beobachterfehlerdynamik $\vtildediff{x}$ im Zustand $\tilde{\v{x}}(t)=\v{x}(t)-\hat{\v{x}}(t)$. Aus der Beobachterfehlerdynamik folgt: $\vhatdiff{x}=(A(t)-L(t)C(t))\tilde{\v{x}}$ mit $A(t)=\frac{\partial \v{f}}{\partial \v{x}}\vert_{\v{x}^*,\v{u}^*}$ und $C(t)=\frac{\partial \v{h}}{\partial \v{x}}\vert_{\v{x}^*,\v{u}^*}$. Dimensionierung bspw aus Ackermann-Formel f\u r LTV-Systeme.
 
 \subsubsection{Trajektorienfolgeregelung f\u r einen nicht-flachen Ausgang}
-
+Bestimme Referenztrajektorie $\v{z}^*(t)$ aus DGL $\v{\theta}_{\v{y}}(\v{z}^*,\vdiff{z}^*, ..., \v{z}^{*(\gamma)})=\v{y}^*$ um eine Folgeverhalten f\u r $\v{y}(t)\rightarrow \v{y}^*(t)$ zu implizieren. DGL ist stabil: \U ber numerische Integration $\v{y}^*(t)$ ermitteln. DGL instabil: Numerisch l\o sen. Nur APwechsel: Direkt aus $\v{\theta}_{\v{y}}(\v{z}_R^*,\v{0},...,\v{0})=\v{y}_R^*$
 
 \section{Nichtlinearer Beobachter}
+\subsection{Nichtlineare Beobachtbarkeit}
+\textsc{Beobachtbarkeit}\\
+Anfangszust\a nde $\v{x}_{01} \neq \v{x}_{02}$ ununterscheidbar, wenn $y_i(t,\v{x}_{01}, \v{u})=y_i(t,\v{x}_{02}, \v{u})$ f\u r alle $\v{u}$ identisch sind. Beobachtbar wenn $\v{x}_{01}=\v{x}_{02}$. \vspace{0.2cm}
+
+\textsc{Beobachtbarkeitsraum}\\
+$O=\text{span}\{h_1(\v{x}), L_fh_1(\v{x}), ..., h_p(\v{x}), L_f h_p(\v{x}),... \}$ \vspace{0.2cm}
+
+\textsc{Gleichf\o rmige Beobachtbarkeit}\\
+Systeme, deren Zust\a nde aus aufeinanderfolgenden Zeitableitungen der Messgr\o \ss en rekonstriert werden k\o nnen sind gleichf\o rmig beobachtbar: $H \subset O$, mit $H$ wie Beobachtbarkeitsraum nur bis $L_f^{\rho_i-1}$ mit Beobachtbarkeitsindex $\rho_i$. \vspace{0.2cm}
+
+\textsc{Beobachtbarkeits-Abbildung}\\
+Wenn gleichf\o rmig beobachtbar, dann Beo-Abb. $\v{q}(x)$ immer invertierbar (lokal), d.h. der unbekannte Zustand $\v{x}$ kann aus dem Vektor $\bar{\v{y}}$ der Zeitableitungen eindeutig berechnet werden. $\v{q}(\v{x})=[\v{q}_1 \cdots \v{q}_p]^T = \bar{\v{y}}$ mit $\v{q}_i=[L_f^0 h_i(\v{x}) \cdots L_f^{n_i-1}h_i(\v{x})]^T$. \vspace{0.2cm}
+
+\textsc{Lokale Beobachtbarkeit}\\
+System lokal beobachtbar an $\v{x}_p$ $\Leftrightarrow$ $\exists$ Umgebung $U$ von $\v{x}_p$, so dass $\v{q}$ f\u r $\v{x}\in U$ invertiert werden kann. \vspace{0.2cm}
+
+\textsc{Beobachtbarkeits-Matrix}\\
+Jacobi-Matrix von $\v{q}(\v{x})$ hat vollen Rang an $\v{x}_p$, dann ist das System lokal beobachtbar an $\v{x}_p$.
+
+
+\subsection{Beobachterentwurf f\u r nichtlineare Systeme}
+\textsc{Luenberger Struktur}\\
+$\vhatdiff{x}=\underbrace{f(\hat{\v{x}},\v{u})}_{\text{Simulator}}+\underbrace{G(\hat{\v{x}},\v{u})(\v{y}-\v{h}(\hat{\v{x}}))}_{\text{Korrektur}}$
+
+\textsc{Dimensionierung}\\
+Sinnvoller Anfangswert. Korrektur \u ber Beobachterfehler $\tilde{\v{x}}=\v{x}-\hat{\v{x}}$ mit Ziel $\lim_{t\rightarrow \infty}\tilde{\v{x}}(t)=\v{0}$ (Stabilisierungsaufgabe).
+
+\subsubsection{Spezialf\a lle}
+\paragraph{a) Linearisierung um Ruhelage $\v{x}_R$}
+$\tilde{\v{x}}=\Delta\v{x}-\Delta\hat{\v{x}}$ f\u hrt auf $\vtildediff{x}=(A-GC)\tilde{\v{x}}+\mathcal{O}^2$ und somit beobachtbar, wenn $\text{Re}\{\lambda(A-GC)\}<0$.\\
+Gegenbsp: $\dot{x}=x, \; y=x^3$ mit $x_R=0$. Linearisiert nicht beobachtbar, obwohl NLS beobachtbar. W\a hle: $\dot{\hat{x}}=\hat{x}+g\underbrace{(\sqrt[3]{y}-\hat{x})}_{\tilde{x}}$ $\Rightarrow$ $\dot{\tilde{x}}=\tilde{x}(1-g)$
+
+\paragraph{b) Spezielle Systemstruktur}
+Kein Plan, ob wichtig
+
+
+
+
