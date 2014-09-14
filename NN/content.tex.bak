@@ -1,0 +1,91 @@
+\begin{center}
+     \Large{\textbf{Neural Networks}} \\
+\end{center}
+
+\section{Preprocessing}
+\subsection{Input Normalization}
+Linear rescaling to avoid scaling problems. Useful for radial basis function and multilayer networks. Each input treated independently for scaling. Calculate mean and variance of training set $\v{x}^{(m)}$ with $m\in [0,M-1]$ and normalize input vectors to $\mu_i=0$ and $\sigma_i=1$.
+\subsection{Feature Extraction}
+For \textbf{speech recognition} use AnaFB, power estimation ($|\cdot|^2$), mel-filterbank (15-30 normalized overlapping triangular filters), cepstrum estimation (IDFT/IDCT of log power spectrum - to decorrelate input features - symmetric), temporal features (combine successive features vectors - delta or delta-delta features), dimension reduction (feature space transformation, e.g. LDA - dimensionality reduction by preserving class discriminatory information - variance of features corresponding to one class is minimized, distance between classes maximized).
+
+\subsubsection{LDA}
+Dataset of $M$ observations of $N$-dimensional Euclidian variable $\v{x}$. Project $\v{x}$ to one dimension using a projection vector $\v{w}$, such that $y^{(m)}=\v{w}^T\v{x}^{(m)}$. Cost function $\max_{\v{w}} \v{w}^T(\v{\mu}_1 - \v{\mu}_0)$ to separate class means. \textbf{Fisher's idea:} Large separation between projected class means while granting small variance within each class: \begin{align*}
+J(\v{w}) = \frac{\v{w}^T\v{S}_b\v{w}}{\v{w}^T\v{S}_w\v{w}} \quad\Rightarrow\quad \v{w}_{\text{opt}}=\v{S}_w^{-1}(\v{\mu}_1 - \v{\mu}_0)
+\end{align*}
+with $\v{S}_b$ being between class covariance matrix, $\v{S}_w$ within class covariance matrix.
+
+
+\section{Threshold Logic Units - Single Perceptrons}
+Neural Network is a blackbox/mapping machine/network of functions with $N$-dim. input $\v{x}$ and $M$-dim. output $\v{y}$.
+A computing element/unit/node has unlimited fan-in and is a primitive function $f$ of $N$ arguments. 
+
+\subsection{McCulloch-Pitts Neuron}
+Binary signals transmitted over edges produce binary result, driven by threshold $\Phi$. $N$ exhibitory edges $x_i$ and $K$ inhibitory edges $x'_j$. Inhibitory edges can inactivate the whole unit if at least one is active. Else it works as a threshold gate. Neuron is activated if $\sum_{k=0}^{N-1} x_k \geq \Phi$.
+
+\subsection{Perceptron}
+With threshold $\Phi$ and input weights $w_k$, so the output is active if $\sum_{k=0}^{N-1}w_kx_k \geq \Phi$. Simple Perceptron and McCulloch-Pitts Unit are equivalent. Geometric interpretation can be used to check if a function can be computed by a Perceptron using a separating line/plane. XOR function with 2 vars can not be solved by one perceptron - not linearly separable ($0<\Phi$, $w_0>\Phi$, $w_1>\Phi$, $w_0+w_1<\Phi$). Two sets of $A$ and $B$ with different output values are linearly separable if $\sum_{x_k \in A} x_k w_k \geq \Phi$ and $\sum_{x_k \in B} x_k w_k < \Phi$.\\
+Solve XOR problem using network of perceptrons $(x_0 \wedge \bar{x_1})\vee(\bar{x_0} \wedge x_1)$. First layer labels the region, output layer decodes the classification.
+
+\subsection{Training}
+\paragraph{Supervised learning}
+Weights of the network are initialized randomly. On misclassification network parameters are adjusted. Desired output is always known, thus it is called learning with a teacher. In \textbf{reinforcement learning} only input vector is used for the weight adjustment. In \textbf{corrective learning} the magnitude of the error together with the input vector are used for the weight correction. \\
+Training rule:
+\begin{align*}
+\Phi_{\text{new}} = \Phi_{\text{old}} + \Delta\Phi, \qquad w_{\text{new},i} = w_{\text{old},i} + \Delta w_i
+\end{align*}
+
+\paragraph{Unsupervised learning}
+For a given input the output is unknown - learning without a teacher.
+
+\subsection{Perceptron Learning Algorithm}
+Transform perceptron into zero-valued threshold by turning $\Phi$ into a weight $w_N$ (bias) such that $\sum_{k=0}^{N-1}x_kw_k-\Phi \geq 0$.
+\begin{align*}
+\textit{start}:  & \v{w}_0 \text{ is generated randomly } \\
+                 & n=0 \\
+\textit{test}:   & \text{Select $\v{x} \in P \cup F$ randomly} \\
+                 & \text{if $\v{x} \in P$ and $\v{w}_t\v{x} > 0$ go to test} \\
+                 & \text{if $\v{x} \in P$ and $\v{w}_t\v{x} \leq 0$ go to add} \\
+                 & \text{if $\v{x} \in N$ and $\v{w}_t\v{x} < 0$ go to test} \\
+                 & \text{if $\v{x} \in N$ and $\v{w}_t\v{x} \geq 0$ go to subtract} \\
+\textit{add}:    & \text{set $\v{w}_{n+1} = \v{w}_t + \v{x}$ and $n=n+1$, goto test} \\
+\textit{subtract}:& \text{set $\v{w}_{n+1} = \v{w}_t - \v{x}$ and $n=n+1$, goto test} \\
+\end{align*}
+
+\subsection{Fast learning algorithm - delta rule}
+If $\v{x} \in P$ is classified erroneously we have $\v{w}_n^T\v{x}\leq 0$ so we get the error $\Delta(n)=-\v{w}_n^T\v{x}$ so that the weight vector gets corrected: $\v{w}_{n+1}=\v{w}_n\frac{\Delta(n)+\epsilon^+}{\Vert \v{x} \Vert^2}\v{x}$. So that $\v{w}_{n+1}^T\v{x}=\left(\v{w}_n\frac{\Delta(n)+\epsilon^+}{\Vert \v{x} \Vert^2}\v{x}\right)^T \v{x} = \epsilon^+ > 0$. $\epsilon$ guarantees that the new weight vector barely skips over the border of the region with higher error. For $\v{x}\in F$ use $\epsilon^-$. A variant is using $\gamma(\Delta(n)+\epsilon)\v{x}$ with $\gamma$ as learning factor.
+
+\subsection{Convergence}
+If $P$ and $N$ are finite and linearly separable.
+\begin{align*}
+\cos(\phi)&=\frac{\v{w}_{\text{des}}^T\v{w}_{n+1}}{\Vert \v{w}_{n+1} \Vert}\\
+&=\frac{\v{w}_{\text{des}}^T\v{w}_0+(n+1)\delta}{\sqrt{\Vert \v{w}_0 \Vert^2 + (n+1)}}
+\end{align*}
+
+
+\section{Multilayer perceptrons}
+ANN is a $(L,C)$ tupel with a set of nodes $L$ and a set of directed edges $C$. $c=(v,l)\in C$ are directed edges from node $v$ to node $l$. $L_{in}$ input layer subset, $L_{hid}$ hidden layer subset, $L_{out}$ output layer. Set $L_l^{(pre)}$ consists of prior nodes of node $l$ (predecessors). Set $L_l^{(suc)}$ consists of subsequent nodes of node $l$ (successors). Every edge has a weight $w_v^{(l)}$.
+
+\paragraph{Generalized neuron}
+Consists of network input function $f_{net}^{(l)}$, activation function $f_{act}^{(l)}$ and network output function $f_{out}^{(l)}$ and three states respectively $y_{net}^{(l)}$, $y_{act}^{(l)}$, $y_{out}^{(l)}$, also external input $x_{ref}^{(l)}$.
+
+\paragraph{Properties of multilayer perceptrons}
+A NN with layered architecture doesn't contain cycles. A MP is a feed-fwd NN with strictly layered structure. Normally all units in a layer connected to all other units of the next layer.
+
+\paragraph{Weight matrices}
+Given $L_{in} = \{v_0,...,v_{N-1}\}$ and $L_{out}=\{l_0, ..., l_{M-1}\}$ the connection weights are gathered in a matrix \begin{align*}
+\v{W}=\begin{bmatrix}
+w_{v_0}^{(l_0)} & w_{v_1}^{(l_0)} & \cdots & w_{v_{N-1}}^{(l_0)} \\
+w_{v_0}^{(l_1)} & w_{v_1}^{(l_1)} & \cdots & w_{v_{N-1}}^{(l_1)} \\
+\vdots & \vdots & \ddots & \vdots \\
+w_{v_0}^{(l_{M-1})} & w_{v_1}^{(l_{M-1})} & \cdots & w_{v_{N-1}}^{(l_{M-1})} \\
+\end{bmatrix} \in \Rr{M}{N}
+\end{align*}
+so that $\v{y}_{net}^{(L_1)} = \v{W}\v{y}_{out}^{(L_0)}$
+
+
+
+
+
+
+
+

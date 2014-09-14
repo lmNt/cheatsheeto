@@ -681,7 +681,7 @@ AP ist die L\o sung von $\v{0}=\v{f}(\v{x}_R,\v{u}_R)$. AP entsprechen der Form 
 Um $\v{z}$ zu bestimmen w\a hle Polynom vom Grad $2\beta +1$ resultiert in einem algebraischen Gleichungssystem f\u r die Koeffizienten $p_i$ des Polynoms.
 
 \paragraph{2-FHG-Regeleung mit flachheitsbasierter Steuerung}
-Praxiseinsatz. Flachheitsbasierte Parametrierung + Referenzgenerator und eine R\u ckf\u hrung mit Beobachter zur Stabilisierung des Trajektorienfolgefehlers. Bei kleinen Abweichungen zwischen $\v{x}_0$ und $\v{x}_0^*$ kann eine Linearisierung aus der flachheitsbasierten Parametrierung folgen, was auf ein LTI System f\u hrt.
+Praxiseinsatz. Flachheitsbasierte Parametrierung + Referenzgenerator und eine R\u ckf\u hrung mit Beobachter zur Stabilisierung des Trajektorienfolgefehlers. Bei kleinen Abweichungen zwischen $\v{x}_0$ und $\v{x}_0^*$ kann eine Linearisierung aus der flachheitsbasierten Parametrierung folgen, was auf ein LTV System f\u hrt.
 
 \subsubsection{Flachheitsbasierte Trajektorienfolgeregelung}
 Trajektorienfolgeregelung f\u r flachen Ausgang $\v{z}$. Zwei F\a lle \textbf{(i)} $\sum_{i=1}^m \beta_i=n$ und \textbf{(ii)} $\sum_{i=1}^m \beta_i>n$.
