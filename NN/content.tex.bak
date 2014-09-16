@@ -231,17 +231,17 @@ Understand knowledge of a NN after training. Analyze change of output relative t
 
 \section{Radial Basis Function Networks}
 Feed-forward NNs, similar to multilayer perceptrons and trained using supervised training algorithms. Consist of 3 layers with $L_{in} \cap L_{out} = \emptyset$. Only adjacent layers are connected. Training of RBFN are relatively fast compared to backpropagation networks. As activation function a radial function is used. The activation of a hidden unit is determined by the distance between the input vector and the connection weight vector.  Weights from the input layer to a hidden neuron characterize the center of a radial basis function. Each radius (distance from the center) of a RBF is assigned to its corresponding activation.\\
-\paragraph{Distance functions}
+\paragraph{Distance functions}\label{distance}
 Distance between input vector and weight vector is used as input function for each hidden neuron:
 $f_{net}^{(l)}(\v{w}^{(l)}, \v{x}^{(l)}) = d(\v{w}^{(l)}, \v{x}^{(l)}) \quad \forall l\in L_{hid}$ with distance function $d$. Distance between input and weight vector $d_k(\v{w},\v{x})=(\sum_{i=0}^{N-1}|w_i-x_i|^k)^{\frac{1}{k}}$.\\
 Special cases: $k=1$: Manhattan distance, $k=2$: Euclidian distance, $k=\infty$: Maximum distance, $d_\infty(\cdot)=\max_{0\leq i<N}|w_i - x_i|$\\
 
-\paragraph{Network functions (hidden and output layer)}
+\paragraph{Network functions (hidden and output layer)}\label{activation}
 Each hidden neuron uses a radial function as activation function with $f_{act}^{(l)}(0)=1$ and $\lim_{x\rightarrow\infty} f_{act}^{(l)}(\infty)=0$.\\
  The network input function of each output neuron is the weighted sum of the input vector: $f_{net}^{(l)}=(\v{w}^{(l)}, \v{x}^{(l)})=\sum_{v\in L_l^{(pre)}} w_v^{(l)} x_v^{(l)} =y_{net}^{(l)}$.\\
 Linear function as activation function for each output neuron: $f_{act}^{(l)}(y_{net}^{(l)}, \theta^{(l)})= \beta y_{net}^{(l)}-\theta^{(l)}$.\\
 
-\paragraph{Radial activation functions}
+\paragraph{Radial activation functions}\label{radialact}
 \begin{itemize}
 \item rectangle function $f_{act}(x,\theta)=\begin{cases} 1, &x \leq \theta \\ 0 &\text{else} \end{cases}$
 \item triangle function $f_{act}(x,\theta)=\begin{cases} 1-x/\theta, &x \leq \theta \\ 0 &\text{else} \end{cases}$
@@ -330,6 +330,70 @@ RBFN only has a single hidden layer. Hidden and output neurons have the same und
 Advantages of RBFN: Simple feed-fwd. architecture, simple adaptation, extremely fast training. Applications: Processes with quick adaptation, function approx., pattern recognition, control engineering.
 
 \section{LVQ}
+Can be seen as a special case of a supervised NN using competitive learning. No hidden neurons. Similar to RBFNs the distance between input and weight vector is used as input function for each output neuron: $f_{net}^{(l)}(\v{w}^{(l)}, \v{x}^{(l)}) = d(\v{w}^{(l)},\v{x}^{(l)})$.\vspace{0.2cm}
+
+\textsc{Distance functions} same as in \ref{distance}.\vspace{0.2cm}
+
+\textsc{Activation function} use radial function (\ref{activation}) for output neuron. \vspace{0.2cm}
+
+\textsc{Output function} of output neurons is not the identity, rather considers the activations of all output neurons simultaneously: $f_{out}^{(l)}(y_{out}^{(l)}) = \begin{cases} 1 & y_{act}^{(l)}=\max_{v\in L_{out}}y_{act}^{(v)} \\ 0 & \text{else} \end{cases}$.\\
+The unit with maximal activation is selected to have an output of one (winner take all principle)\\
+Same functions as in \ref{radialact}.
+
+\paragraph{Learning Rule}
+Init: Reference or codebook vectors are set on random positions in the input space\\
+Training sample: Select training vector $\v{x}$ from training set\\
+Distance measurement: Distance between all reference vectors and the training sample is computed, closest ref vector $\v{r}$ wins.\\
+Adaptation:
+\begin{itemize}
+\item Attraction rule: ($\v{x}$ and $\v{r}$ have same class) $\v{r}^{(new)} = \v{r}^{(old)} + \gamma (\v{x}-\v{r}^{(old)})$ 
+\item Repulsion rule: ($\v{x}$ and $\v{r}$ have different classes) $\v{r}^{(new)} = \v{r}^{(old)} - \gamma (\v{x}-\v{r}^{(old)})$ 
+\end{itemize}
+
+\paragraph{Time dependent learning rate}
+Fixed learning rate may cause oscillations, use time-dependent: $\gamma(t)=\gamma_0 K^t$ $0<K<1$
+
+\paragraph{Improved learning rule}
+Not only update the winning neuron - rather update two ref vectors closest to the training samples. If classes of $\v{r}_j$ and $\v{r}_k$ are not the same and one of them belongs to the class of $\v{x}$ update the reference vectors: \begin{align*}
+\v{r}_j^{(new)}=\v{r}_j^{(old)}+\gamma(\v{x}-\v{r}_j^{(old)}), \quad \v{r}_k^{(new)}=\v{r}_k^{(old)}-\gamma(\v{x}-\v{r}_k^{(old)})
+\end{align*}
+
+\paragraph{Window rule}
+Only adapt if $\v{x}$ is close to classification boundary (inside a window), to omit driving ref. vectors away indefinitely. $\min(d_{jk}, d_{kj})>\theta$ with $\theta = \frac{1-w}{1+w}$ with $0<w\leq 1$ being the width of the window around the classification boundary. 
+
+\paragraph{Soft LVQ}
+Soft assignment instead of winner-takes-all principle. Assumption: PDF of training data is described by a mixture of normal distributions. Each ref. vector describes one Gaussian distribution. Objective: Maximize log-likelihood ratio. Maximize rate of correct classification and minimize rate of misclassification. Update rule: Reference vectors with correct labels are attracted towards training sample, incorrect prototypes are repelled.
+
+\paragraph{Hard LVQ}
+If width of Gaussian components $\sigma$ goes to zero, soft assignment becomes hard assignment. Always update closest vector of same/different class by attracting/repelling. No window rule needed, hard LVQ is stable.
+
+\paragraph{Extensions}
+Frequency sensitive competitive learning: Distance to ref. vector is modified dependant on the number of data points assigned to the ref. vector. \\
+Fuzzy learning vector quantization: Minimize network output error and distances between training patterns and competing neurons - leads to faster clustering.
+
+\section{Kohonen Self-Organizing Maps}
+Output neurons and neighbourhood relationships (topology). Each input neuron is connected to all output neurons. Distance between input and weight vectors is used as input function (RBFN). Activation function is a radial function. Identity as output function for each output neuron.\\
+Topology described by distance function $d_{nb}$. Training highly influenced by topology. SOM always activates neuron with least distance to input pattern (winner takes all). Without neighborhood relationships SOM operates as VQ of the input space. SOM are trained without a teacher. Mostly 1D or 2D topology in a grid.
+
+\paragraph{Training}
+Start with random neuron centers $\v{r}_l$. Select random input vector $\v{x}$. Determine distance for every neuron and select winner neuron $l_w$ with maximum activation. Update ref vectors using neighborhood/topology function $f_{nb}(x)$:
+\begin{align*}
+\v{r}_l(t+1) = \v{r}_l(t) + \mu(t) f_{nb}(d_{nb}^{(l,l_w)}(t),\rho(t)) (\v{x}(t) - \v{r}_l(t))
+\end{align*}
+Continue with selecting $\v{x}$ until max number of iterations reached.
+Time-varying learning rate: $\mu(t)=\mu_0 \alpha_\mu^t$, and time-varying neighborhood radius: $\rho(t)=p_0 \alpha_\rho^t$. Topology functions: Gaussian, triangular, mexican hat, rectangle. Common topology is Gaussian function $f_{nb}(d_{nb}^{(l,l_w)}(t),\rho(t)) = \exp(\frac{\Vert \v{g}_l-\v{g}_{l_w}(t) \Vert^2}{2\rho(t)^2}$ with $\v{g}_l$ representing the neuron on the grid.
+Training may fail if init not correctly, e.g. learning rate or neighbourhood radius too low. SOM can be used for dimensionality reduction, e.g. 2D SOM in 3D input space if trained with points of a rotation parabola with 3 input neurons (x,y,z).\\
+Applications: Speech recognition (each neuron responds strongly to a specific phoneme). Dimension reduction: animal names and attributes.
+
+\section{Hopfield networks}
+Network with cycles trained using supervised training. All neurons are input as well as output neurons - no hidden. Every neuron connected to all other neurons. Connection weights are symmetric $w_u^{(l)}=w_l^{(u)}$. Network input function of each neuron is the weighted sum of the outputs of all other neurons
+
+\section{Recurrent networks}
+
+
+
+
+
 
 
 
