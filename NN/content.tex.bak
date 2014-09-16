@@ -80,8 +80,256 @@ w_{v_0}^{(l_1)} & w_{v_1}^{(l_1)} & \cdots & w_{v_{N-1}}^{(l_1)} \\
 w_{v_0}^{(l_{M-1})} & w_{v_1}^{(l_{M-1})} & \cdots & w_{v_{N-1}}^{(l_{M-1})} \\
 \end{bmatrix} \in \Rr{M}{N}
 \end{align*}
-so that $\v{y}_{net}^{(L_1)} = \v{W}\v{y}_{out}^{(L_0)}$
+so that $\v{y}_{net}^{(L_1)} = \v{W}\v{y}_{out}^{(L_0)}$.
 
+\paragraph{Network functions}
+\vspace{0.1cm}
+\textsc{Network input function} is the weighted sum of the inputs $\sum_{v\in L_l^{(pre)}} w_v^{(l)}x_v^{(l)} = y_{net}^{(l)}$. \vspace{0.1cm}
+
+\textsc{Activation function} of each hidden neuron is a monotonously increasing function. Sigmoid function $\lim_{x\rightarrow -\infty} f_{act}^{(l)}(x)=0$ and $\lim_{x\rightarrow \infty} f_{act}^{(l)}(x)=1$. Or bipolar sigmoid function with $\lim_{x\rightarrow -\infty} f_{act}^{(l)}(x)=-1$. The activation function of the output neuron is either a sigmoid or a linear function: $f_{act}^{(l)}\left( y_{net}^{(l)}, \Phi^{(l)}\right) = \beta y_{net}^{(l)} -\Phi^{(l)}$.
+
+More activation functions: 
+\begin{itemize}
+\item step function $f_{act}(x,\Phi)=\begin{cases} 1, &x\geq \Phi \\ 0 &\text{else} \end{cases}$
+\item semi-linear function: $f_{act}(x,\Phi)=\begin{cases} 1, &x > \Phi + 0.5 \\ 0, &x < \Phi - 0.5 \\ (x-\Phi)+0.5 &\text{else} \end{cases}$
+\item logistic function $f_{act}(x,\Phi)=\frac{1}{1+e^{-(x-\Phi)}}$
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    axis on top,
+    ticks=none,
+    smooth,
+    xlabel=$x$,
+    xmin=-4, xmax=4,
+    ymin=0, ymax=1,
+    width=0.12\textwidth,
+    height=0.1\textwidth,
+]
+\addplot[draw=blue][domain=-4:4]{1/(1+exp(-(x-0))};
+\end{axis}
+\end{tikzpicture}
+
+\item sine until saturation: $f_{act}(x,\Phi)=\begin{cases} 1, &x > \Phi + \pi/2 \\ 0, &x < \Phi - \pi/2 \\ \frac{\sin(x-\Phi)+1}{2} &\text{else} \end{cases}$
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    axis on top,
+    ticks=none,
+    smooth,
+    xlabel=$x$,
+    xmin=-3.14, xmax=3.14,
+    ymin=0, ymax=1,
+    width=0.12\textwidth,
+    height=0.1\textwidth,
+]
+\addplot[mark=none,draw=blue,sharp plot][domain=3.14/2:4,samples=200] {1};
+\addplot[mark=none,draw=blue,sharp plot][domain=-4:-pi/2,samples=200] {0};
+\addplot[mark=none,draw=blue,sharp plot][domain=-3.14/2:3.14/2,samples=200] {0.5*(sin(deg(x-0))+1)};
+\end{axis}
+\end{tikzpicture}
+
+\item (bipolar sigmoid:) hyperbolic tangent $f_{act}(x,\Phi)=\tanh(x-\Phi)$
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    axis on top,
+    ticks=none,
+    smooth,
+    xlabel=$x$,
+    xmin=-3.14, xmax=3.14,
+    ymin=-1, ymax=1,
+    width=0.12\textwidth,
+    height=0.1\textwidth,
+]
+\addplot[mark=none,draw=blue,sharp plot][domain=-3:3,samples=200] {tanh((x))};
+\end{axis}
+\end{tikzpicture}
+\end{itemize}
+
+\paragraph{Function approximation}
+Approximate desired function by step function and let NN compute the step function. Any Riemann integrable function can be approximated with arbitrary accuracy by a 4 layer perceptron. Every quantization range is represented by a neuron in the second hidden layer. One hidden layer can be omitted when using relative heights.\\
+To achieve \textsc{Piecewise Approximation} use semi-linear activation functions with $\Delta x = x_{i+1} - x_i$ and $\Phi_i = \frac{x_i}{\Delta x}$
+
+
+\subsection{Regression analysis}
+\paragraph{Linear regression} 
+Training neural networks is closely related to linear regression. Regression line $g(x)$ minimizes the sum of squared errors $\sum_{m=0}^{M-1} (g(x^{(m)})-y^{(m)})^2$ to the samples of the data set.
+
+\paragraph{Multi-linear regression}
+TODO
+
+\paragraph{Non-linear regression}
+Try to find a transformation for  \textsc{non-polynomial functions} to a linear/polynomial case, e.g. $y=ax^c$ $\Rightarrow$ $\ln y = \ln a + c \ln x$. Special case: For NN if a logistic function is used it is important to have a transformation into a linear form (logistic regression). Ideal output: $y^{(m)}=\frac{1}{1+\exp\left(-\sum_{i=0}^N w_i x_i^{(m)}\right)}$, which is a non-linear regression - or a linear regression for $0<y^{(m)}<1$ satisfying: $\sum_{i=0}^N w_i x_i^{(m)} = \ln \frac{1-y^{(m)}}{y^{(m)}}$ which is a linear regression model.
+
+\paragraph{Logistic regression} (only applicable for 2-layer perceptron)
+Assume logistic function $y=\frac{A}{1+e^{-(wx+\Phi)}}$. Build inverse $\frac{A-y}{y}=e^{-(wx+\Phi)}$ and apply Logit-Transformation: $\ln \frac{y}{A-y}=wx+\Phi$. Logistic regression can be computed using a single neuron with $y_{net}=wx$, $y_{act}=\frac{1}{1+e^{-(y_{net}-\Phi)}}$ and $y_{out}=Ay_{act}$.
+
+
+\section{Training multilayer perceptrons}
+\paragraph{Definition and properties}
+Popular learning algorithm is backpropagation algorithm, which searches for the minimum of the error function in weight space using gradient descent. Solution of the learning problem is the combination of weights that minimizes the error function, which must be continuous and differentiable (same as the activation function - popular: sigmoide function).
+
+\paragraph{Gradient descent}
+Goal: Output $\v{y}_{out}^{(m)}$ and desired output $\v{y}_{ref}^{(m)}$ should be identical $\forall m$. 
+\begin{align*}
+\min e= \sum_{m \in M_{ref}} \sum_{v\in L_{out}} (y_{ref}^{(v,m)} - y_{out}^{(v,m)})^2
+\end{align*}
+Calculate direction of correction step $\nabla_{\v{w}^{(l)}} e = \left(\frac{\partial e}{\partial w_{p_0}^{(l)}}, ..., \frac{\partial e}{\partial w_{p_{N-1}}^{(l)}}, -\frac{\partial e}{\partial \Phi^{(l)}}\right)^T$. Error of multilayer perceptron is the sum of individual errors over the training patterns and the individual error depends on weights through the network input $y_{net}^{(l,m)} = (\v{w}^{(l)})^T \v{x}^{(l,m)}$. Using chain rule:
+\begin{align*}
+\frac{\partial e^{(m)}}{\partial \v{w}^{(l)}} = \frac{\partial e^{(m)}}{\partial y_{net}^{(l,m)}} \frac{\partial y_{net}^{(l,m)}}{\partial \v{w}^{(l)}}
+\end{align*}
+with the individual error at the output: $e^{(m)} = \sum_{v\in L_{out}}(y_{ref}^{(v,m)} - y_{out}^{(v,m)})^2$.
+BLABLA
+
+\paragraph{i) $l$ is an output neuron}
+Gradient
+\begin{align*}
+\frac{\partial e^{(m)}}{\partial \v{w}^{(l)}} = - 2(y_{ref}^{(l,m)} - y_{out}^{(l,m)}) \frac{\partial y_{out}^{(l,m)}}{\partial y_{net}^{(l,m)}} \v{x}^{(l,m)}
+\end{align*}
+Update network weights in negative gradient direction with learning constant $\gamma$ defining the step length.
+\begin{align*}
+\Delta \v{w}^{(l,m)} = -\frac{\gamma}{2} \frac{\partial e^{(m)}}{\partial \v{w}^{(l)}}
+\end{align*}
+\textbf{online traning}: apply weight corrections sequentially after each pattern presentation
+\textbf{batch training}: compute weight corrections over all training patterns and use the sum of corrections for the update\\
+Update rule:
+\begin{align*}
+\v{w}_{new}^{(l)}=\v{w}_{old}^{(l)} + \Delta\v{w}^{(l,m)}
+\end{align*}
+
+\paragraph{ii) $l$ is a hidden neuron}
+Recursive equation called error backpropagation:\\
+TODO\\
+Simplified update equation
+\begin{align*}
+\Delta \v{w}^{(l,m)} = \gamma \left( \sum_{s\in L_l^{(suc)}} \delta^{(s,m)} w_l^{(s)} \right) y_{out}^{(l,m)}(1-y_{out}^{(l,m)} ) \v{x}^{(l,m)}
+\end{align*}
+
+\paragraph{Summary}
+\textsc{Initialization}: $y_{out}^{(u,m)} = x_{ref}^{(u,m)}$ \\
+\textsc{Fwd propagation} up to the hidden layer: $y_{out}^{(l,m)} = \frac{1}{1+\exp(-\sum_{p\in L_l^{(pre)}} w_p^{(l)}x_p^{(l,m)}}$\\
+\textsc{Error term} and \textsc{weight update} at the output layer: $\delta^{(l,m)} = (y_{ref}^{(l,m)}-y_{out}^{(l,m)})y_{out}^{(l,m)}(1-y_{out}^{(l,m)})$ and $\Delta w_p^{(l,m)} = \gamma \delta^{(l,m)} y_{out}^{(p,m)}$.
+\textsc{Backward propagation} and \textsc{Weight update} at the hidden layers:
+$\delta^{(l,m)} = \left( \sum_{s\in L_l^{(suc)}} \delta^{(s,m)} w_l^{(s)} \right) y_{out}^{(l,m)} (1-y_{out}^{(l,m)})$ and $\Delta w_p^{(l,m)} = \gamma \delta^{(l,m)} y_{out}^{(p,m)}$
+
+\paragraph{Update rules}:
+\begin{itemize}
+\item standard backpropagation (gradient descent) $\Delta w(t) = - \frac{\gamma}{2}\nabla_w e(t)$
+\item Manhattan-Training (useful for error functions that have a flat characteristic) $\Delta w(t) = -\gamma \text{sgn} (\nabla_w e(t))$
+\item momentum method using the last update term. Accelerates training in flat regions but decreases in an uniform direction $\Delta w(t) = -\frac{\gamma}{2}\nabla_w e(t) + \alpha \Delta w(t-1)$ with $\alpha<1$
+\item Self adaptive error backpropagation. $\gamma$ is increased ($\alpha \in [0.3, 0.5]$) if the current and the previous gradients have the same sign, and is decreased ($\beta \in [0.05,0.2]$) when they have different signs. Use only for batch training.
+\item Quick propagation: Approximate error function by a parabola at current weight position. From current and previous gradient the apex of the parabola is determined to use as the new weight value $\Delta w(t) = \frac{\nabla_w e(t)}{\nabla_w e(t-1)-\nabla_w e(t)}\Delta w(t-1)$
+\item Weight decay: Large weights are inappropriate as they reach the saturation region of the logistic function, resulting in very low gradients. Also overfitting may occur. $\Delta w(t) = -\frac{\gamma}{2} \nabla_w e(t) - \zeta w(t)$ with $0<\zeta \ll 1$
+\end{itemize}
+
+\paragraph{Sensitivity analysis}
+Understand knowledge of a NN after training. Analyze change of output relative to change of input (derivative of the outputs w.r.t. the inputs).
+
+
+\section{Radial Basis Function Networks}
+Feed-forward NNs, similar to multilayer perceptrons and trained using supervised training algorithms. Consist of 3 layers with $L_{in} \cap L_{out} = \emptyset$. Only adjacent layers are connected. Training of RBFN are relatively fast compared to backpropagation networks. As activation function a radial function is used. The activation of a hidden unit is determined by the distance between the input vector and the connection weight vector.  Weights from the input layer to a hidden neuron characterize the center of a radial basis function. Each radius (distance from the center) of a RBF is assigned to its corresponding activation.\\
+\paragraph{Distance functions}
+Distance between input vector and weight vector is used as input function for each hidden neuron:
+$f_{net}^{(l)}(\v{w}^{(l)}, \v{x}^{(l)}) = d(\v{w}^{(l)}, \v{x}^{(l)}) \quad \forall l\in L_{hid}$ with distance function $d$. Distance between input and weight vector $d_k(\v{w},\v{x})=(\sum_{i=0}^{N-1}|w_i-x_i|^k)^{\frac{1}{k}}$.\\
+Special cases: $k=1$: Manhattan distance, $k=2$: Euclidian distance, $k=\infty$: Maximum distance, $d_\infty(\cdot)=\max_{0\leq i<N}|w_i - x_i|$\\
+
+\paragraph{Network functions (hidden and output layer)}
+Each hidden neuron uses a radial function as activation function with $f_{act}^{(l)}(0)=1$ and $\lim_{x\rightarrow\infty} f_{act}^{(l)}(\infty)=0$.\\
+ The network input function of each output neuron is the weighted sum of the input vector: $f_{net}^{(l)}=(\v{w}^{(l)}, \v{x}^{(l)})=\sum_{v\in L_l^{(pre)}} w_v^{(l)} x_v^{(l)} =y_{net}^{(l)}$.\\
+Linear function as activation function for each output neuron: $f_{act}^{(l)}(y_{net}^{(l)}, \theta^{(l)})= \beta y_{net}^{(l)}-\theta^{(l)}$.\\
+
+\paragraph{Radial activation functions}
+\begin{itemize}
+\item rectangle function $f_{act}(x,\theta)=\begin{cases} 1, &x \leq \theta \\ 0 &\text{else} \end{cases}$
+\item triangle function $f_{act}(x,\theta)=\begin{cases} 1-x/\theta, &x \leq \theta \\ 0 &\text{else} \end{cases}$
+\item cosine function  $f_{act}(x,\theta)=\begin{cases} \frac{\cos(\pi x/(2\theta))+1}{2}, &x \leq 2\theta \\ 0 &\text{else} \end{cases}$
+\item gaussian function  $f_{act}(x,\theta)=\exp(-\frac{1}{2}(\frac{x}{\theta})^2)$
+
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    axis on top,
+    ticks=none,
+    smooth,
+    xlabel=$x$,
+    xmin=0, xmax=4,
+    ymin=0, ymax=1,
+    width=0.12\textwidth,
+    height=0.1\textwidth,
+]
+\addplot[draw=blue][domain=0:4]{1-x/2};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    axis on top,
+    ticks=none,
+    smooth,
+    xlabel=$x$,
+    xmin=0, xmax=8,
+    ymin=0, ymax=1,
+    width=0.12\textwidth,
+    height=0.1\textwidth,
+]
+\addplot[draw=blue][domain=0:4]{(cos(deg(pi*x/(4)))+1)/2};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    axis on top,
+    ticks=none,
+    smooth,
+    xlabel=$x$,
+    xmin=0, xmax=8,
+    ymin=0, ymax=1,
+    width=0.12\textwidth,
+    height=0.1\textwidth,
+]
+\addplot[draw=blue][domain=0:8]{exp(-0.5*(x/2)^2)};
+\end{axis}
+\end{tikzpicture}
+\end{itemize}
+
+\paragraph{Initialization - Simple RBFN}
+\textbf{Hidden layer} has as many neurons as the number of training patterns. Connection weights from the input neurons the the hidden neurons are initialized by the elements of the input patterns from the training set $\v{w}^{(v_m)} = \v{x}_{ref}^{(m)}$. Determine radii for Gaussian function heuristically $\theta^{(v_m)}=\frac{d_{max}}{\sqrt{2M}}$. Maximum distance between two input vectors: $d_{max}=\max{0\leq m<k<M}d(\v{x}_{ref}^{(m)}, \v{x}_{ref}^{(k)})$.\vspace{0.2cm}
+
+\textbf{Output neuron} network input and activation function are linear, so connection weights from hidden to output can be solved via $\v{Y}_{out}\v{w}^{(l)} = \bar{\v{y}}_{ref}^{(l)}$ with bias $\theta^{(l)}=0$, so that $\v{w}^{(l)}=\v{Y}_{out}^{-1}\bar{\v{y}}_{ref}^{(l)}$.\\
+
+Drawbacks:\\
+Number of training patterns are often huge, and it is reasonable to capture many learning tasks with the same RBF.
+
+\paragraph{Initialization - Standard RBFN}
+Lower hidden neurons than training patterns. For init a subset of training patterns are used as centers for the RBF. Coordinates of the training patterns are copied into the weight vectors. Radii determined heuristically similar to simple RBFN.\\
+\textsc{Initial weights}: $Y_{out}$ is a $M\times K+1$ Matrix (non-quadratic). Use Moore-Penrose Pseudo Inverse: $Y=(Y^TY)^{-1}Y^T$ so that $\v{w}^{(l)}=\v{Y}_{out}^+ \bar{\v{y}}_{ref}^{(l)}$.\\
+
+In real applications only an approximation of the desired solution is achieved due to the overdetermination. Final solution is achieved after a subsequent training for standard RBFN.
+
+\paragraph{Clustering - K-Means}
+Cost function: Minimize average distance: $F=\frac{1}{M} \sum_{m=0}^{M-1}\sum_{k=0}^{K-1} r_{mk}\Vert \v{x}_{ref}^{(m)}-\v{c}_k\Vert^2$. Use centroids as initial centers for the RBFs. Use std.dev. between cluster centers and their features as radii of RBFs.
+
+\paragraph{Training RBFNs}
+Train using gradient descent. First stage: connection weights from hidden to output neurons and bias values. Second stage: hidden layer parameters - connections weights and radii of RBFs.\\
+\textsc{Output parameter} update terms: $\Delta \v{w}^{(l,m)} = \frac{\gamma_3}{2}\frac{\partial e^{(m)}}{\partial \v{w}^{(l)}}$.\\
+\textsc{Hidden parameter} update rule for center coordinates: $\Delta \v{w}^{(v,m)} = \gamma_1(\sum_{s\in L_v^{(suc)}} (y_{ref}^{(s,m)}-y_{out}^{(s,m)}) w_v^{(s)}) \frac{\partial y_{out}^{(v,m)}}{\partial y_{net}^{(v,m)}} \frac{\partial y_{net}^{(v,m)}}{\partial \v{w}^{(v)}}$. Often Euclidian distance as input function and Gaussian function as activation.\\
+The radius update term $\Delta \theta^{(v,m)} = \gamma_2 (\sum_{s\in L_v^{(suc)}} (y_{ref}^{(s,m)}-y_{out}^{(s,m)}) w_v^{(s)}) \frac{\partial y_{out}^{(v,m)}}{\partial \theta^{(v)}}$
+
+\paragraph{Generalization - Mahalanobis Distance}
+Prior distance functions are not appropriate for training patterns that are distributed ellipsoidal in the input space. Use a large number of RBFs concatenated along the feature contour line (increases complexity). Use Mahalanobis distance (hyper ellipsoid). Special case: Uncorrelated features with same variance in all directions yields equivalence of Mahalanobis and Euclidean distance.
+
+\paragraph{MLP vs RBFN}
+RBFN only has a single hidden layer. Hidden and output neurons have the same underlying function in MLP - RBFN uses distinct functions. All neurons in MLP are nonlinear, output layer of RBFNs is linear. Hidden layers in RBFs calculate the distance of input and center - MLP calculates inner product of input and weight vectors. Monotonously decreasing function as activation function for hidden neurons in RBFNs - MLP monotonously increasing function.
+
+Advantages of RBFN: Simple feed-fwd. architecture, simple adaptation, extremely fast training. Applications: Processes with quick adaptation, function approx., pattern recognition, control engineering.
+
+\section{LVQ}
 
 
 

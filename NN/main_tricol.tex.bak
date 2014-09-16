@@ -13,6 +13,8 @@
 \usepackage{color}
 \usepackage{listings}
 \usepackage{titlesec}
+\usepackage{tikz}
+\usepackage{pgfplots}
 \usepackage[makeroom]{cancel} % zum durchstreichen von gleichungen
 \renewcommand{\a}{\"{a}}
 \renewcommand{\o}{\"{o}}
