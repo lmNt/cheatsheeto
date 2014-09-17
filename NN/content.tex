@@ -83,8 +83,7 @@ w_{v_0}^{(l_{M-1})} & w_{v_1}^{(l_{M-1})} & \cdots & w_{v_{N-1}}^{(l_{M-1})} \\
 so that $\v{y}_{net}^{(L_1)} = \v{W}\v{y}_{out}^{(L_0)}$.
 
 \paragraph{Network functions}
-\vspace{0.1cm}
-\textsc{Network input function} is the weighted sum of the inputs $\sum_{v\in L_l^{(pre)}} w_v^{(l)}x_v^{(l)} = y_{net}^{(l)}$. \vspace{0.1cm}
+\textsc{Network input function} of hidden and output neurons is the weighted sum of the inputs $\sum_{v\in L_l^{(pre)}} w_v^{(l)}x_v^{(l)} = y_{net}^{(l)}$. \vspace{0.1cm}
 
 \textsc{Activation function} of each hidden neuron is a monotonously increasing function. Sigmoid function $\lim_{x\rightarrow -\infty} f_{act}^{(l)}(x)=0$ and $\lim_{x\rightarrow \infty} f_{act}^{(l)}(x)=1$. Or bipolar sigmoid function with $\lim_{x\rightarrow -\infty} f_{act}^{(l)}(x)=-1$. The activation function of the output neuron is either a sigmoid or a linear function: $f_{act}^{(l)}\left( y_{net}^{(l)}, \Phi^{(l)}\right) = \beta y_{net}^{(l)} -\Phi^{(l)}$.
 
@@ -385,10 +384,89 @@ Time-varying learning rate: $\mu(t)=\mu_0 \alpha_\mu^t$, and time-varying neighb
 Training may fail if init not correctly, e.g. learning rate or neighbourhood radius too low. SOM can be used for dimensionality reduction, e.g. 2D SOM in 3D input space if trained with points of a rotation parabola with 3 input neurons (x,y,z).\\
 Applications: Speech recognition (each neuron responds strongly to a specific phoneme). Dimension reduction: animal names and attributes.
 
-\section{Hopfield networks}
-Network with cycles trained using supervised training. All neurons are input as well as output neurons - no hidden. Every neuron connected to all other neurons. Connection weights are symmetric $w_u^{(l)}=w_l^{(u)}$. Network input function of each neuron is the weighted sum of the outputs of all other neurons
+\section{Hopfield networks (special recurrent network)}
+Network with cycles trained using supervised training. All neurons are input as well as output neurons - no hidden. Every neuron connected to all other neurons. Connection weights are symmetric $w_u^{(l)}=w_l^{(u)}$.\\
+ Network input function of each neuron is the weighted sum of the outputs of all other neurons $y_{net}^{(l)}=\sum_{v\in L-\{l\}} w_v^{(l)} y_{out}^{(v)}$.\\
+Activation function of a neuron is a threshold function $y_{act}^{(l)} = \begin{cases} 1 & y_{net}^{(l)}\geq \theta^{(l)} \\ -1 & \text{else} \end{cases}$. Can also take into account previous activation if $y_{net}^{(l)}=\theta^{(l)}$ use previous activation value.\\
+Output function is the identity.\\
+Symmetric weight matrix: 
+\begin{align*}
+\begin{bmatrix}
+0 & w_{v_1}^{(l_0)} & \cdots & w_{v_{N-1}}^{(l_0)} \\
+w_{v_1}^{(l_0)} & 0 & \cdots & w_{v_{N-1}}^{(l_1)} \\
+\vdots & \vdots & \ddots & \vdots \\
+w_{v_{N-1}}^{(l_0)} & w_{v_{N-1}}^{(l_1)} & \cdots & 0 \\
+\end{bmatrix}
+\end{align*}
+Weights control update procedure of the network and take pos, neg or zero values. Positive weights force neurons to become equal (energetically more favorable), negative weights drive neurons to be different, 0 weights have no influence. Weights describe the way from current state of the network towards the next minimum of the energy function.
+
+\paragraph{Updates}
+Neurons are processed one after the other and activations are recalculated until convergence. Performance depends on update order.
+\textbf{Synchronous update} may generate oscillations.
+\textbf{Asynchronous update} always converges to stable state, which depends on the update order.
+
+\paragraph{Simplified representation}
+Combine symmetric connections with double arrows.
+
+\paragraph{Convergence properties}
+Hopfield network with symmetric weight matrix with zeros on diag always converges if updated asynchronously. At most $N2^N$ updates of single neurons needed. Minimum of energy surface searched in input states. Stops on minimum. Output is binary state string.
+\textbf{Energy function} $E=-\frac{1}{2}\v{y}_{act}^T \v{W} \v{y}_{act} + \v{\theta}^T\v{y}_{act}$. After each iteration the energy remains const or decreases. \\
+Proof of convergence: $\Delta E = (y_{act}^{(l,old)}-y_{act}^{(l,new)})(y_{net}^{(l)}-\theta^{(l)})$ with 2 cases $y_{net}^{(l)}<\theta^{(l)}$ or $y_{net}^{(l)}\geq\theta^{(l)}$.\\
+In state graphs the energy always decreases. State graph isn't always symmetric (non-zero thresholds).
+
+\paragraph{Ising model}
+HN can be seen as a microscopic model of magnetism - communication between particles and particles try to reach energetically favourable state.\\
+\begin{tabular}{|c|c|}
+\hline 
+Neuron & Atom \\ 
+\hline 
+Activation state & Magnetic moment (spin) \\ 
+\hline 
+Threshold & Strength of ext. magn. field\\ 
+\hline 
+Connection weights & Magnetic coupling of atoms \\ 
+\hline 
+Energy function & Hamilton operator \\ 
+\hline 
+\end{tabular} 
+
+\paragraph{Associative memory}
+Use HN as associative memory (stable states). Known pattern yields same exact pattern. Noisy patterns can be recognized or corrected. Find weights and thresholds that patterns are stable states of HN. $M$ patterns $\v{p}_m$ of length $N$.\vspace{0.1cm}
+
+\textbf{Storing a single pattern} necessary condition: $F(\v{Wp}-\v{\theta})=\v{p}$ with element-wise threshold (mapping) function $F$ (1 if $x_i\geq 0$, -1 else). Simplify: $\v{\theta}=\v{0}$. Find $\v{W}$ that has positive EV w.r.t $\v{p}$: $\v{Wp}=c\v{p}$. Choose $\v{W}=\v{pp}^T - \v{I}$ which yields $\v{Wp}=\v{pp}^T\v{p}-\v{Ip}=(N-1)\v{p}$ with pattern $\v{p}$ being a stable state of HN.\vspace{0.1cm}
+
+\textbf{Hebbian learning}: neurons which fire together, wire together. Weights $w_u^{(l)}=1$ if neuron $l$ and $u$ are simultaneously active, 0 if $u=l$ and -1 else.\\
+Minimum of energy function in HN is located at $\v{y_{act}}=\v{p}$.\vspace{0.1cm}
+
+\textbf{Storing several patterns}: $\v{W}=(\sum_{m=0}^{M-1}\v{p}_m\v{p}_m^T)-M\v{I}$. Excitation of the units $\v{Wp}_k = (N-M)\v{p}_k + \sum_{m=0,m\neq k}^{M-1} \v{p}_m(\v{p}_m^T \v{p}_k)$. 2nd term is perturbation term. Patterns stable if $M<N$ and perturbation is small. Capacity of HN very small compared to the number of possible states ($2^n$). Best results if $\v{p}_k$ orthogonal: $\v{Wp}_k = (N-M)\v{p}_k$. Complements $-\v{p}_k$ are also stable states of HN.\vspace{0.1cm}
+
+\textbf{Perceptron learning} if Hebbian learning doesn't find a solution. Transform weight matrix into a vector
+\begin{align*}
+\begin{array}{cccccc}
+\v{w} = ( & w_{l_1}^{(l_0)} & w_{l_2}^{(l_0)} & \cdots & w_{l_{N-1}}^{(l_0)}&    \\
+  &                 & w_{l_2}^{(l_1)} & \cdots & w_{l_{N-1}}^{(l_1)}        &     \\
+  &                 &                 & \ddots & \vdots                    &   \\
+  &                 &                 &        & w_{l_{N-1}}^{(l_{N-2})}    &      \\
+  & -\theta_{u_1}   & -\theta_{u_2}   & \cdots & -\theta_{u_n}  & )
+\end{array}
+\end{align*}
+Construct input vector $\v{z}$ so that the conditions yield $y(\v{w}^T\v{z}_{k,m}) = y_{act,m}^{(l_k)}$ for all neurons. Solution by linear separation of $\v{z}_{k,m}$. If $y(\cdot)=1$ $\v{z}$ belongs to the positive half-space, if $y(\cdot)=-1$ negative half-space. Perceptron learning can be used to compute $\v{w}$ for linear separation. Learning of HN with $N$ units can be transformed into learning of perceptron of dim $N(N+1)/2$.\\
+
+\paragraph{Optimization}
+HN  for which an energy function of a certain form exists can be used to solve optimization problems. Transform cost function into energy function. Construct HN parameters from energy function. Init HN randomly. Can only find a local minimum. 
+
 
 \section{Recurrent networks}
+Well suited for solving differential equations numerically by training of appropriate RN.
+
+\paragraph{Cooling law}
+General recursive formula $\xi(t_i)=\xi(t_{i-1})-p(\xi(t_{i-1}-\xi_{env})\Delta t$. Calculate $\xi(t_i)$ with NN with only one neuron. $f_{net}^{(l)}(w,x(t_i))= -p \Delta t x(t_i)$ with bias $\Phi^{(l)}=-p \xi_{env} \Delta t$ and $f_{act}^{(l)}(\cdot)=y_{act}^{(l)}(t_{i-1})+y_{net}^{(l)}(t_i)-\Phi^{(l)}$
+
+\paragraph{Representation of DiffEqs}
+Decompose $N$-th order differential equation into $N$ first order differential equations. Approximate differential quotient by difference quotient. Transform first order differential equations into recursive equations using difference quotient. Network input and activation for first $N-1$ neurons are: $y_{net}^{(l_m)}(t_i)=y_{m+1}(t_i)\Delta t$, $y_{act}^{(l_m)}(t_i)=y_{act}^{(l_m)}(t_{i-1})+y_{net}^{(l_m)}(t_i)-\Phi^{(l_m)}$. 2nd to last neuron depends on the chosen type of DE. The last neuron tracks time by $t_i=t_{i-1}+\Delta t$.
+
+\paragraph{Learning}
+Trained similarly to MLP. Unfolded over time between training patterns to eliminate feedback. One neuron created for each time interval
 
 
 
